@@ -1,5 +1,5 @@
 from .models import Journal
-from .serializers import JournalSerializer, UserSerializer
+from .serializers import JournalSerializer
 
 from rest_framework import generics
 from rest_framework import permissions
@@ -12,7 +12,7 @@ class JournalList(generics.ListAPIView):
     serializer_class = JournalSerializer
 
 
-class JournalDetail(generics.RetrieveUpdateAPIView):
+class JournalDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'issn_number'
     queryset = Journal.objects.all()

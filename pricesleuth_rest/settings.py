@@ -21,11 +21,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(pey#zu#!$06n(!#!47gvar@fhv&x3k-hl)%tlw%j#i_l$7@=$'
+"""
+with open('/etc/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
+"""
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'http://ec2-54-193-66-154.us-west-1.compute.amazonaws.com',
+]
 
 
 # Application definition
@@ -76,7 +82,16 @@ WSGI_APPLICATION = 'pricesleuth_rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+"""
+def get_login_info():
+    with open('/etc/db_info.txt') as f:
+        name = f.readline().strip()
+        user = f.readline().strip()
+        password = f.readline().strip()
+    return name, user, password
 
+name, user, password = get_login_info()
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -125,6 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATIC_ROOT = '/home/ubuntu/pricesleuth_rest/static'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -135,3 +151,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+
+
+# Security settings
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#CSRF_COOKIE_HTTPONLY = True
+X_FRAME_OPTIONS = 'DENY'
