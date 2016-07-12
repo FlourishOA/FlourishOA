@@ -27,3 +27,12 @@ class Price(models.Model):
     def __str__(self):
         return self.journal_issn + ": " + str(self.price) + "; " + str(self.update_date)
 
+@python_2_unicode_compatible
+class Publisher(models.Model):
+    publisher = models.CharField(max_length=150)
+    journal_issn = models.ForeignKey(Journal, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.publisher + ": " + self.journal_issn
+
+
