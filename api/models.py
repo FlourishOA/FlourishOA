@@ -27,12 +27,13 @@ class Price(models.Model):
     Model of a single price 'event'; there may be multiple price events
     for each journal. One journal may map to many price events
     """
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     time_stamp = models.DateTimeField()
-    journal_issn = models.ForeignKey(Journal, on_delete=models.CASCADE)
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.journal_issn + ": " + str(self.price) + "; " + str(self.time_stamp)
+        return self.journal.issn_number + ": " + str(self.price) + ", " \
+               + str(self.time_stamp) + ";"
 
 @python_2_unicode_compatible
 class Publisher(models.Model):
@@ -40,10 +41,10 @@ class Publisher(models.Model):
     Model of a publisher. One publisher may map to many journals,
     which are listed by ISSN (a foreign key)
     """
-    publisher = models.CharField(max_length=150)
-    journal_issn = models.ForeignKey(Journal, on_delete=models.CASCADE)
+    publisher_name = models.CharField(max_length=150)
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.publisher + ": " + self.journal_issn
+        return self.publisher_name + ": " + self.journal.issn_number
 
 
