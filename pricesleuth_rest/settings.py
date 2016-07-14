@@ -144,7 +144,7 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -153,26 +153,7 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
-    'api_version': '1.0',
-    'api_path': '/',
-    'relative_paths': False,
-    'enabled_methods': [
-        'get',
-        'put',
-        'post',
-        'patch',
-        'delete',
-    ],
-    'is_authenticated': False,
-    'is_superuser': False,
-    'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
-    'base_path': 'localhost/docs',
-    'info': {
-        'contact': 'pspieker@uw.edu',
-        'description': 'This is an API for accessing info about OpenAccess scientific journals.',
-        'license': 'Apache 2.0',
-        'title': 'PriceSleuth REST API'
-    }
+    'USE_SESSION_AUTH': False
 }
 
 # Security settings

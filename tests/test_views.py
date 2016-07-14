@@ -1,4 +1,5 @@
 from django.test import TestCase
+from unittest import skip
 from api.models import Journal
 from rest_framework.test import APIRequestFactory
 from api.views import JournalViewSet
@@ -97,10 +98,36 @@ class TestJournalViewSet(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, correct_data)
 
-    def test_journal_viewset_update_nonexistent(self):
-        pass
+    """
+    Testing the update function of the JournalViewSet
+    """
 
-    def test_journal_viewset_update_nxistent(self):
+    @skip("Authentication not implemented yet")
+    def test_journal_viewset_update_nonexistent(self):
+        Journal.objects.create(issn='5553-1519',
+                               journal_name='Journal 2',
+                               article_influence=None,
+                               est_article_influence=15.2,
+                               is_hybrid=False,
+                               category=None)
+
+        new_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 27',
+            'article_influence': None,
+            'est_article_influence': '17.30200',
+            'is_hybrid': True,
+            'category': None,
+        }
+
+        factory = APIRequestFactory()
+        request = factory.put('journals/', new_data)
+        view = JournalViewSet.as_view({'put': 'update'})
+        response = view(request, issn='5553-1519')
+        response.render()
+
+    @skip("Authentication not implemented yet")
+    def test_journal_viewset_update_existent(self):
         pass
 
 
