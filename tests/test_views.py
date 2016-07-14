@@ -2,13 +2,16 @@ from django.test import TestCase
 from api.models import Journal
 from rest_framework.test import APIRequestFactory
 from api.views import JournalViewSet
+
 """
 Unit tests for the views
 """
 
 
 class TestJournalViewSet(TestCase):
-
+    """
+    Tests for the JournalViewSet
+    """
     def setUp(self):
         """Journal.objects.create(issn='1353-651X',
                                journal_name='Journal 1',
@@ -93,6 +96,12 @@ class TestJournalViewSet(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, correct_data)
+
+    def test_journal_viewset_update_nonexistent(self):
+        pass
+
+    def test_journal_viewset_update_nxistent(self):
+        pass
 
 
 
