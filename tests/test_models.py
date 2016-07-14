@@ -1,13 +1,10 @@
 from django.test import TestCase
 from api.models import Journal, Publisher, Price
 
-from datetime import datetime
-import pytz
-
 """
 Overall testing plan:
-    Unit tests for models
-    Unit tests for views
+    -Unit tests for models
+    -Unit tests for views
 """
 
 
@@ -20,14 +17,14 @@ class JournalModelTestCase(TestCase):
     """
     def setUp(self):
         # Normal, valid test case w/no est. art. infl.
-        Journal.objects.create(issn_number='1353-651X',
+        Journal.objects.create(issn='1353-651X',
                                journal_name='Journal 1',
                                article_influence=122.4,
                                est_article_influence=None,
                                is_hybrid=False,
                                category=None)
         # Journal with no article infl.
-        Journal.objects.create(issn_number='5553-1519',
+        Journal.objects.create(issn='5553-1519',
                                journal_name='Journal 2',
                                article_influence=None,
                                est_article_influence=15.2,
@@ -35,12 +32,13 @@ class JournalModelTestCase(TestCase):
                                category=None)
 
     def test_journal_str(self):
-        j1 = Journal.objects.get(issn_number='1353-651X')
-        j2 = Journal.objects.get(issn_number='5553-1519')
+        j1 = Journal.objects.get(issn='1353-651X')
+        j2 = Journal.objects.get(issn='5553-1519')
         self.assertEqual(j1.__str__(),
                          "1353-651X: Journal 1")
         self.assertEqual(j2.__str__(),
                          "5553-1519: Journal 2")
+
 
 class PriceModelTestCase(TestCase):
     """
@@ -48,22 +46,22 @@ class PriceModelTestCase(TestCase):
     """
     def setUp(self):
         # Normal, valid test case w/no est. art. infl.
-        Journal.objects.create(issn_number='1353-651X',
+        Journal.objects.create(issn='1353-651X',
                                journal_name='Journal 1',
                                article_influence=122.4,
                                est_article_influence=None,
                                is_hybrid=False,
                                category=None)
         # Journal with no article infl.
-        Journal.objects.create(issn_number='5553-1519',
+        Journal.objects.create(issn='5553-1519',
                                journal_name='Journal 2',
                                article_influence=None,
                                est_article_influence=15.2,
                                is_hybrid=False,
                                category=None)
 
-        j1 = Journal.objects.get(issn_number='1353-651X')
-        j2 = Journal.objects.get(issn_number='5553-1519')
+        j1 = Journal.objects.get(issn='1353-651X')
+        j2 = Journal.objects.get(issn='5553-1519')
 
         # Price with full, down to second time-stamp
         Price.objects.create(journal=j1,
@@ -83,8 +81,8 @@ class PriceModelTestCase(TestCase):
                              time_stamp='2011-12-05 00:00:00-07:00')
 
     def test_price_str(self):
-        j1 = Journal.objects.get(issn_number='1353-651X')
-        j2 = Journal.objects.get(issn_number='5553-1519')
+        j1 = Journal.objects.get(issn='1353-651X')
+        j2 = Journal.objects.get(issn='5553-1519')
 
         # getting QuerySet of Journal 1's prices
         j1_ps = Price.objects.filter(journal=j1)
@@ -107,21 +105,21 @@ class PublisherModelTestCase(TestCase):
 
     def setUp(self):
         # Normal, valid test case w/no est. art. infl.
-        Journal.objects.create(issn_number='1353-651X',
+        Journal.objects.create(issn='1353-651X',
                                journal_name='Journal 1',
                                article_influence=122.4,
                                est_article_influence=None,
                                is_hybrid=False,
                                category=None)
         # Journal with no article infl.
-        Journal.objects.create(issn_number='5553-1519',
+        Journal.objects.create(issn='5553-1519',
                                journal_name='Journal 2',
                                article_influence=None,
                                est_article_influence=15.2,
                                is_hybrid=False,
                                category=None)
-        j1 = Journal.objects.get(issn_number='1353-651X')
-        j2 = Journal.objects.get(issn_number='5553-1519')
+        j1 = Journal.objects.get(issn='1353-651X')
+        j2 = Journal.objects.get(issn='5553-1519')
         Publisher.objects.create(publisher_name='Big Pub 1', journal=j1)
         Publisher.objects.create(publisher_name='Small Pub 1', journal=j2)
 
@@ -131,4 +129,3 @@ class PublisherModelTestCase(TestCase):
 
         self.assertEqual(big_pub.__str__(), 'Big Pub 1: 1353-651X')
         self.assertEqual(small_pub.__str__(), 'Small Pub 1: 5553-1519')
-
