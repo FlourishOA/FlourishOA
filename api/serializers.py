@@ -3,6 +3,9 @@ from .models import Journal, Price, Publisher
 from django.contrib.auth.models import User
 
 
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
 class JournalSerializer(serializers.ModelSerializer):
     """
     Allows Journal model to be serialized into JSON/other formats for

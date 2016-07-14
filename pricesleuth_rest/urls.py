@@ -15,12 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.conf.urls import include
-
-
-
+from rest_framework.authtoken import views
 
 urlpatterns = [
     url(r'^', include('api.urls')),
-    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^docs/', include('rest_framework_swagger.urls'))
 ]
