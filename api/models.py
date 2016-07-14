@@ -9,7 +9,7 @@ class Journal(models.Model):
     """
     Model of a journal, with the ISSN as the primary key of the model
     """
-    issn_number = models.CharField(max_length=9, primary_key=True)
+    issn = models.CharField(max_length=9, primary_key=True)
     journal_name = models.CharField(max_length=150)
     article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
     est_article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
@@ -17,7 +17,7 @@ class Journal(models.Model):
     category = models.CharField(max_length=50, null=True)
 
     def __str__(self):
-        result = self.issn_number + ": " + self.journal_name
+        result = self.issn + ": " + self.journal_name
         return result
 
 
@@ -32,7 +32,7 @@ class Price(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.journal.issn_number + ": " + str(self.price) + ", " \
+        return self.journal.issn + ": " + str(self.price) + ", " \
                + str(self.time_stamp) + ";"
 
 @python_2_unicode_compatible
@@ -45,6 +45,6 @@ class Publisher(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.publisher_name + ": " + self.journal.issn_number
+        return self.publisher_name + ": " + self.journal.issn
 
 

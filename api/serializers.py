@@ -10,7 +10,7 @@ class JournalSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Journal
-        fields = ('issn_number', 'journal_name', 'article_influence', 'est_article_influence',
+        fields = ('issn', 'journal_name', 'article_influence', 'est_article_influence',
                   'is_hybrid', 'category')
 
 
@@ -21,7 +21,7 @@ class PriceSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Price
-        fields = ('price', 'time_stamp', 'journal_issn')
+        fields = ('price', 'time_stamp', 'journal')
 
 
 class PublisherSerializer(serializers.ModelSerializer):
@@ -31,4 +31,4 @@ class PublisherSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Publisher
-        fields = ('publisher', 'journal_issn')
+        fields = ('publisher_name', 'journal')
