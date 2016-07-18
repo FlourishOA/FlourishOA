@@ -1,16 +1,15 @@
 from django.test import TestCase
-from unittest import skip
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory
-from rest_framework.authtoken import views as auth_views
-from rest_framework import serializers
 import json
 
 
 class TestAuthentication(TestCase):
 
     def setUp(self):
+        """
+        Creating user and valid token
+        """
         self.u = User.objects.create_user(username='test1', password='thisis8chars')
         self.u.save()
         self.token = Token.objects.create(user=self.u)
@@ -24,9 +23,11 @@ class TestAuthentication(TestCase):
         data = {"username": "test1", "password": "thisis8chars"}
         url = "/api-token-auth/"
 
-        response = self.client.post(url, json.dumps(data), content_type='application/json')
+        response = self.client.post(url, data)
+        # parsing out the token from the string
         token = json.loads(response.content)['token']
 
+        # checking for valid response status AND the correct token
         self.assertEqual(response.status_code, 200)
         self.assertEqual(token, str(self.token))
 
@@ -34,7 +35,8 @@ class TestAuthentication(TestCase):
         data = {"username": "test1", "password": "thisis9chars"}
         url = "/api-token-auth/"
 
-        response = self.client.post(url, json.dumps(data), content_type='application/json')
+        response = self.client.post(url, data)
 
+        # bad password should result in bad credentials error
         self.assertEqual(response.status_code, 400)
 
