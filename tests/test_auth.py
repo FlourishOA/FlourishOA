@@ -9,35 +9,23 @@ import json
 
 
 class TestAuthentication(TestCase):
-    """
+
     def setUp(self):
-        self.u = User.objects.create(username='test1', password='thisis8chars')
+        self.u = User.objects.create_user(username='test1', password='thisis8chars')
+        self.u.save()
         self.token = Token.objects.create(user=self.u)
-    """
+        self.token.save()
 
     def test_create_valid_request(self):
-        u = User.objects.create(username='test1', password='thisis8chars')
-        Token.objects.create(user=u)
         # Assertions that should be left regardless
-        self.assertEqual(User.objects.get(username='test1'), u)
-        self.assertEqual(u.username, 'test1')
-        self.assertEqual(u.password, 'thisis8chars')
+        self.assertEqual(User.objects.get(username='test1'), self.u)
+        self.assertEqual(self.u.username, 'test1')
 
-        data = {'username': 'test1', 'password': 'thisis8chars'}
+        data = {"username": "test1", "password": "thisis8chars"}
         url = "/api-token-auth/"
 
-        response = self.client.post(url, data)
-        print response.status_code
-        print response.content
-        """
-        request = APIRequestFactory().post("/api-token-auth/",
-                                           data={'username': 'test1', 'password': 'thisis8chars'}, format='json')
-        print request.body
-        view = auth_views.ObtainAuthToken.as_view()
+        response = self.client.post(url, json.dumps(data), content_type='application/json')
+        token = json.loads(response.content)['token']
 
-        response = view(request)
-        response.render()
-
-        print response.content
-
-        """
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(token, str(self.token))
