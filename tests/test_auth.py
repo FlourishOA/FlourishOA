@@ -29,3 +29,12 @@ class TestAuthentication(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(token, str(self.token))
+
+    def test_create_invalid_request(self):
+        data = {"username": "test1", "password": "thisis9chars"}
+        url = "/api-token-auth/"
+
+        response = self.client.post(url, json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
