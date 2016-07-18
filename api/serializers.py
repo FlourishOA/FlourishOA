@@ -3,8 +3,12 @@ from .models import Journal, Price, Publisher
 from django.contrib.auth.models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+class UserSerializer(serializers.Serializer):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+        write_only_fields = ('password',)
+
 
 class JournalSerializer(serializers.ModelSerializer):
     """
