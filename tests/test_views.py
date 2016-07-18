@@ -2,7 +2,10 @@ from django.test import TestCase
 from unittest import skip
 from api.models import Journal
 from rest_framework.test import APIRequestFactory
+from rest_framework.test import force_authenticate
 from api.views import JournalViewSet
+from django.contrib.auth.models import User
+import json
 
 """
 Unit tests for the views
@@ -102,8 +105,10 @@ class TestJournalViewSet(TestCase):
     Testing the update function of the JournalViewSet
     """
 
-    @skip("Authentication not implemented yet")
     def test_journal_viewset_update_nonexistent(self):
+
+        user = User.objects.create_user(username='test1', password='passw')
+
         Journal.objects.create(issn='5553-1519',
                                journal_name='Journal 2',
                                article_influence=None,
@@ -121,12 +126,16 @@ class TestJournalViewSet(TestCase):
         }
 
         factory = APIRequestFactory()
-        request = factory.put('journals/', new_data)
+        request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
+        force_authenticate(request, user=user)
+
         view = JournalViewSet.as_view({'put': 'update'})
         response = view(request, issn='5553-1519')
         response.render()
+        print response
+        print response.data
 
-    @skip("Authentication not implemented yet")
+    @skip("not implemented yet")
     def test_journal_viewset_update_existent(self):
         pass
 

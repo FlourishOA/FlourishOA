@@ -30,7 +30,7 @@ class JournalViewSet(mixins.ListModelMixin,
         serializer = JournalSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'status': 'journal update'})
+            return Response({'status': 'journal updated'})
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
