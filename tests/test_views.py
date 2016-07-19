@@ -106,7 +106,27 @@ class TestJournalViewSet(TestCase):
     """
 
     def test_journal_viewset_update_nonexistent(self):
+        # factory for making web requests
+        factory = APIRequestFactory()
 
+        # data that will be 'put' into database
+        new_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 27',
+            'article_influence': None,
+            'est_article_influence': '17.30200',
+            'is_hybrid': True,
+            'category': None,
+        }
+        # making get request, should return 404
+        request = factory.get('journals/', {'issn': new_data['issn']})
+        view = JournalViewSet.as_view({'get': 'retrieve'})
+        print request.body
+        response = view(request, issn=request.POST['issn'])
+        response.render()
+        self.assertEqual(response.status_code, 404)
+
+        # setting up user and info to be update
         user = User.objects.create_user(username='test1', password='passw')
 
         Journal.objects.create(issn='5553-1519',
@@ -116,27 +136,78 @@ class TestJournalViewSet(TestCase):
                                is_hybrid=False,
                                category=None)
 
-        new_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 27',
-            'article_influence': None,
-            'est_article_influence': '17.30200',
-            'is_hybrid': True,
-            'category': None,
-        }
-
-        factory = APIRequestFactory()
+        # making put request (and authenticating by force)
         request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
         force_authenticate(request, user=user)
 
         view = JournalViewSet.as_view({'put': 'update'})
         response = view(request, issn='5553-1519')
         response.render()
-        print response
 
-    @skip("not implemented yet")
+        # making get request to see if the data has up dates
+        request = factory.get('journals/', {'issn': new_data['issn']})
+        view = JournalViewSet.as_view({'get': 'retrieve'})
+        response = view(request, issn=new_data['issn'])
+        response.render()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, new_data)
+
     def test_journal_viewset_update_existent(self):
-        pass
+        # original data to be put in database
+        old_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 2',
+            'article_influence': None,
+            'est_article_influence': 15.2,
+            'is_hybrid': False,
+            'category': None
+        }
+
+        # data that will be 'put' into database
+        new_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 27',
+            'article_influence': None,
+            'est_article_influence': 17.30200,
+            'is_hybrid': True,
+            'category': None,
+        }
+
+        # creating journal so there is something in the database
+        Journal.objects.create(**old_data)
+
+        # factory for making web requests
+        factory = APIRequestFactory()
+
+        # making get request, should return old_data
+        request = factory.get('journals/', {'issn': new_data['issn']})
+        view = JournalViewSet.as_view({'get': 'retrieve'})
+        print request.body
+        response = view(request, issn=request.POST['issn'])
+        response.render()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, old_data)
+
+        # setting up user (must be authenticated in order to update)
+        user = User.objects.create_user(username='test1', password='passw')
+
+        # making put request (and authenticating by force)
+        request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
+        force_authenticate(request, user=user)
+
+        view = JournalViewSet.as_view({'put': 'update'})
+        response = view(request, issn=new_data['issn'])
+        response.render()
+
+        # making get request to see if the data has up dates
+        request = factory.get('journals/', {'issn': new_data['issn']})
+        view = JournalViewSet.as_view({'get': 'retrieve'})
+        response = view(request, issn=new_data['issn'])
+        response.render()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, new_data)
+
+
 
 
 
