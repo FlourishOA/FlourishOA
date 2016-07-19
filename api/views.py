@@ -26,7 +26,7 @@ class JournalViewSet(mixins.ListModelMixin,
         serializer = JournalSerializer(journal)
         return Response(serializer.data)
 
-    def update(self, request, *args, **kwargs):
+    def update(self, request, issn=None, *args, **kwargs):
         serializer = JournalSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
