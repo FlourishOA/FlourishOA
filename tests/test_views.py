@@ -133,7 +133,6 @@ class TestJournalViewSet(TestCase):
         response = view(request, issn='5553-1519')
         response.render()
         print response
-        print response.data
 
     @skip("not implemented yet")
     def test_journal_viewset_update_existent(self):
