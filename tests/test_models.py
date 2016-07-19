@@ -11,7 +11,9 @@ Overall testing plan:
 """
 Unit tests for the models
 """
-class JournalModelTestCase(TestCase):
+
+
+class TestJournalModel(TestCase):
     """
     Testing behavior of the Journal model
     """
@@ -40,7 +42,7 @@ class JournalModelTestCase(TestCase):
                          "5553-1519: Journal 2")
 
 
-class PriceModelTestCase(TestCase):
+class TestPriceMode(TestCase):
     """
     testing behavior of the Price model
     """
@@ -98,7 +100,7 @@ class PriceModelTestCase(TestCase):
         self.assertEqual(j2_p.__str__(), "5553-1519: 0.00, 2011-12-05 07:00:00+00:00;")
 
 
-class PublisherModelTestCase(TestCase):
+class TestPublisherModel(TestCase):
     """
     Test case for the Publisher model
     """
