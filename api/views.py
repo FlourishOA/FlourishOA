@@ -30,4 +30,5 @@ class JournalViewSet(mixins.ListModelMixin,
         journal, created = Journal.objects.update_or_create(issn=issn, defaults=request.data)
         serializer = JournalSerializer(journal)
         journal.save()
+        return Response(serializer.data)
 
