@@ -121,8 +121,7 @@ class TestJournalViewSet(TestCase):
         # making get request, should return 404
         request = factory.get('journals/', {'issn': new_data['issn']})
         view = JournalViewSet.as_view({'get': 'retrieve'})
-        print request.body
-        response = view(request, issn=request.POST['issn'])
+        response = view(request, issn=request.GET['issn'])
         response.render()
         self.assertEqual(response.status_code, 404)
 
@@ -140,15 +139,17 @@ class TestJournalViewSet(TestCase):
         request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
         force_authenticate(request, user=user)
 
+        # rendering the changes into the Django view (and by proxy, the model)
         view = JournalViewSet.as_view({'put': 'update'})
-        response = view(request, issn='5553-1519')
-        response.render()
+        response = view(request, issn=json.loads(request.body)['issn'])
 
         # making get request to see if the data has up dates
         request = factory.get('journals/', {'issn': new_data['issn']})
         view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn=new_data['issn'])
+        response = view(request, issn=request.GET['issn'])
         response.render()
+
+        # data received should be the same as the original dict
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, new_data)
 
@@ -158,7 +159,7 @@ class TestJournalViewSet(TestCase):
             'issn': '5553-1519',
             'journal_name': 'Journal 2',
             'article_influence': None,
-            'est_article_influence': 15.2,
+            'est_article_influence': '15.20000',
             'is_hybrid': False,
             'category': None
         }
@@ -168,7 +169,7 @@ class TestJournalViewSet(TestCase):
             'issn': '5553-1519',
             'journal_name': 'Journal 27',
             'article_influence': None,
-            'est_article_influence': 17.30200,
+            'est_article_influence': '17.30200',
             'is_hybrid': True,
             'category': None,
         }
@@ -182,8 +183,8 @@ class TestJournalViewSet(TestCase):
         # making get request, should return old_data
         request = factory.get('journals/', {'issn': new_data['issn']})
         view = JournalViewSet.as_view({'get': 'retrieve'})
-        print request.body
-        response = view(request, issn=request.POST['issn'])
+
+        response = view(request, issn=request.GET['issn'])
         response.render()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, old_data)
@@ -196,14 +197,16 @@ class TestJournalViewSet(TestCase):
         force_authenticate(request, user=user)
 
         view = JournalViewSet.as_view({'put': 'update'})
-        response = view(request, issn=new_data['issn'])
+        response = view(request, issn=json.loads(request.body)['issn'])
         response.render()
 
         # making get request to see if the data has up dates
         request = factory.get('journals/', {'issn': new_data['issn']})
         view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn=new_data['issn'])
+        response = view(request, issn=request.GET['issn'])
         response.render()
+
+        # data retrieved should be the same as the data we had before
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, new_data)
 
