@@ -1,210 +1,144 @@
-from django.test import TestCase
+# General testing
+from rest_framework.test import APITestCase
 from unittest import skip
-from api.models import Journal
-from rest_framework.test import APIRequestFactory
-from rest_framework.test import force_authenticate
-from api.views import JournalViewSet
-from django.contrib.auth.models import User
+from rest_framework.reverse import reverse
 import json
+
+# Stuff from my app
+from api.models import Journal
+
+# Authentication
+from django.contrib.auth.models import User
+
 
 """
 Unit tests for the views
 """
 
 
-class TestJournalViewSet(TestCase):
+class TestJournalViewSet(APITestCase):
     """
     Tests for the JournalViewSet
     """
     def setUp(self):
-        """Journal.objects.create(issn='1353-651X',
-                               journal_name='Journal 1',
-                               article_influence=122.4,
-                               est_article_influence=None,
-                               is_hybrid=False,
-                               category=None)
-        # Journal with no article infl.
+        self.journal1_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 2',
+            'article_influence': None,
+            'est_article_influence': '15.20000',
+            'is_hybrid': False,
+            'category': None,
+        }
+        self.updated_journal1_data = {
+            'issn': '5553-1519',
+            'journal_name': 'Journal 27',
+            'article_influence': None,
+            'est_article_influence': '17.30200',
+            'is_hybrid': True,
+            'category': None,
+        }
 
-        Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)"""
-        pass
+        self.journal2_data = {
+            'issn': '1234-1519',
+            'journal_name': 'Weird Bad Journal',
+            'article_influence': None,
+            'est_article_influence': '1.20010',
+            'is_hybrid': True,
+            'category': None,
+        }
 
-    def test_journal_viewset_get_list_empty(self):
-        factory = APIRequestFactory()
-        request = factory.get('journals/')
-        view = JournalViewSet.as_view({'get': 'list'})
-        response = view(request)
-        response.render()
-
+    def test_get_list_empty(self):
+        """
+        Checking whether empty list is returned
+        """
+        response = self.client.get(reverse('journal-list'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, [])
 
-    def test_journal_viewset_get_list_not_empty(self):
-        Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)
-        correct_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 2',
-            'article_influence': None,
-            'est_article_influence': '15.20000',
-            'is_hybrid': False,
-            'category': None,
-        }
+    def test_get_list_not_empty(self):
+        # creating objects
+        Journal.objects.create(**self.journal1_data)
+        response = self.client.get(reverse('journal-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, [self.journal1_data])
 
-        factory = APIRequestFactory()
-        request = factory.get('journals/')
-        view = JournalViewSet.as_view({'get': 'list'})
-        response = view(request)
-        response.render()
-
-        self.assertEqual(response.data, [correct_data])
-
-    def test_journal_viewset_get_single_empty(self):
-        factory = APIRequestFactory()
-        request = factory.get('journals/', {'issn': '5553-1519'})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn='5553-1519')
-        response.render()
-
+    def test_get_single_empty(self):
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
         self.assertEqual(response.status_code, 404)
 
-    def test_journal_viewset_get_single_not_empty(self):
-        Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)
-        correct_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 2',
-            'article_influence': None,
-            'est_article_influence': '15.20000',
-            'is_hybrid': False,
-            'category': None,
-        }
-
-        factory = APIRequestFactory()
-        request = factory.get('journals/', {'issn': '5553-1519'})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn='5553-1519')
-        response.render()
-
+    def test_get_single_not_empty(self):
+        # creating objects
+        Journal.objects.create(**self.journal1_data)
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, correct_data)
+        self.assertEqual(response.data, self.journal1_data)
 
     """
     Testing the update function of the JournalViewSet
     """
+    def test_update_nonexistent(self):
 
-    def test_journal_viewset_update_nonexistent(self):
-        # factory for making web requests
-        factory = APIRequestFactory()
-
-        # data that will be 'put' into database
-        new_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 27',
-            'article_influence': None,
-            'est_article_influence': '17.30200',
-            'is_hybrid': True,
-            'category': None,
-        }
-        # making get request, should return 404
-        request = factory.get('journals/', {'issn': new_data['issn']})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn=request.GET['issn'])
-        response.render()
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
         self.assertEqual(response.status_code, 404)
 
         # setting up user and info to be update
         user = User.objects.create_user(username='test1', password='passw')
-
-        # making put request (and authenticating by force)
-        request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
-        force_authenticate(request, user=user)
+        self.client.force_authenticate(user=user)
 
         # rendering the changes into the Django view (and by proxy, the model)
-        view = JournalViewSet.as_view({'put': 'update'})
-        response = view(request, issn=json.loads(request.body)['issn'])
-        response.render()
+        response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
+                                   data=json.dumps(self.journal1_data), format='json')
         self.assertEqual(response.status_code, 201)
 
-        # making get request to see if the data has up dates
-        request = factory.get('journals/', {'issn': new_data['issn']})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn=request.GET['issn'])
-        response.render()
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
 
         # data received should be the same as the original dict
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, new_data)
+        self.assertEqual(response.data, self.journal1_data)
 
-    def test_journal_viewset_update_existent(self):
-        # original data to be put in database
-        old_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 2',
-            'article_influence': None,
-            'est_article_influence': '15.20000',
-            'is_hybrid': False,
-            'category': None
-        }
-
-        # data that will be 'put' into database
-        new_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 27',
-            'article_influence': None,
-            'est_article_influence': '17.30200',
-            'is_hybrid': True,
-            'category': None,
-        }
+    def test_update_existent(self):
 
         # creating journal so there is something in the database
-        Journal.objects.create(**old_data)
+        Journal.objects.create(**self.journal1_data)
 
-        # factory for making web requests
-        factory = APIRequestFactory()
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
 
-        # making get request, should return old_data
-        request = factory.get('journals/', {'issn': new_data['issn']})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-
-        response = view(request, issn=request.GET['issn'])
-        response.render()
+        # data received should be the same as the original dict
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, old_data)
+        self.assertEqual(response.data, self.journal1_data)
 
-        # setting up user (must be authenticated in order to update)
+        # setting up user and info to be update
         user = User.objects.create_user(username='test1', password='passw')
+        self.client.force_authenticate(user=user)
 
-        # making put request (and authenticating by force)
-        request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
-        force_authenticate(request, user=user)
-
-        view = JournalViewSet.as_view({'put': 'update'})
-        response = view(request, issn=json.loads(request.body)['issn'])
-        response.render()
-
-        # making get request to see if the data has up dates
-        request = factory.get('journals/', {'issn': new_data['issn']})
-        view = JournalViewSet.as_view({'get': 'retrieve'})
-        response = view(request, issn=request.GET['issn'])
-        response.render()
+        # rendering the changes into the Django view (and by proxy, the model)
+        response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
+                                   data=json.dumps(self.updated_journal1_data), format='json')
+        self.assertEqual(response.status_code, 200)
 
         # data retrieved should be the same as the data we had before
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, new_data)
+        self.assertEqual(response.data, self.updated_journal1_data)
 
+    def test_non_uniform_issn_update(self):
+        # creating journal so there is something in the database
+        Journal.objects.create(**self.journal1_data)
+
+        # setting up user and authenticating
+        user = User.objects.create_user(username='test1', password='passw')
+        self.client.force_authenticate(user=user)
+
+        # sending the ISSN for journal1, but having a different ISSN in the data
+        response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
+                                   data=json.dumps(self.journal2_data), format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_no_auth_update(self):
+        # trying to update data with no authenication, should result in 'Unauthorized'
+        # response from the server
+        response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
+                                   data=json.dumps(self.journal1_data), format='json')
+        self.assertEqual(response.status_code, 401)
 
 
 
