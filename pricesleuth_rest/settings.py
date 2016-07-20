@@ -79,7 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pricesleuth_rest.wsgi.application'
-
+APPEND_SLASH = False
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
