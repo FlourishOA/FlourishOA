@@ -15,8 +15,8 @@ class JournalViewSet(mixins.ListModelMixin,
                      mixins.UpdateModelMixin,
                      viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
     lookup_field = 'issn'
+
     def list(self, request, *args, **kwargs):
         """
         Lists information about journals
@@ -27,7 +27,7 @@ class JournalViewSet(mixins.ListModelMixin,
 
     def retrieve(self, request, issn=None, *args, **kwargs):
         """
-        Lists information about journal with given ISSN number
+        Lists information about journal with given ISSN
         """
         queryset = Journal.objects.all()
         journal = get_object_or_404(queryset, issn=issn)
