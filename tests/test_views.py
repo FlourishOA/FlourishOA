@@ -128,13 +128,6 @@ class TestJournalViewSet(TestCase):
         # setting up user and info to be update
         user = User.objects.create_user(username='test1', password='passw')
 
-        Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)
-
         # making put request (and authenticating by force)
         request = factory.put('journals/', json.dumps(new_data), content_type='application/json')
         force_authenticate(request, user=user)
@@ -142,6 +135,8 @@ class TestJournalViewSet(TestCase):
         # rendering the changes into the Django view (and by proxy, the model)
         view = JournalViewSet.as_view({'put': 'update'})
         response = view(request, issn=json.loads(request.body)['issn'])
+        response.render()
+        self.assertEqual(response.status_code, 201)
 
         # making get request to see if the data has up dates
         request = factory.get('journals/', {'issn': new_data['issn']})

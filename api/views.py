@@ -12,23 +12,46 @@ from django.shortcuts import get_object_or_404
 class JournalViewSet(mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
-                     viewsets.ViewSet):
+                     viewsets.GenericViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def list(self, request, *args, **kwargs):
+        """
+        Lists information about journals
+        """
         queryset = Journal.objects.all()
         serializer = JournalSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, issn=None, *args, **kwargs):
+        """
+        Lists information about journal with given ISSN number
+        """
         queryset = Journal.objects.all()
         journal = get_object_or_404(queryset, issn=issn)
         serializer = JournalSerializer(journal)
         return Response(serializer.data)
 
     def update(self, request, issn=None, *args, **kwargs):
+        """
+        Updates/creates information about journal with given ISSN
+        """
+        if not issn:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         journal, created = Journal.objects.update_or_create(issn=issn, defaults=request.data)
-        serializer = JournalSerializer(journal)
-        journal.save()
-        return Response(serializer.data)
+        if created:
+            return Response(data=JournalSerializer(journal).data, status=status.HTTP_201_CREATED)
+        return Response(JournalSerializer(journal).data)
+
+    def partial_update(self, request, issn=None, *args, **kwargs):
+        """
+        Updates only fields that differ between request and stored data
+        """
+        journal = get_object_or_404(Journal.objects.all(), issn=issn)
+        ser = JournalSerializer(journal, data=request.data, partial=True)
+        if ser.is_valid():
+            ser.save()
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 
