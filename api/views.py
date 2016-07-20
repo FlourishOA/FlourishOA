@@ -7,14 +7,16 @@ from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+import json
 
 
 class JournalViewSet(mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin,
-                     viewsets.GenericViewSet):
+                     viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    lookup_field = 'issn'
     def list(self, request, *args, **kwargs):
         """
         Lists information about journals
@@ -36,14 +38,19 @@ class JournalViewSet(mixins.ListModelMixin,
         """
         Updates/creates information about journal with given ISSN
         """
-        if not issn:
+        try:
+            json_data = json.loads(request.data)
+        except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        journal, created = Journal.objects.update_or_create(issn=issn, defaults=request.data)
+        # if the given ISSN and the ISSN in the new json_data aren't the same
+        if issn != json_data['issn']:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        journal, created = Journal.objects.update_or_create(issn=issn, defaults=json_data)
         if created:
             return Response(data=JournalSerializer(journal).data, status=status.HTTP_201_CREATED)
         return Response(JournalSerializer(journal).data)
 
-    def partial_update(self, request, issn=None, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         """
         Updates only fields that differ between request and stored data
         """
