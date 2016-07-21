@@ -42,7 +42,7 @@ class TestJournalModel(TestCase):
                          "5553-1519: Journal 2")
 
 
-class TestPriceMode(TestCase):
+class TestPriceModel(TestCase):
     """
     testing behavior of the Price model
     """

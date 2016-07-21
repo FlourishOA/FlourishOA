@@ -62,15 +62,20 @@ class JournalViewSet(mixins.ListModelMixin,
 
 
 class PriceViewSet(mixins.ListModelMixin,
+                   mixins.UpdateModelMixin,
                    viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    lookup_field = 'journal'
 
-    def list(self, request, journal=None, *args, **kwargs):
-        if journal:
-            queryset = Price.objects.filter(journal=journal)
+    def list(self, request, issn=None, *args, **kwargs):
+        if issn:
+            queryset = Price.objects.filter(journal__issn=issn)
         else:
             queryset = Price.objects.all()
         serializer = PriceSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def update(self, request, journal=None, *args, **kwargs):
+        if not journal:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
