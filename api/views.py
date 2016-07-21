@@ -50,7 +50,7 @@ class JournalViewSet(mixins.ListModelMixin,
             return Response(data=JournalSerializer(journal).data, status=status.HTTP_201_CREATED)
         return Response(JournalSerializer(journal).data)
 
-    def partial_update(self, request, *args, **kwargs):
+    def partial_update(self, request, issn=None, *args, **kwargs):
         """
         Updates only fields that differ between request and stored data
         """
@@ -61,4 +61,16 @@ class JournalViewSet(mixins.ListModelMixin,
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class PriceViewSet(mixins.ListModelMixin,
+                   viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    lookup_field = 'journal'
+
+    def list(self, request, journal=None, *args, **kwargs):
+        if journal:
+            queryset = Price.objects.filter(journal=journal)
+        else:
+            queryset = Price.objects.all()
+        serializer = PriceSerializer(queryset, many=True)
+        return Response(serializer.data)
 
