@@ -13,20 +13,19 @@ from django.contrib.auth.models import User
 
 class TestPriceViewSet(APITestCase):
     def setUp(self):
-
         self.j1_data = {
-            'issn': '5553-1519',
-            'journal_name': 'Journal 2',
+            'issn': u'5553-1519',
+            'journal_name': u'Journal 2',
             'article_influence': None,
-            'est_article_influence': '15.20000',
+            'est_article_influence': u'15.20000',
             'is_hybrid': False,
             'category': None,
         }
 
         self.j1p1_data = {
-            'price': 2500,
-            'time_stamp': '2016-2-13 10:41:51',
-            'journal': '5553-1519'
+            'price': u'2500.00',
+            'time_stamp': u'2016-02-13T10:41:51Z',
+            'journal': u'5553-1519'
         }
 
 
@@ -42,8 +41,8 @@ class TestPriceViewSet(APITestCase):
     def test_get_list_not_empty(self):
         # creating objects
         Journal.objects.create(**self.j1_data)
-        Price.objects.create({key: Journal.objects.get(issn=self.j1p1_data['issn']) if key == 'journal' else value
-                              for (key, value) in self.j1p1_data})
+        Price.objects.create(**{key: Journal.objects.get(issn=self.j1p1_data['journal']) if key == 'journal' else value
+                                for (key, value) in self.j1p1_data.iteritems()})
         response = self.client.get(reverse('price-list'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, [self.j1p1_data])
+        self.assertEqual([dict(response.data[0])], [self.j1p1_data])
