@@ -17,6 +17,7 @@ class JournalViewSet(mixins.ListModelMixin,
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'issn'
 
+
     def list(self, request, *args, **kwargs):
         """
         Lists information about journals
