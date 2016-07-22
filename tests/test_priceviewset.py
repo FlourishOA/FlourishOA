@@ -36,7 +36,7 @@ class TestPriceViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, [])
 
-    @skip("Unicode issues, needs to be reimplemented")
+    @skip("Unicode issues, needs to be reimplemented\n")
     def test_get_all_not_empty(self):
         # creating objects
         Journal.objects.create(**self.j1_data)

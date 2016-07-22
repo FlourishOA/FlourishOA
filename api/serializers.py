@@ -26,6 +26,8 @@ class PriceSerializer(serializers.ModelSerializer):
     Allows Price model to be serialized into JSON/other formats for
     use by the REST API
     """
+    journal = serializers.PrimaryKeyRelatedField(queryset=Journal.objects.all())
+
     class Meta:
         model = Price
         fields = ('price', 'time_stamp', 'journal')
