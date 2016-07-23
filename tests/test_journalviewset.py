@@ -112,8 +112,10 @@ class TestJournalViewSet(APITestCase):
         self.client.force_authenticate(user=user)
 
         # rendering the changes into the Django view (and by proxy, the model)
+        tmp = reverse('journal-detail', kwargs={'issn': '5553-1519'}),
         response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
                                    data=json.dumps(self.updated_journal1_data), format='json')
+        print tmp
         self.assertEqual(response.status_code, 200)
 
         # data retrieved should be the same as the data we had before

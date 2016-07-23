@@ -21,11 +21,17 @@ class TestPriceViewSet(APITestCase):
             'is_hybrid': False,
             'category': None,
         }
-
+        self.j1 = Journal.objects.create(**self.j1_data)
         self.j1p1_data = {
             'price': u'2500.00',
             'time_stamp': u'2016-02-13T10:41:51Z',
-            'issn': u'5553-1519'
+            'journal': self.j1,
+        }
+
+        self.j1p1_serialized = {
+            'price': u'2500.00',
+            'time_stamp': u'2016-02-13T10:41:51Z',
+            'journal': u'5553-1519',
         }
 
     def test_get_all_empty(self):
@@ -36,11 +42,10 @@ class TestPriceViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, [])
 
-    @skip("Unicode issues, needs to be reimplemented\n")
     def test_get_all_not_empty(self):
         # creating objects
-        Journal.objects.create(**self.j1_data)
+        Price.objects.create(**self.j1p1_data)
 
         response = self.client.get(reverse('price-list'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual([dict(response.data[0])], [])
+        self.assertEqual(self.j1p1_serialized, dict(response.data[0]))
