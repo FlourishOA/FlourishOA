@@ -40,3 +40,9 @@ class TestAuthentication(TestCase):
         # bad password should result in bad credentials error
         self.assertEqual(response.status_code, 400)
 
+    def test_full_auth(self):
+        data = {"username": "test1", "password": "thisis8chars"}
+        url = "/api-token-auth/"
+
+        response = self.client.post(url, data)
+        token = json.loads(response.content)['token']

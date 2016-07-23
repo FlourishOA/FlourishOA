@@ -17,7 +17,6 @@ class JournalViewSet(mixins.ListModelMixin,
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'issn'
 
-
     def list(self, request, *args, **kwargs):
         """
         Lists information about journals
@@ -39,10 +38,11 @@ class JournalViewSet(mixins.ListModelMixin,
         """
         Updates/creates information about journal with given ISSN
         """
-        try:
+        """try:
             json_data = json.loads(request.data)
         except ValueError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)"""
+        json_data = request.data
         # if the given ISSN and the ISSN in the new json_data aren't the same
         if issn != json_data['issn']:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -78,5 +78,4 @@ class PriceViewSet(mixins.ListModelMixin,
     def update(self, request, journal=None, *args, **kwargs):
         if not journal:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
+        return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)

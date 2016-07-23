@@ -38,6 +38,8 @@ class PublisherSerializer(serializers.ModelSerializer):
     Allows Publisher model to be serialized into JSON/other formats for
     use by the REST API
     """
+    journal = serializers.PrimaryKeyRelatedField(queryset=Journal.objects.all())
+
     class Meta:
         model = Publisher
         fields = ('publisher_name', 'journal')
