@@ -97,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'price_sleuth',
         'USER': 'pspieker',
-        'PASSWORD': 'test623',
+        'PASSWORD': 'test623test326',
         'HOST': 'localhost',
     }
 }
