@@ -27,7 +27,7 @@ with open('/etc/secret_key.txt') as f:
 """
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'http://ec2-54-193-66-154.us-west-1.compute.amazonaws.com',
