@@ -82,22 +82,13 @@ WSGI_APPLICATION = 'pricesleuth_rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-"""
-def get_login_info():
-    with open('/etc/db_info.txt') as f:
-        name = f.readline().strip()
-        user = f.readline().strip()
-        password = f.readline().strip()
-    return name, user, password
 
-name, user, password = get_login_info()
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'price_sleuth',
         'USER': 'pspieker',
-        'PASSWORD': 'test623test326',
+        'PASSWORD': 'test623',
         'HOST': 'localhost',
     }
 }
@@ -159,10 +150,3 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False
 }
 
-# Security settings
-"""SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
-#CSRF_COOKIE_HTTPONLY = True
-X_FRAME_OPTIONS = 'DENY'"""
