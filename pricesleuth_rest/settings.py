@@ -23,12 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(pey#zu#!$06n(!#!47gvar@fhv&x3k-hl)%tlw%j#i_l$7@=$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'http://ec2-54-193-66-154.us-west-1.compute.amazonaws.com',
 ]
-"This shouldn't show up in master"
 
 # Application definition
 
@@ -84,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'price_sleuth',
         'USER': 'pspieker',
-        'PASSWORD': 'test623',
+        'PASSWORD': 'test623test326',
         'HOST': 'localhost',
     }
 }
@@ -146,3 +145,8 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False
 }
 
+# grabbing development settings
+try:
+    from dev_settings import *
+except ImportError:
+    pass
