@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'http://ec2-54-193-66-154.us-west-1.compute.amazonaws.com',
 ]
-
+"This shouldn't show up in master"
 
 # Application definition
 
