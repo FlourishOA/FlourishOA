@@ -15,6 +15,7 @@ class JournalSerializer(serializers.ModelSerializer):
     Allows Journal model to be serialized into JSON/other formats for
     use by the REST API
     """
+    # TODO: fix the journal/issn conflict
     class Meta:
         model = Journal
         fields = ('issn', 'journal_name', 'article_influence', 'est_article_influence',

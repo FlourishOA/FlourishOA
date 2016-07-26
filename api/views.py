@@ -76,6 +76,9 @@ class PriceViewSet(mixins.ListModelMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if not Journal.objects.filter(issn=issn).exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
+        if Price.objects.filter(journal__issn=issn,
+                                time_stamp=request.data['time_stamp']).exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         Price.objects.create(price=request.data['price'],
                              time_stamp=request.data['time_stamp'],
