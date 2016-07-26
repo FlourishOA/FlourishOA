@@ -42,4 +42,4 @@ class PublisherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Publisher
-        fields = ('publisher_name', 'journal')
+        fields = ('publisher_name', 'journal',)

@@ -23,6 +23,8 @@ class JournalViewSet(mixins.ListModelMixin,
         """
         queryset = Journal.objects.all()
         serializer = JournalSerializer(queryset, many=True)
+        response_data = serializer.data
+
         return Response(serializer.data)
 
     def retrieve(self, request, issn=None, *args, **kwargs):
@@ -38,44 +40,54 @@ class JournalViewSet(mixins.ListModelMixin,
         """
         Updates/creates information about journal with given ISSN
         """
-        """try:
-            json_data = json.loads(request.data)
-        except ValueError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)"""
-        json_data = request.data
-        # if the given ISSN and the ISSN in the new json_data aren't the same
-        if issn != json_data['issn']:
+        # if the given ISSN and the ISSN in the new request.data aren't the same
+        if issn != request.data['issn']:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        journal, created = Journal.objects.update_or_create(issn=issn, defaults=json_data)
-        if created:
-            return Response(data=JournalSerializer(journal).data, status=status.HTTP_201_CREATED)
-        return Response(JournalSerializer(journal).data)
 
-    def partial_update(self, request, issn=None, *args, **kwargs):
-        """
-        Updates only fields that differ between request and stored data
-        """
-        journal = get_object_or_404(Journal.objects.all(), issn=issn)
-        ser = JournalSerializer(journal, data=request.data, partial=True)
-        if ser.is_valid():
-            ser.save()
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        # creating new Journal model
+        journal, journal_created = Journal.objects.update_or_create(
+            issn=issn,
+            defaults={i: request.data[i] for i in request.data if i != 'pub_name'}
+        )
+
+        publisher = Publisher.objects.create(publisher_name=request.data['pub_name'],
+                                             journal=journal)
+        response_data = JournalSerializer(journal).data
+        response_data['pub_name'] = PublisherSerializer(publisher).data['publisher_name']
+        if journal_created:
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
+        return Response(data=response_data, status=status.HTTP_200_OK)
 
 
 class PriceViewSet(mixins.ListModelMixin,
                    mixins.UpdateModelMixin,
+                   mixins.RetrieveModelMixin,
                    viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    lookup_field = 'issn'
 
-    def list(self, request, issn=None, *args, **kwargs):
-        if issn:
-            queryset = Price.objects.filter(journal__issn=issn)
-        else:
-            queryset = Price.objects.all()
+    def list(self, request, *args, **kwargs):
+        queryset = Price.objects.all()
         serializer = PriceSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def update(self, request, journal=None, *args, **kwargs):
-        if not journal:
+    def update(self, request, issn=None, *args, **kwargs):
+        if not issn or request.data['issn'] != issn:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+        if not Journal.objects.filter(issn=issn).exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        Price.objects.create(price=request.data['price'],
+                             time_stamp=request.data['time_stamp'],
+                             journal=Journal.objects.get(issn=request.data['issn']))
+        return Response(status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, issn=None, *args, **kwargs):
+        """
+        Lists information about journal with given ISSN
+        """
+        queryset = Price.objects.filter(journal__issn=issn)
+        serializer = PriceSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
