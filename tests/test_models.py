@@ -1,5 +1,5 @@
 from django.test import TestCase
-from api.models import Journal, Publisher, Price
+from api.models import Journal, Price
 
 """
 Overall testing plan:
@@ -99,35 +99,3 @@ class TestPriceModel(TestCase):
         # Note that Django stores the timezone as UTC
         self.assertEqual(j2_p.__str__(), "5553-1519: 0.00, 2011-12-05 07:00:00+00:00;")
 
-
-class TestPublisherModel(TestCase):
-    """
-    Test case for the Publisher model
-    """
-
-    def setUp(self):
-        # Normal, valid test case w/no est. art. infl.
-        Journal.objects.create(issn='1353-651X',
-                               journal_name='Journal 1',
-                               article_influence=122.4,
-                               est_article_influence=None,
-                               is_hybrid=False,
-                               category=None)
-        # Journal with no article infl.
-        Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)
-        j1 = Journal.objects.get(issn='1353-651X')
-        j2 = Journal.objects.get(issn='5553-1519')
-        Publisher.objects.create(publisher_name='Big Pub 1', journal=j1)
-        Publisher.objects.create(publisher_name='Small Pub 1', journal=j2)
-
-    def test_publisher_str(self):
-        big_pub = Publisher.objects.get(publisher_name='Big Pub 1')
-        small_pub = Publisher.objects.get(publisher_name='Small Pub 1')
-
-        self.assertEqual(big_pub.__str__(), 'Big Pub 1: 1353-651X')
-        self.assertEqual(small_pub.__str__(), 'Small Pub 1: 5553-1519')

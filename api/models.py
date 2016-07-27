@@ -11,6 +11,7 @@ class Journal(models.Model):
     """
     issn = models.CharField(max_length=9, primary_key=True)
     journal_name = models.CharField(max_length=150)
+    pub_name = models.CharField(max_length=150)
     article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
     est_article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
     is_hybrid = models.BooleanField()
@@ -34,17 +35,3 @@ class Price(models.Model):
     def __str__(self):
         return self.journal.issn + ": " + str(self.price) + ", " \
                + str(self.time_stamp) + ";"
-
-@python_2_unicode_compatible
-class Publisher(models.Model):
-    """
-    Model of a publisher. One publisher may map to many journals,
-    which are listed by ISSN (a foreign key)
-    """
-    publisher_name = models.CharField(max_length=150)
-    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.publisher_name + ": " + self.journal.issn
-
-
