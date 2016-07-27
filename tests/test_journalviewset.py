@@ -15,7 +15,6 @@ from django.contrib.auth.models import User
 Unit tests for the views
 """
 
-
 class TestJournalViewSet(APITestCase):
     """
     Tests for the JournalViewSet
@@ -60,12 +59,12 @@ class TestJournalViewSet(APITestCase):
 
     def test_get_list_not_empty(self):
         # creating objects
-        Journal.objects.create(**{i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'})
+        Journal.objects.create(**self.journal1_data)
         response = self.client.get(reverse('journal-list'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [dict(response.data[0])],
-            [{i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'}]
+            [self.journal1_data]
         )
 
     def test_get_single_empty(self):
@@ -74,12 +73,12 @@ class TestJournalViewSet(APITestCase):
 
     def test_get_single_not_empty(self):
         # creating objects
-        Journal.objects.create(**{i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'})
+        Journal.objects.create(**self.journal1_data)
         response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             dict(response.data),
-            {i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'}
+            self.journal1_data
         )
 
     """
@@ -109,7 +108,7 @@ class TestJournalViewSet(APITestCase):
     def test_update_existent(self):
 
         # creating journal so there is something in the database
-        Journal.objects.create(**{i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'})
+        Journal.objects.create(**self.journal1_data)
 
         response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
 
@@ -117,7 +116,7 @@ class TestJournalViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            {i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'}
+            self.journal1_data
         )
 
         # setting up user and info to be update
@@ -139,7 +138,7 @@ class TestJournalViewSet(APITestCase):
 
     def test_non_uniform_issn_update(self):
         # creating journal so there is something in the database
-        Journal.objects.create(**{i: self.journal1_data[i] for i in self.journal1_data if i != 'pub_name'})
+        Journal.objects.create(**self.journal2_data)
 
         # setting up user and authenticating
         user = User.objects.create_user(username='test1', password='passw')
