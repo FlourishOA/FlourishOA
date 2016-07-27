@@ -1,16 +1,13 @@
 from django.test import TestCase
-from api.models import Journal, Publisher, Price
+from api.models import Journal, Price
 from datetime import datetime
 from pytz import UTC
-from api.serializers import JournalSerializer, \
-                            PriceSerializer, \
-                            PublisherSerializer
-
+from api.serializers import JournalSerializer, PriceSerializer
+from unittest import skip
 
 """
 Unit tests for the model serializers
 """
-
 
 class TestJournalSerializer(TestCase):
     """
@@ -19,40 +16,42 @@ class TestJournalSerializer(TestCase):
     def setUp(self):
         # note that the data is represented as unicode
         # the numbers are strings, carrying 5 decimal places
-        self.j1_data = {
+        self.j1_query_data = {
             'issn': u'1353-651X',
             'journal_name': u'Journal 1',
+            'pub_name': u'Big Pub 1',
             'article_influence': u'122.40000',
             'est_article_influence': None,
             'is_hybrid': False,
             'category': None
         }
-        self.j2_data = {
+        self.j2_query_data = {
             'issn': u'5553-1519',
             'journal_name': u'Journal 2',
+            'pub_name': u'Big Pub 2',
             'article_influence': None,
             'est_article_influence': u'15.20000',
             'is_hybrid': False,
             'category': None
         }
         # Normal, valid test case w/no est. art. infl.
-        self.j1 = Journal.objects.create(**self.j1_data)
+        self.j1 = Journal.objects.create(**self.j1_query_data)
         # Journal with no article infl.
-        self.j2 = Journal.objects.create(**self.j2_data)
+        self.j2 = Journal.objects.create(**self.j2_query_data)
 
     def test_serialize_single(self):
         serializer = JournalSerializer(self.j1)
-        self.assertEqual(serializer.data, self.j1_data)
+        self.assertEqual(serializer.data, self.j1_query_data)
 
         serializer = JournalSerializer(self.j2)
-        self.assertEqual(serializer.data, self.j2_data)
+        self.assertEqual(serializer.data, self.j2_query_data)
 
     def test_serialize_many(self):
         serializer = JournalSerializer(Journal.objects.all(), many=True)
         self.assertEqual([dict(i) for i in serializer.data],
                          [
-                             self.j1_data,
-                             self.j2_data,
+                             self.j1_query_data,
+                             self.j2_query_data,
                          ])
 
 
@@ -80,7 +79,6 @@ class TestPriceSerializer(TestCase):
         }
 
 
-
         # Normal, valid test case w/no est. art. infl.
         self.j1 = Journal.objects.create(**self.j1_data)
 
@@ -92,7 +90,7 @@ class TestPriceSerializer(TestCase):
         }
 
         self.j1p1_expected_serialized = {
-            u'journal': u'1353-651X',
+            u'issn': u'1353-651X',
             u'price': u'2500.00',
             u'time_stamp': datetime(2010, 10, 25, 14, 30, tzinfo=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
         }
@@ -107,42 +105,3 @@ class TestPriceSerializer(TestCase):
     def test_deserialize_single(self):
         ser = PriceSerializer(data=self.j1p1_expected_serialized)
         self.assertTrue(ser.is_valid())
-        self.assertEqual(self.j1p1_expected_serialized, ser.data)
-
-
-class TestPublisherSerializer(TestCase):
-
-
-    def setUp(self):
-        # Normal, valid test case w/no est. art. infl.
-        j1 = Journal.objects.create(issn='1353-651X',
-                               journal_name='Journal 1',
-                               article_influence=122.4,
-                               est_article_influence=None,
-                               is_hybrid=False,
-                               category=None)
-        # Journal with no article infl.
-        j2 = Journal.objects.create(issn='5553-1519',
-                               journal_name='Journal 2',
-                               article_influence=None,
-                               est_article_influence=15.2,
-                               is_hybrid=False,
-                               category=None)
-        self.pub1 = Publisher.objects.create(publisher_name='Big Pub 1', journal=j1)
-        self.pub2 = Publisher.objects.create(publisher_name='Small Pub 1', journal=j2)
-
-        self.pub1_expected_serialized = {
-            u'publisher_name': u'Big Pub 1',
-            u'journal': u'1353-651X'
-        }
-
-    def test_serialize_single(self):
-        ser = PublisherSerializer(self.pub1)
-        self.assertEqual(self.pub1_expected_serialized, ser.data)
-
-    def test_deserialize_single(self):
-        ser = PublisherSerializer(data=self.pub1_expected_serialized)
-        self.assertTrue(ser.is_valid())
-        self.assertEqual(self.pub1_expected_serialized, ser.data)
-
-

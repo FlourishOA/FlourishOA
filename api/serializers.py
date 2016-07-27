@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Journal, Price, Publisher
+from .models import Journal, Price
 from django.contrib.auth.models import User
 
 
@@ -18,7 +18,7 @@ class JournalSerializer(serializers.ModelSerializer):
     # TODO: fix the journal/issn conflict
     class Meta:
         model = Journal
-        fields = ('issn', 'journal_name', 'article_influence', 'est_article_influence',
+        fields = ('issn', 'journal_name', 'pub_name', 'article_influence', 'est_article_influence',
                   'is_hybrid', 'category')
 
 
@@ -27,20 +27,9 @@ class PriceSerializer(serializers.ModelSerializer):
     Allows Price model to be serialized into JSON/other formats for
     use by the REST API
     """
-    journal = serializers.PrimaryKeyRelatedField(queryset=Journal.objects.all())
+    issn = serializers.ReadOnlyField(source='journal.issn', read_only=True)
 
     class Meta:
         model = Price
-        fields = ('price', 'time_stamp', 'journal')
+        fields = ('price', 'time_stamp', 'issn')
 
-
-class PublisherSerializer(serializers.ModelSerializer):
-    """
-    Allows Publisher model to be serialized into JSON/other formats for
-    use by the REST API
-    """
-    journal = serializers.PrimaryKeyRelatedField(queryset=Journal.objects.all())
-
-    class Meta:
-        model = Publisher
-        fields = ('publisher_name', 'journal',)

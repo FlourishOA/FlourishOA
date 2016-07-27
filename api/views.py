@@ -1,5 +1,5 @@
-from .models import Journal, Price, Publisher
-from .serializers import JournalSerializer, PriceSerializer, PublisherSerializer
+from .models import Journal, Price
+from .serializers import JournalSerializer, PriceSerializer
 
 from rest_framework import permissions
 from rest_framework import status
@@ -23,8 +23,6 @@ class JournalViewSet(mixins.ListModelMixin,
         """
         queryset = Journal.objects.all()
         serializer = JournalSerializer(queryset, many=True)
-        response_data = serializer.data
-
         return Response(serializer.data)
 
     def retrieve(self, request, issn=None, *args, **kwargs):
@@ -47,13 +45,10 @@ class JournalViewSet(mixins.ListModelMixin,
         # creating new Journal model
         journal, journal_created = Journal.objects.update_or_create(
             issn=issn,
-            defaults={i: request.data[i] for i in request.data if i != 'pub_name'}
+            defaults=request.data
         )
 
-        publisher = Publisher.objects.create(publisher_name=request.data['pub_name'],
-                                             journal=journal)
         response_data = JournalSerializer(journal).data
-        response_data['pub_name'] = PublisherSerializer(publisher).data['publisher_name']
         if journal_created:
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(data=response_data, status=status.HTTP_200_OK)
@@ -72,13 +67,13 @@ class PriceViewSet(mixins.ListModelMixin,
         return Response(serializer.data)
 
     def update(self, request, issn=None, *args, **kwargs):
-        if not issn or request.data['issn'] != issn:
+        # checking for valid issn and making sure price for given journal at given time doesn't exist
+        if (not issn or (request.data['issn'] != issn) or
+                Price.objects.filter(journal__issn=issn, time_stamp=request.data['time_stamp']).exists()):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
         if not Journal.objects.filter(issn=issn).exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if Price.objects.filter(journal__issn=issn,
-                                time_stamp=request.data['time_stamp']).exists():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         Price.objects.create(price=request.data['price'],
                              time_stamp=request.data['time_stamp'],
