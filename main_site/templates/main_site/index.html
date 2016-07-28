@@ -6,6 +6,8 @@
 </head>
 
 <body>
-
+{% for price in most_expensive %}
+    <li>{{ price.price }}</li>
+{% endfor %}
 </body>
 </html>
