@@ -7,7 +7,7 @@
 
 <body>
 {% for price in most_expensive %}
-    <li>{{ price.price }}</li>
+    <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
 {% endfor %}
 </body>
 </html>
