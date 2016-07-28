@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<p>Most Expensive Journals to publish in from our database:</p>
 {% for price in most_expensive %}
     <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
 {% endfor %}
