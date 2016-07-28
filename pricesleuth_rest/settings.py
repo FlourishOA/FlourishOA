@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'rest_framework.authtoken',
     'api',
+    'main_site',
 ]
 
 MIDDLEWARE_CLASSES = [
