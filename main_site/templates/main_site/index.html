@@ -7,7 +7,7 @@
 {% load staticfiles %}
 <html>
 	<head>
-		<title>Stellar by HTML5 UP</title>
+		<title>PriceSleuth - Find your ideal journal</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -23,9 +23,9 @@
 				<!-- Header -->
 					<header id="header" class="alt">
 						<span class="logo"><img src="{% static "images/logo.svg" %}" alt="" /></span>
-						<h1>Stellar</h1>
-						<p>Just another free, fully responsive site template<br />
-						built by <a href="https://twitter.com/ajlkn">@ajlkn</a> for <a href="https://html5up.net">HTML5 UP</a>.</p>
+						<h1>PriceSleuth</h1>
+						<p>Empowering researchers to maximize their published impact at any price level. <br />
+						Built by the <a href="https://twitter.com">UW DataLab</a></p>
 					</header>
 
 				<!-- Nav -->
@@ -46,15 +46,21 @@
 								<div class="spotlight">
 									<div class="content">
 										<header class="major">
-											<h2>Ipsum sed adipiscing</h2>
+											<h2>Welcome to the Future of Publishing</h2>
 										</header>
-										<p>Sed lorem ipsum dolor sit amet nullam consequat feugiat consequat magna
-										adipiscing magna etiam amet veroeros. Lorem ipsum dolor tempus sit cursus.
-										Tempus nisl et nullam lorem ipsum dolor sit amet aliquam.</p>
-                                        <p>Most Expensive Journals to publish in from our database:</p>
+										<p>The OpenAccess movement has changed a five hundred year old publishing model
+                                        that exploits academics and allows publishers to have some of the highest
+                                        profit margins of any corporations in the world. </p>
+                                        <p>Still, some publishers and
+                                        journals take advantage of the lack of clear information about article publishing
+                                        costs. With simple, no-nonsense data analysis and visualization, PriceSleuth
+                                        fixes this problem. </p>
+                                        <ul>
+                                            <b>Most Expensive Journals to Publish in:</b>
                                             {% for price in most_expensive %}
                                                 <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
                                             {% endfor %}
+                                        </ul>
 										<ul class="actions">
 											<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 										</ul>
