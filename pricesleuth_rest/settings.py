@@ -129,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    ('main_site', '/Users/pspieker/Documents/projects/pricesleuth_rest/main_site/static'),
+    ('main_site', '/home/ubuntu/pricesleuth_rest/main_site/static'),
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
