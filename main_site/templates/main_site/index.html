@@ -4,15 +4,16 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+{% load staticfiles %}
 <html>
 	<head>
 		<title>Stellar by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<link rel="stylesheet" href="{% static "main_site/assets/css/main.css" %}" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="{% static "main_site/assets/css/ie9.css" %}" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static "main_site/assets/css/ie8.css" %}" /><![endif]-->
 	</head>
 	<body>
 
@@ -21,7 +22,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						<span class="logo"><img src="images/logo.svg" alt="" /></span>
+						<span class="logo"><img src="{% static "images/logo.svg" %}" alt="" /></span>
 						<h1>Stellar</h1>
 						<p>Just another free, fully responsive site template<br />
 						built by <a href="https://twitter.com/ajlkn">@ajlkn</a> for <a href="https://html5up.net">HTML5 UP</a>.</p>
@@ -55,10 +56,10 @@
                                                 <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
                                             {% endfor %}
 										<ul class="actions">
-											<li><a href="generic.html" class="button">Learn More</a></li>
+											<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 										</ul>
 									</div>
-									<span class="image"><img src="images/pic01.jpg" alt="" /></span>
+									<span class="image"><img src="../../../static/main_site/images/pic01.jpg" alt="" /></span>
 								</div>
 							</section>
 
@@ -86,7 +87,7 @@
 								</ul>
 								<footer class="major">
 									<ul class="actions">
-										<li><a href="generic.html" class="button">Learn More</a></li>
+										<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 									</ul>
 								</footer>
 							</section>
@@ -123,7 +124,7 @@
 								<p class="content">Nam elementum nisl et mi a commodo porttitor. Morbi sit amet nisl eu arcu faucibus hendrerit vel a risus. Nam a orci mi, elementum ac arcu sit amet, fermentum pellentesque et purus. Integer maximus varius lorem, sed convallis diam accumsan sed. Etiam porttitor placerat sapien, sed eleifend a enim pulvinar faucibus semper quis ut arcu. Ut non nisl a mollis est efficitur vestibulum. Integer eget purus nec nulla mattis et accumsan ut magna libero. Morbi auctor iaculis porttitor. Sed ut magna ac risus et hendrerit scelerisque. Praesent eleifend lacus in lectus aliquam porta. Cras eu ornare dui curabitur lacinia.</p>
 								<footer class="major">
 									<ul class="actions">
-										<li><a href="generic.html" class="button">Learn More</a></li>
+										<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 									</ul>
 								</footer>
 							</section>
@@ -137,8 +138,8 @@
 								</header>
 								<footer class="major">
 									<ul class="actions">
-										<li><a href="generic.html" class="button special">Get Started</a></li>
-										<li><a href="generic.html" class="button">Learn More</a></li>
+										<li><a href="../../../static/main_site/generic.html" class="button special">Get Started</a></li>
+										<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 									</ul>
 								</footer>
 							</section>
@@ -151,7 +152,7 @@
 							<h2>Aliquam sed mauris</h2>
 							<p>Sed lorem ipsum dolor sit amet et nullam consequat feugiat consequat magna adipiscing tempus etiam dolore veroeros. eget dapibus mauris. Cras aliquet, nisl ut viverra sollicitudin, ligula erat egestas velit, vitae tincidunt odio.</p>
 							<ul class="actions">
-								<li><a href="generic.html" class="button">Learn More</a></li>
+								<li><a href="../../../static/main_site/generic.html" class="button">Learn More</a></li>
 							</ul>
 						</section>
 						<section>
@@ -178,13 +179,13 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
+			<script src="../../../static/main_site/assets/js/jquery.min.js"></script>
+			<script src="../../../static/main_site/assets/js/jquery.scrollex.min.js"></script>
+			<script src="../../../static/main_site/assets/js/jquery.scrolly.min.js"></script>
+			<script src="../../../static/main_site/assets/js/skel.min.js"></script>
+			<script src="../../../static/main_site/assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+			<script src="../../../static/main_site/assets/js/main.js"></script>
 
 	</body>
 </html>
