@@ -39,7 +39,7 @@ class JournalViewSet(mixins.ListModelMixin,
         Updates/creates information about journal with given ISSN
         """
         # if the given ISSN and the ISSN in the new request.data aren't the same
-        if issn != request.data['issn']:
+        if not issn or (issn != request.data['issn']):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # creating new Journal model
@@ -53,6 +53,11 @@ class JournalViewSet(mixins.ListModelMixin,
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(data=response_data, status=status.HTTP_200_OK)
 
+    def partial_update(self, request, issn=None, *args, **kwargs):
+        if (not issn) or (not 'issn' in request.data) or (issn != request.data['issn']):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 class PriceViewSet(mixins.ListModelMixin,
                    mixins.UpdateModelMixin,
