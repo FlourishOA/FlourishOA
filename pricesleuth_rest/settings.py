@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
         '54.183.181.205',
+        'pricesleuth.eigenfactor.org',
 ]
 
 # Application definition
