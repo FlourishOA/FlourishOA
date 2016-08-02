@@ -12,3 +12,13 @@ class IndexView(TemplateView):
         context['num_journals'] = Journal.objects.all().count()
         context['num_prices'] = Price.objects.all().count()
         return context
+
+class PriceAIView(TemplateView):
+    template_name = "main_site/viz.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        price_ai_map = {}
+        for i in Journal.objects.all().filter(article_influence__isnull=False):
+           pass
+        return context
