@@ -101,8 +101,8 @@ class InfluenceViewSet(mixins.UpdateModelMixin,
     lookup_field = 'issn'
 
     def update(self, request, issn=None, *args, **kwargs):
-        if (not issn or (issn not in request.data) or
-                Influence.objects.filter(journal__issn=issn, date_stamp=request.data['data_stamp']).exists()):
+        if (not issn or ('issn' not in request.data) or
+                Influence.objects.filter(journal__issn=issn, date_stamp=request.data['date_stamp']).exists()):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         if not Journal.objects.filter(issn=issn).exists():

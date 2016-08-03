@@ -38,7 +38,7 @@ class Price(models.Model):
 
 
 class Influence(models.Model):
-    article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
-    est_article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+    article_influence = models.DecimalField(max_digits=10, decimal_places=7, null=True)
+    est_article_influence = models.DecimalField(max_digits=10, decimal_places=7, null=True)
     date_stamp = models.DateField()
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
