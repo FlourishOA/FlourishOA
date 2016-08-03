@@ -1,4 +1,4 @@
-from .models import Journal, Price
+from .models import Journal, Price, Influence
 from .serializers import JournalSerializer, PriceSerializer
 
 from rest_framework import permissions
@@ -94,3 +94,23 @@ class PriceViewSet(mixins.ListModelMixin,
         return Response(serializer.data)
 
 
+class InfluenceViewSet(mixins.UpdateModelMixin,
+                       viewsets.ViewSet):
+
+    permissions = (permissions.IsAuthenticated,)
+    lookup_field = 'issn'
+
+    def update(self, request, issn=None, *args, **kwargs):
+        if (not issn or (issn not in request.data) or
+                Influence.objects.filter(journal__issn=issn, date_stamp=request.data['data_stamp']).exists()):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if not Journal.objects.filter(issn=issn).exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.data['article_influence'] is None:
+            return Response(status=status.HTTP_200_OK)
+
+        Influence.objects.create(article_influence=request.data['article_influence'],
+                                 date_stamp=request.data['date_stamp'],
+                                 journal=Journal.objects.get(issn=issn))
+        return Response(status=status.HTTP_201_CREATED)
