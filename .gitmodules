@@ -1,3 +1,6 @@
 [submodule "main_site"]
 	path = main_site
 	url = https://PatrickSpieker@bitbucket.org/PatrickSpieker/pricesleuth_static.git
+[submodule "pricesleuth_static"]
+	path = pricesleuth_static
+	url = https://PatrickSpieker@bitbucket.org/PatrickSpieker/pricesleuth_static.git
