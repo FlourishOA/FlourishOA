@@ -1,0 +1,3 @@
+[submodule "main_site"]
+	path = main_site
+    url = git@bitbucket.org:PatrickSpieker/pricesleuth_static.git
