@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from django.db import models
 
+
 @python_2_unicode_compatible
 class Journal(models.Model):
     """
@@ -12,15 +13,13 @@ class Journal(models.Model):
     issn = models.CharField(max_length=9, primary_key=True)
     journal_name = models.CharField(max_length=150)
     pub_name = models.CharField(max_length=150)
-    article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
-    est_article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+
     is_hybrid = models.BooleanField()
     category = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         result = self.issn + ": " + self.journal_name
         return result
-
 
 @python_2_unicode_compatible
 class Price(models.Model):
@@ -29,9 +28,17 @@ class Price(models.Model):
     for each journal. One journal may map to many price events
     """
     price = models.DecimalField(max_digits=7, decimal_places=2)
-    time_stamp = models.DateTimeField()
+    date_stamp = models.DateField()
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.journal.issn + ": " + str(self.price) + ", " \
-               + str(self.time_stamp) + ";"
+               + str(self.date_stamp) + ";"
+
+
+
+class Influence(models.Model):
+    article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+    est_article_influence = models.DecimalField(max_digits=8, decimal_places=5, null=True)
+    date_stamp = models.DateField()
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
