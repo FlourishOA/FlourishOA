@@ -17,8 +17,6 @@ class TestPriceViewSet(APITestCase):
         self.j1_data = {
             'issn': u'5553-1519',
             'journal_name': u'Journal 2',
-            'article_influence': None,
-            'est_article_influence': u'15.20000',
             'is_hybrid': False,
             'category': None,
         }
@@ -26,8 +24,6 @@ class TestPriceViewSet(APITestCase):
         self.j2_data = {
             'issn': '1234-1519',
             'journal_name': 'Weird Bad Journal',
-            'article_influence': None,
-            'est_article_influence': '1.20010',
             'is_hybrid': True,
             'category': None,
 
@@ -35,7 +31,7 @@ class TestPriceViewSet(APITestCase):
 
         self.j1p1_request_data = {
             'price': u'2500.00',
-            'time_stamp': u'2016-02-13T10:41:51Z',
+            'date_stamp': u'2016-02-13',
             'issn': u'5553-1519',
         }
 
