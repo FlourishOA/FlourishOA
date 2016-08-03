@@ -4,25 +4,16 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+{% load staticfiles %}
 <html>
 	<head>
 		<title>Generic - Stellar by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-        <script src="assets/js/d3.min.js"></script>
-        <script src="assets/js/jquery.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                var main = d3.select("#content").insert("svg", ":first-child")
-                        .attr("width", 500)
-                        .attr("height", 500);
-            });
-
-        </script>
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="{% static 'assets/css/ie9.css' %}"/><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'assets/css/ie8.css' %}"/><![endif]-->
 	</head>
 	<body>
 
@@ -40,6 +31,7 @@
 
 						<!-- Content -->
 							<section id="content" class="main">
+                                <svg class="chart"></svg>
 								<h2>The visualization will go here</h2>
 								<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis fames ac ante ipsum primis in faucibus.</p>
 								<p>Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Consequat leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit enim turpis lorem ipsum dolor sit amet feugiat. Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet est velit quis lorem.</p>
@@ -82,13 +74,70 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
+            <script src="{% static 'assets/js/d3.min.js' %}"></script>
+            <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'assets/js/skel.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
+			<script src="{% static 'assets/js/main.js'%}"></script>
+            <script>
+            $(document).ready(function() {
+                var pairs = JSON.parse("{{pairs}}");
+                console.log(pairs);
+                // set the dimensions and margins of the graph
+                var margin = {top: 20, right: 20, bottom: 30, left: 50},
+                    width = 850 - margin.left - margin.right,
+                    height = 850 - margin.top - margin.bottom;
 
-	</body>
+                // parse the date / time
+                var parseTime = d3.timeParse("%d-%b-%y");
+
+                // set the ranges
+                var x = d3.scaleLinear().range([0, width]);
+                var y = d3.scaleLinear().range([height, 0]);
+
+                // append the svg obgect to the body of the page
+                // appends a 'group' element to 'svg'
+                // moves the 'group' element to the top left margin
+                var svg = d3.select("#content").insert("svg", ":first-child")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                    .attr("transform",
+                          "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+                  // format the data
+                  pairs.forEach(function(d) {
+                      d.price = d[0];
+                      d.ai = d[1];
+                  });
+
+                  // Scale the range of the data
+                  x.domain(d3.extent(pairs, function(d) { return d.price; }));
+                  y.domain([0, d3.max(pairs, function(d) { return d.ai; })]);
+
+                  // Add the scatterplot
+                  svg.selectAll("dot")
+                      .data(pairs).enter().append("circle")
+                      .attr("r", 5)
+                      .attr("cx", function(d) { return x(d.price); })
+                      .attr("cy", function(d) { return y(d.ai); });
+
+                  // Add the X Axis
+                  svg.append("g")
+                      .attr("transform", "translate(0," + height + ")")
+                      .call(d3.axisBottom(x));
+
+                  // Add the Y Axis
+                  svg.append("g")
+                      .call(d3.axisLeft(y));
+
+            });
+
+                    </script>
+                </body>
 </html>
