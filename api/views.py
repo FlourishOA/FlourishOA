@@ -74,14 +74,14 @@ class PriceViewSet(mixins.ListModelMixin,
     def update(self, request, issn=None, *args, **kwargs):
         # checking for valid issn and making sure price for given journal at given time doesn't exist
         if (not issn or (request.data['issn'] != issn) or
-                Price.objects.filter(journal__issn=issn, time_stamp=request.data['time_stamp']).exists()):
+                Price.objects.filter(journal__issn=issn, date_stamp=request.data['date_stamp']).exists()):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         if not Journal.objects.filter(issn=issn).exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         Price.objects.create(price=request.data['price'],
-                             time_stamp=request.data['time_stamp'],
+                             date_stamp=request.data['date_stamp'],
                              journal=Journal.objects.get(issn=request.data['issn']))
         return Response(status=status.HTTP_201_CREATED)
 

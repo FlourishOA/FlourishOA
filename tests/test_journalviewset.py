@@ -24,8 +24,6 @@ class TestJournalViewSet(APITestCase):
             'issn': u'5553-1519',
             'journal_name': u'Journal 2',
             'pub_name': u'Publisher 1',
-            'article_influence': None,
-            'est_article_influence': u'15.20000',
             'is_hybrid': False,
             'category': None,
         }
@@ -33,8 +31,6 @@ class TestJournalViewSet(APITestCase):
             'issn': u'5553-1519',
             'journal_name': u'Journal 27',
             'pub_name': u'Publisher 2',
-            'article_influence': None,
-            'est_article_influence': u'17.30200',
             'is_hybrid': True,
             'category': None,
         }
@@ -43,8 +39,6 @@ class TestJournalViewSet(APITestCase):
             'issn': u'1234-1519',
             'journal_name': u'Weird Bad Journal',
             'pub_name': u'Publisher 2',
-            'article_influence': None,
-            'est_article_influence': u'1.20010',
             'is_hybrid': True,
             'category': None,
         }

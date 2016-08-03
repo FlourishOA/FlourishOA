@@ -1,6 +1,6 @@
 from django.test import TestCase
 from api.models import Journal, Price
-from datetime import datetime
+from datetime import date
 from pytz import UTC
 from api.serializers import JournalSerializer, PriceSerializer
 from unittest import skip
@@ -20,8 +20,6 @@ class TestJournalSerializer(TestCase):
             'issn': u'1353-651X',
             'journal_name': u'Journal 1',
             'pub_name': u'Big Pub 1',
-            'article_influence': u'122.40000',
-            'est_article_influence': None,
             'is_hybrid': False,
             'category': None
         }
@@ -29,8 +27,6 @@ class TestJournalSerializer(TestCase):
             'issn': u'5553-1519',
             'journal_name': u'Journal 2',
             'pub_name': u'Big Pub 2',
-            'article_influence': None,
-            'est_article_influence': u'15.20000',
             'is_hybrid': False,
             'category': None
         }
@@ -64,16 +60,12 @@ class TestPriceSerializer(TestCase):
         self.j1_data = {
             u'issn': u'1353-651X',
             u'journal_name': u'Journal 1',
-            u'article_influence': u'122.40000',
-            u'est_article_influence': None,
             u'is_hybrid': False,
             u'category': None
         }
         self.j2_data = {
             u'issn': u'5553-1519',
             u'journal_name': u'Journal 2',
-            u'article_influence': None,
-            u'est_article_influence': u'15.20000',
             u'is_hybrid': False,
             u'category': None
         }
@@ -86,13 +78,13 @@ class TestPriceSerializer(TestCase):
         self.j1p1_create_data = {
             u'journal': self.j1,
             u'price': u'2500.00',
-            u'time_stamp': datetime(2010, 10, 25, 14, 30, tzinfo=UTC)
+            u'date_stamp': str(date(2010, 10, 25))
         }
 
         self.j1p1_expected_serialized = {
             u'issn': u'1353-651X',
             u'price': u'2500.00',
-            u'time_stamp': datetime(2010, 10, 25, 14, 30, tzinfo=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+            u'date_stamp': str(date(2010, 10, 25))
         }
 
         # Price with full, down to second time-stamp
@@ -104,4 +96,7 @@ class TestPriceSerializer(TestCase):
 
     def test_deserialize_single(self):
         ser = PriceSerializer(data=self.j1p1_expected_serialized)
+        ser.is_valid()
+        print ser.errors
         self.assertTrue(ser.is_valid())
+
