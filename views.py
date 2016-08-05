@@ -35,9 +35,12 @@ class VisualizationView(TemplateView):
         pairs = []
         for price_obj in Price.objects.all():
             try:
-                ai = Influence.objects.get(journal__issn=price_obj.journal.issn,
-                                           date_stamp__year=price_obj.date_stamp.year)
-                pairs.append((float(price_obj.price), float(ai.article_influence)))
+                ai_list = Influence.objects.filter(journal__issn=price_obj.journal.issn,
+                                                   date_stamp__year=price_obj.date_stamp.year)\
+                                                   .order_by('date_stamp')
+                if ai_list:
+                    ai = ai_list[0]
+                    pairs.append((float(price_obj.price), float(ai.article_influence)))
 
             except ObjectDoesNotExist:
                 continue
