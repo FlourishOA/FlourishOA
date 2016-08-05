@@ -117,7 +117,7 @@
                   });
 
                   // Scale the range of the data
-                  x.domain(d3.extent(pairs, function(d) { return d.ai; }));
+                  x.domain([0, d3.max(pairs, function(d) { return d.ai; })]);
                   y.domain([0, d3.max(pairs, function(d) { return d.price; })]);
 
                   // Add the scatterplot
