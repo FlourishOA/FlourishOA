@@ -45,9 +45,9 @@ class VisualizationView(TemplateView):
                     ai_ser = InfluenceSerializer(ai)
                     price_ser = PriceSerializer(price_obj)
                     journal_ser = JournalSerializer(ai.journal)
-                    event['ai'] = ai_ser.data['article_influence']
+                    event['ai'] = float(ai_ser.data['article_influence'])
                     event['ai_date_stamp'] = ai_ser.data['date_stamp']
-                    event['price'] = price_ser.data['price']
+                    event['price'] = float(price_ser.data['price'])
                     event['price_date_stamp'] = price_ser.data['date_stamp']
                     event.update(journal_ser.data)
                     events.append(event)
