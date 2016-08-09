@@ -85,14 +85,23 @@
             <script>
             $(document).ready(function() {
                 var pairs = JSON.parse("{{pairs}}");
+                //console.log(pairs);
                 // set the dimensions and margins of the graph
-                var margin = {top: 20, right: 20, bottom: 30, left: 50},
+                var margin = {top: 30, right: 30, bottom: 30, left: 50},
                         width = 850 - margin.left - margin.right,
                         height = 850 - margin.top - margin.bottom;
 
                 // set the ranges
                 var x = d3.scaleLinear().range([0, width]);
                 var y = d3.scaleLinear().range([height, 0]);
+
+                /* Log Scale
+                 * var y = d3.scaleLog().range([height, 0]).clamp(true);
+                 * Log Domain
+                 * y.domain([0, d3.max(pairs, function (d) {
+                    return d.price;
+                    })]);
+                 */
 
                 // append the svg obgect to the body of the page
                 // appends a 'group' element to 'svg'
@@ -122,16 +131,16 @@
                 var dots = svg.selectAll("dot")
                         .data(pairs).enter().append("g")
                         .on("mouseover", function (d) {
-                            d3.select(this).append("text")
-                                    .text(function (d) {
-                                        return d.price;
+                            svg.append("text")
+                                    .text(function() {
+                                        return "AI: " + d.ai + ", Price: " + d.price;
                                     })
                                     .attr("id", "tmp")
                                     .attr("font-size", "12px")
                                     .attr("dx", -12)
                                     .attr("dy", -15)
                                     .attr("stroke", "black")
-                                    .attr("transform", function (d) {
+                                    .attr("transform", function () {
                                         return "translate(" + x(d.ai) + "," + y(d.price) + ")";
                                     });
                             d3.select(this).select("circle")
@@ -152,18 +161,10 @@
                             return x(d.ai);
                         })
                         .attr("cy", function (d) {
+                            console.log(d.price);
+                            console.log(y(d.price));
                             return y(d.price);
                         });
-                 /*dots.append("text")
-                        .text(function(d) {
-                            return d.price;
-                        })
-                        .attr("font-size", "12px")
-                        .attr("dx", -21)
-                        .attr("stroke", "black")
-                        .attr("transform", function(d) {
-                           return "translate(" + x(d.ai) + "," + y(d.price) + ")";
-                        });*/
 
                 // Add the X Axis
                 svg.append("g")
