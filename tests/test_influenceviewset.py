@@ -30,7 +30,7 @@ class TestInfluenceViewSet(APITestCase):
         self.j1i1_request_data = {
             'article_influence': u'0.5871000',
             'est_article_influence': None,
-            'date_stamp': u'2016-02-13',
+            'year': u'2016',
             'issn': u'5553-1519',
         }
 
@@ -58,6 +58,7 @@ class TestInfluenceViewSet(APITestCase):
         response = self.client.put(reverse('influence-detail', kwargs={'issn': '5553-1519'}),
                                    data=self.j1i1_request_data, format='json')
         self.assertEqual(response.status_code, 201)
+
         self.assertEqual(InfluenceSerializer(Influence.objects.get(journal__issn='5553-1519')).data,
                          self.j1i1_request_data)
 
