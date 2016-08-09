@@ -59,6 +59,7 @@ class JournalViewSet(mixins.ListModelMixin,
 
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 class PriceViewSet(mixins.ListModelMixin,
                    mixins.UpdateModelMixin,
                    mixins.RetrieveModelMixin,
@@ -72,17 +73,28 @@ class PriceViewSet(mixins.ListModelMixin,
         return Response(serializer.data)
 
     def update(self, request, issn=None, *args, **kwargs):
-        # checking for valid issn and making sure price for given journal at given time doesn't exist
-        if (not issn or (request.data['issn'] != issn) or
+        # must have ISSN, year; Price with same date and journal must not already exist;
+        # given ISSN must match given data; either ArticleInfluence or est. ArticleInfluence must be non-null
+        if (not issn or ('issn' not in request.data) or
+                (request.data['issn'] != issn) or ('date_stamp' not in request.data) or
                 Price.objects.filter(journal__issn=issn, date_stamp=request.data['date_stamp']).exists()):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        # journal with relevant ISSN must already exist
         if not Journal.objects.filter(issn=issn).exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+        try:
+            influence = Influence.objects.get(journal__issn=issn,
+                                              date_stamp__year=request.data['date_stamp'][0:4])
+        except Influence.DoesNotExist:
+            influence = None
+
         Price.objects.create(price=request.data['price'],
                              date_stamp=request.data['date_stamp'],
-                             journal=Journal.objects.get(issn=request.data['issn']))
+                             journal=Journal.objects.get(issn=issn),
+                             influence=influence)
+
         return Response(status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, issn=None, *args, **kwargs):
@@ -97,20 +109,31 @@ class PriceViewSet(mixins.ListModelMixin,
 class InfluenceViewSet(mixins.UpdateModelMixin,
                        viewsets.ViewSet):
 
+    # Write-only, so authentication is always required
     permissions = (permissions.IsAuthenticated,)
     lookup_field = 'issn'
 
     def update(self, request, issn=None, *args, **kwargs):
+        # must have ISSN, year; Influence with same year and journal must not already exist;
+        # given ISSN must match given data; either ArticleInfluence or est. ArticleInfluence must be non-null
         if (not issn or ('issn' not in request.data) or
-                Influence.objects.filter(journal__issn=issn, date_stamp=request.data['date_stamp']).exists()):
+                ('issn' in request.data and request.data['issn'] != issn) or ('year' not in request.data) or
+                Influence.objects.filter(journal__issn=issn, date_stamp__year=request.data['year']).exists() or
+                (request.data['article_influence'] is None and request.data['est_article_influence'] is None)):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        # journal with relevant ISSN must already exist
         if not Journal.objects.filter(issn=issn).exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if request.data['article_influence'] is None:
-            return Response(status=status.HTTP_200_OK)
 
-        Influence.objects.create(article_influence=request.data['article_influence'],
-                                 date_stamp=request.data['date_stamp'],
-                                 journal=Journal.objects.get(issn=issn))
+        # deciding whether to use est. ArticleInfluence or regular ArticleInfluence
+        if request.data['article_influence'] is not None:
+            Influence.objects.create(article_influence=request.data['article_influence'],
+                                     date_stamp=request.data['year'] + "-12-31",
+                                     journal=Journal.objects.get(issn=issn))
+        else: # est. ArticleInfluence must not be none then
+            Influence.objects.create(est_article_influence=request.data['est_article_influence'],
+                                     date_stamp=request.data['year'] + "-12-31",
+                                     journal=Journal.objects.get(issn=issn))
+
         return Response(status=status.HTTP_201_CREATED)
