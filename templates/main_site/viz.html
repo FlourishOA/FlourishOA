@@ -84,8 +84,10 @@
 			<script src="{% static 'assets/js/main.js'%}"></script>
             <script>
             $(document).ready(function() {
-                var pairs = JSON.parse("{{pairs}}");
-                //console.log(pairs);
+                var events = JSON.parse('{{events|safe}}');
+                for (let event of events) {
+                    console.log(event);
+                }
                 // set the dimensions and margins of the graph
                 var margin = {top: 30, right: 30, bottom: 30, left: 50},
                         width = 850 - margin.left - margin.right,
@@ -113,23 +115,17 @@
                         .attr("transform",
                                 "translate(" + margin.left + "," + margin.top + ")");
 
-                // giving the data more descriptive properties.
-                pairs.forEach(function (d) {
-                    d.price = d[0];
-                    d.ai = d[1];
-                });
-
                 // Scale the range of the data
-                x.domain([0, d3.max(pairs, function (d) {
+                x.domain([0, d3.max(events, function (d) {
                     return d.ai;
                 })]);
-                y.domain([0, d3.max(pairs, function (d) {
+                y.domain([0, d3.max(events, function (d) {
                     return d.price;
                 })]);
 
                 // Add the scatterplot
                 var dots = svg.selectAll("dot")
-                        .data(pairs).enter().append("g")
+                        .data(events).enter().append("g")
                         .on("mouseover", function (d) {
                             svg.append("text")
                                     .text(function() {
@@ -161,8 +157,6 @@
                             return x(d.ai);
                         })
                         .attr("cy", function (d) {
-                            console.log(d.price);
-                            console.log(y(d.price));
                             return y(d.price);
                         });
 
