@@ -77,6 +77,7 @@ class PriceViewSet(mixins.ListModelMixin,
         # given ISSN must match given data; either ArticleInfluence or est. ArticleInfluence must be non-null
         if (not issn or ('issn' not in request.data) or
                 (request.data['issn'] != issn) or ('date_stamp' not in request.data) or
+                (request.data['price'] is None) or (request.data['price'] < 0) or
                 Price.objects.filter(journal__issn=issn, date_stamp=request.data['date_stamp']).exists()):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -89,7 +90,6 @@ class PriceViewSet(mixins.ListModelMixin,
                                               date_stamp__year=request.data['date_stamp'][0:4])
         except Influence.DoesNotExist:
             influence = None
-
         Price.objects.create(price=request.data['price'],
                              date_stamp=request.data['date_stamp'],
                              journal=Journal.objects.get(issn=issn),
