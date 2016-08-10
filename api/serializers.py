@@ -28,7 +28,8 @@ class PriceSerializer(serializers.ModelSerializer):
 
 class InfluenceSerializer(serializers.ModelSerializer):
     issn = serializers.ReadOnlyField(source='journal.issn', read_only=True)
+    year = serializers.StringRelatedField(source='date_stamp.year', read_only=True)
 
     class Meta:
         model = Influence
-        fields = ('article_influence', 'est_article_influence', 'date_stamp', 'issn')
+        fields = ('article_influence', 'est_article_influence', 'year', 'issn')
