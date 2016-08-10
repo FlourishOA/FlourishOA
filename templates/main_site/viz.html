@@ -82,9 +82,10 @@
 			<script src="{% static 'assets/js/util.js' %}"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="{% static 'assets/js/main.js'%}"></script>
+            <script id="events" type="application/json">{{ events|safe }}</script>
             <script>
             $(document).ready(function() {
-                var events = JSON.parse('{{events|safe}}');
+                var events = document.getElementById('events').innerHTML;
                 for (let event of events) {
                     console.log(event);
                 }

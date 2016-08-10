@@ -3,8 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
 from api.models import Journal, Price, Influence
 from api.serializers import JournalSerializer, PriceSerializer, InfluenceSerializer
-import json
-
+import simplejson as json
 
 class IndexView(TemplateView):
     template_name = "main_site/index.html"
@@ -34,11 +33,11 @@ class VisualizationView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(VisualizationView, self).get_context_data(**kwargs)
         events = []
-        for price in Price.objects.filter(influence__isnull=False):
+        for price in Price.objects.filter(influence__isnull=False, date_stamp__year__gte=2013):
             event = PriceSerializer(price).data
-            event.update(JournalSerializer(price.journal))
-            event['article_influence'] = price.influence.article_influence
-            event['est_article_influence'] = price.influence.est_article_influence
+            event.update(JournalSerializer(price.journal).data)
+            event["article_influence"] = price.influence.article_influence
+            event["est_article_influence"] = price.influence.est_article_influence
             events.append(event)
 
         context['events'] = json.dumps(events)
