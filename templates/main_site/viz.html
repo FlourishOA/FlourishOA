@@ -85,14 +85,14 @@
             <script id="events" type="application/json">{{ events|safe }}</script>
             <script>
             $(document).ready(function() {
-                var events = document.getElementById('events').innerHTML;
-                for (let event of events) {
-                    console.log(event);
-                }
+                var events = JSON.parse(document.getElementById('events').innerHTML);
                 // set the dimensions and margins of the graph
-                var margin = {top: 30, right: 30, bottom: 30, left: 50},
-                        width = 850 - margin.left - margin.right,
-                        height = 850 - margin.top - margin.bottom;
+                var margin = {top: 30, right: 50, bottom: 30, left: 50}
+                var width = 900 - margin.left - margin.right
+                var height = 900 - margin.top - margin.bottom;
+
+                var popup_width = 150;
+                var popup_height = 20;
 
                 // set the ranges
                 var x = d3.scaleLinear().range([0, width]);
@@ -116,49 +116,87 @@
                         .attr("transform",
                                 "translate(" + margin.left + "," + margin.top + ")");
 
+
+                events.forEach(function(d) {
+                    d.price = parseFloat(d.price);
+                    d.article_influence = parseFloat(d.article_influence);
+                });
+
                 // Scale the range of the data
                 x.domain([0, d3.max(events, function (d) {
-                    return d.ai;
-                })]);
-                y.domain([0, d3.max(events, function (d) {
                     return d.price;
                 })]);
 
+                y.domain([0, d3.max(events, function (d) {
+                    return d.article_influence;
+                })]);
                 // Add the scatterplot
                 var dots = svg.selectAll("dot")
                         .data(events).enter().append("g")
                         .on("mouseover", function (d) {
-                            svg.append("text")
-                                    .text(function() {
-                                        return "AI: " + d.ai + ", Price: " + d.price;
-                                    })
-                                    .attr("id", "tmp")
-                                    .attr("font-size", "12px")
-                                    .attr("dx", -12)
-                                    .attr("dy", -15)
-                                    .attr("stroke", "black")
+                            var lines = [
+                                d.journal_name + ": ",
+                                "ISSN: " + d.issn,
+                                "Price: " + d.price,
+                                "AI: " + d.article_influence,
+                                "Date: " + d.date_stamp
+                            ];
+
+                            var popup_margin = 5;
+                            var ems_to_px = 16;
+                            var lines_ht = lines.length * ems_to_px;
+
+                            // creating the popup grouping
+                            var popup = svg.append("g")
+                                    .attr("id", "popup")
                                     .attr("transform", function () {
-                                        return "translate(" + x(d.ai) + "," + y(d.price) + ")";
+                                        return "translate(" + (x(d.price) - 10) + ","
+                                                + (y(d.article_influence) - lines_ht - ems_to_px)+ ")";
+
                                     });
+
+                            // popup container (svg rect)
+                            popup.append("rect")
+                                    .attr("width", 8.1 * d3.max(lines, function(d) {
+                                        return d.length;
+                                    }) + popup_margin)
+                                    .attr("height", lines_ht + popup_margin)
+                                    .attr("fill", "white")
+                                    .attr("stroke", "black");
+
+                            // base popup text setup (think 'container')
+                            var text = popup.append("text")
+                                    .attr("font-size", "1em")
+                                    .attr("stroke", "black");
+
+                            // attaching each line of text to the popup
+                            lines.forEach(function(line, index) {
+                                text.append("tspan")
+                                        .attr("x", popup_margin)
+                                        .attr("dy", ems_to_px)
+                                        .text(line);
+                            });
+                            // nodes fill red when moused over
+                            d3.select(this).select("circle")
+                                    .attr("fill", "red");
+                        })
+
+                        .on("mouseout", function (d) {
+                            d3.select("#popup").remove();
                             d3.select(this).select("circle")
                                     .attr("fill", "blue");
-                        })
-                        .on("mouseout", function (d) {
-                            d3.select("#tmp").remove();
-                            d3.select(this).select("circle")
-                                    .attr("fill", "white");
                         });
 
 
                 dots.append("circle")
                         .attr("stroke", "black")
-                        .attr("fill", "white")
+                        .attr("fill", "blue")
                         .attr("r", 5)
                         .attr("cx", function (d) {
-                            return x(d.ai);
+                            return x(d.price);
                         })
                         .attr("cy", function (d) {
-                            return y(d.price);
+                            return y(d.article_influence);
                         });
 
                 // Add the X Axis
