@@ -25,6 +25,11 @@ class Journal(models.Model):
 class Influence(models.Model):
     article_influence = models.DecimalField(max_digits=10, decimal_places=7, null=True)
     est_article_influence = models.DecimalField(max_digits=10, decimal_places=7, null=True)
+    ai_percentile = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    eigenfactor = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    ef_percentile = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    efn = models.DecimalField(max_digits=10, decimal_places=10, null=True)
+    cost_effectiveness = models.DecimalField(max_digits=10, decimal_places=7, null=True)
     date_stamp = models.DateField()
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
 
