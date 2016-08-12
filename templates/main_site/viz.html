@@ -142,46 +142,12 @@
                                 "Date: " + d.date_stamp
                             ];
 
-                            var popup_margin = 5;
+                            var popup_margin = 8;
                             var ems_to_px = 16;
                             var lines_ht = lines.length * ems_to_px;
 
                             var scaledX = x(d.price);
                             var scaledY = y(d.article_influence);
-
-                            // creating the popup grouping
-                            var popup = svg.append("g")
-                                    .attr("id", "popup")
-                                    .attr("transform", function () {
-                                        return "translate(" + (scaledX - 10) + ","
-                                                + (scaledY - lines_ht - ems_to_px)+ ")";
-
-                                    });
-
-                            // popup container (svg rect)
-                            popup.append("rect")
-                                    .attr("width", 8.1 * d3.max(lines, function(d) {
-                                        return d.length;
-                                    }) + popup_margin)
-                                    .attr("height", lines_ht + popup_margin)
-                                    .attr("fill", "white")
-                                    .attr("stroke", "black");
-
-                            // base popup text setup (think 'container')
-                            var text = popup.append("text")
-                                    .attr("font-size", "1em")
-                                    .attr("stroke", "black");
-
-                            // attaching each line of text to the popup
-                            lines.forEach(function(line, index) {
-                                text.append("tspan")
-                                        .attr("x", popup_margin)
-                                        .attr("dy", ems_to_px)
-                                        .text(line);
-                            });
-                            // nodes fill red when moused over
-                            d3.select(this).select("circle")
-                                    .attr("fill", "red");
 
                             // transparently highlighting other sections
                             svg.append("rect")
@@ -201,17 +167,54 @@
                                     .attr("height", height - scaledY)
                                     .attr("fill", "red")
                                     .attr("opacity", 0.25);
+
+                            // creating the popup grouping
+                            var popup = svg.append("g")
+                                    .attr("id", "popup")
+                                    .attr("transform", function () {
+                                        return "translate(" + (scaledX - 10) + ","
+                                                + (scaledY - (lines_ht + (lines.length + 1) * popup_margin)
+                                                - 2 * popup_margin) + ")";
+
+                                    });
+
+                            // popup container (svg rect)
+                            popup.append("rect")
+                                    .attr("width", 9.5 * d3.max(lines, function(d) {
+                                        return d.length;
+                                    }) + popup_margin)
+                                    .attr("height", lines_ht + (lines.length + 1) * popup_margin)
+                                    .attr("fill", "white")
+                                    .attr("stroke", "black");
+
+                            // base popup text setup (think 'container')
+                            var text = popup.append("text")
+                                    .attr("font-size", "1em")
+                                    .attr("stroke", "black");
+
+                            // attaching each line of text to the popup
+                            lines.forEach(function(line, index) {
+                                text.append("tspan")
+                                        .attr("x", popup_margin)
+                                        .attr("dy", ems_to_px + popup_margin)
+                                        .text(line);
+                            });
+                            // nodes fill red when moused over
+                            d3.select(this).select("circle")
+                                    .attr("fill", "red");
+
+
                         })
 
                         .on("mouseout", function (d) {
+                            // removing elements from mouseover
                             d3.select("#popup").remove();
                             d3.select("#better").remove();
                             d3.select("#worse").remove();
-
+                            // reverting color
                             d3.select(this).select("circle")
                                     .attr("fill", "blue");
                         });
-
 
                 dots.append("circle")
                         .attr("stroke", "black")
