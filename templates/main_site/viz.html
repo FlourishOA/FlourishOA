@@ -87,8 +87,8 @@
             $(document).ready(function() {
                 var events = JSON.parse(document.getElementById('events').innerHTML);
                 // set the dimensions and margins of the graph
-                var margin = {top: 30, right: 50, bottom: 30, left: 50}
-                var width = 900 - margin.left - margin.right
+                var margin = {top: 30, right: 150, bottom: 30, left: 50};
+                var width = 1000 - margin.left - margin.right;
                 var height = 900 - margin.top - margin.bottom;
 
                 var popup_width = 150;
@@ -146,12 +146,15 @@
                             var ems_to_px = 16;
                             var lines_ht = lines.length * ems_to_px;
 
+                            var scaledX = x(d.price);
+                            var scaledY = y(d.article_influence);
+
                             // creating the popup grouping
                             var popup = svg.append("g")
                                     .attr("id", "popup")
                                     .attr("transform", function () {
-                                        return "translate(" + (x(d.price) - 10) + ","
-                                                + (y(d.article_influence) - lines_ht - ems_to_px)+ ")";
+                                        return "translate(" + (scaledX - 10) + ","
+                                                + (scaledY - lines_ht - ems_to_px)+ ")";
 
                                     });
 
@@ -179,10 +182,32 @@
                             // nodes fill red when moused over
                             d3.select(this).select("circle")
                                     .attr("fill", "red");
+
+                            // transparently highlighting other sections
+                            svg.append("rect")
+                                    .attr("id", "better")
+                                    .attr("x", 0)
+                                    .attr("y", 0)
+                                    .attr("width", scaledX)
+                                    .attr("height", scaledY)
+                                    .attr("fill", "green")
+                                    .attr("opacity", 0.25);
+
+                            svg.append("rect")
+                                    .attr("id", "worse")
+                                    .attr("x", scaledX)
+                                    .attr("y", scaledY)
+                                    .attr("width", width - scaledX)
+                                    .attr("height", height - scaledY)
+                                    .attr("fill", "red")
+                                    .attr("opacity", 0.25);
                         })
 
                         .on("mouseout", function (d) {
                             d3.select("#popup").remove();
+                            d3.select("#better").remove();
+                            d3.select("#worse").remove();
+
                             d3.select(this).select("circle")
                                     .attr("fill", "blue");
                         });
@@ -191,7 +216,7 @@
                 dots.append("circle")
                         .attr("stroke", "black")
                         .attr("fill", "blue")
-                        .attr("r", 5)
+                        .attr("r", 8)
                         .attr("cx", function (d) {
                             return x(d.price);
                         })
