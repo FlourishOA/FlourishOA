@@ -1,9 +1,11 @@
-from django.shortcuts import render
-from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
+from django.shortcuts import render
 from api.models import Journal, Price, Influence
+from django.http import HttpResponseRedirect
 from api.serializers import JournalSerializer, PriceSerializer, InfluenceSerializer
+from main_site.forms import SearchForm
 import simplejson as json
+
 
 class IndexView(TemplateView):
     template_name = "main_site/index.html"
@@ -13,17 +15,6 @@ class IndexView(TemplateView):
         context['most_expensive'] = Price.objects.all().order_by('-price')[:5]
         context['num_journals'] = Journal.objects.all().count()
         context['num_prices'] = Price.objects.all().count()
-        return context
-
-
-class PriceAIView(TemplateView):
-    template_name = "main_site/viz.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(PriceAIView, self).get_context_data(**kwargs)
-        price_ai_map = {}
-        for i in Journal.objects.all().filter(article_influence__isnull=False):
-           pass
         return context
 
 
@@ -42,5 +33,19 @@ class VisualizationView(TemplateView):
             events.append(event)
 
         context['events'] = json.dumps(events)
-        print len(events)
         return context
+
+
+class SearchView(TemplateView):
+    template_name = 'main_site/search.html'
+
+    def get(self, request):
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            results = []
+            for journal in Journal.objects.filter(journal_name__contains=form.cleaned_data['search_query']):
+                results.append(journal.journal_name)
+            print form.cleaned_data['search_query']
+            return render(request, 'main_site/search.html', {'form': form, 'results': results})
+        return render(request, 'main_site/search.html', {'form': form})
+
