@@ -1,4 +1,5 @@
 .idea/
 .DS_Store
 *.pyc
+htmlcov/*
 pricesleuth_rest/dev_settings.py
