@@ -10,6 +10,12 @@
         <p>ISSN: {{ journal.issn }}</p>
         <p>This journal is a hybrid: {{ journal.is_hybrid }}</p>
         <p>Category: {{ journal.category }}</p>
+        <p>Prices:</p>
+        <ul>
+        {% for price in prices %}
+            <li>{{ price.date_stamp }}: ${{ price.price }}</li>
+        {% endfor %}
+        </ul>
     </section>
 
 </div>

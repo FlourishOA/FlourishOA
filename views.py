@@ -53,4 +53,7 @@ class ResultView(TemplateView):
     template_name = 'main_site/result.html'
 
     def get(self, request, **kwargs):
-        return render(request, 'main_site/result.html', {"journal": Journal.objects.get(issn=kwargs['issn'])})
+        context = super(ResultView, self).get_context_data(**kwargs)
+        context['journal'] = Journal.objects.get(issn=kwargs['issn'])
+        context['prices'] = Price.objects.filter(journal__issn=kwargs['issn'])
+        return render(request, 'main_site/result.html', context)
