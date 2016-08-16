@@ -150,7 +150,12 @@
                             .attr("r", node_radius);
                 });
 
-        dots.append("circle")
+        // adding links and circle for each journal
+        dots.append("a")
+                .attr("xlink:href", function (d) {
+                    return "/journal/" + d.issn + "/"
+                })
+                .append("circle")
                 .attr("stroke", "black")
                 .attr("fill", "#6699ff")
                 .attr("r", node_radius)
@@ -170,15 +175,17 @@
         svg.append("g")
                 .call(d3.axisLeft(y));
 
+        // appending X axis label
+        svg.append("text")
+                .attr("transform", "translate(" + width/2 + "," + (height + 40) + ")")
+                .style("text-anchor", "middle")
+                .text("Price in USD ($)");
+
+        // appending Y axis label
         svg.append("text")
                 .attr("transform", "translate(-35," + height/2 + ")rotate(-90)")
                 .style("text-anchor", "middle")
                 .text("ArticleInfluence");
-
-        svg.append("text")
-                .attr("transform", "translate(" + width/2 + "," + (height + 40) + ")")
-                .style("text-anchor", "middle")
-                .text("Price in USD");
     });
 </script>
 {% endblock %}
