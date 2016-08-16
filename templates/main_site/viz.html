@@ -1,3 +1,4 @@
+{% extends 'main_site/base.html' %}
 <!DOCTYPE HTML>
 <!--
 	Stellar by HTML5 UP
@@ -5,253 +6,193 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 {% load staticfiles %}
-<html>
-	<head>
-		<title>Visualizations | PriceSleuth</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="{% static 'assets/css/ie9.css' %}"/><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'assets/css/ie8.css' %}"/><![endif]-->
-	</head>
-	<body>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+{% block content %}
+<!-- Main -->
+<div id="main">
+    <!-- Content -->
+    <section id="content" class="main">
+        <svg class="chart"></svg>
+        <h2>The visualization will go here</h2>
+        <p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis fames ac ante ipsum primis in faucibus.</p>
+        <p>Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Consequat leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit enim turpis lorem ipsum dolor sit amet feugiat. Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet est velit quis lorem.</p>
+        <h2>Tempus veroeros</h2>
+                <p>Cep risus aliquam gravida cep ut lacus amet. Adipiscing faucibus nunc placerat. Tempus adipiscing turpis non blandit accumsan eget lacinia nunc integer interdum amet aliquam ut orci non col ut ut praesent. Semper amet interdum mi. Phasellus enim laoreet ac ac commodo faucibus faucibus. Curae ante vestibulum ante. Blandit. Ante accumsan nisi eu placerat gravida placerat adipiscing in risus fusce vitae ac mi accumsan nunc in accumsan tempor blandit aliquet aliquet lobortis. Ultricies blandit lobortis praesent turpis. Adipiscing accumsan adipiscing adipiscing ac lacinia cep. Orci blandit a iaculis adipiscing ac. Vivamus ornare laoreet odio vis praesent nunc lorem mi. Erat. Tempus sem faucibus ac id. Vis in blandit. Nascetur ultricies blandit ac. Arcu aliquam. Accumsan mi eget adipiscing nulla. Non vestibulum ac interdum condimentum semper commodo massa arcu.</p>
+                    </section>
+</div>
+{% endblock %}
 
-				<!-- Header -->
-					<header id="header">
-						<h1>Generic</h1>
-						<p>Ipsum dolor sit amet nullam</p>
-					</header>
+{% block extra_scripts %}
+    <script src="{% static "assets/js/d3.min.js" %}"></script>
+    <script id="events" type="application/json">{{ events|safe }}</script>
+    <script>
+    $(document).ready(function() {
+        var events = JSON.parse(document.getElementById('events').innerHTML);
+        // set the dimensions and margins of the graph
+        var margin = {top: 30, right: 150, bottom: 30, left: 50};
+        var width = 1000 - margin.left - margin.right;
+        var height = 900 - margin.top - margin.bottom;
 
-				<!-- Main -->
-					<div id="main">
+        var popup_width = 150;
+        var popup_height = 20;
 
-						<!-- Content -->
-							<section id="content" class="main">
-                                <svg class="chart"></svg>
-								<h2>The visualization will go here</h2>
-								<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis fames ac ante ipsum primis in faucibus.</p>
-								<p>Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Consequat leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit enim turpis lorem ipsum dolor sit amet feugiat. Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet est velit quis lorem.</p>
-								<h2>Tempus veroeros</h2>
-								<p>Cep risus aliquam gravida cep ut lacus amet. Adipiscing faucibus nunc placerat. Tempus adipiscing turpis non blandit accumsan eget lacinia nunc integer interdum amet aliquam ut orci non col ut ut praesent. Semper amet interdum mi. Phasellus enim laoreet ac ac commodo faucibus faucibus. Curae ante vestibulum ante. Blandit. Ante accumsan nisi eu placerat gravida placerat adipiscing in risus fusce vitae ac mi accumsan nunc in accumsan tempor blandit aliquet aliquet lobortis. Ultricies blandit lobortis praesent turpis. Adipiscing accumsan adipiscing adipiscing ac lacinia cep. Orci blandit a iaculis adipiscing ac. Vivamus ornare laoreet odio vis praesent nunc lorem mi. Erat. Tempus sem faucibus ac id. Vis in blandit. Nascetur ultricies blandit ac. Arcu aliquam. Accumsan mi eget adipiscing nulla. Non vestibulum ac interdum condimentum semper commodo massa arcu.</p>
-							</section>
+        // set the ranges
+        var x = d3.scaleLinear().range([0, width]);
+        var y = d3.scaleLinear().range([height, 0]);
 
-					</div>
+        /* Log Scale
+         * var y = d3.scaleLog().range([height, 0]).clamp(true);
+         * Log Domain
+         * y.domain([0, d3.max(pairs, function (d) {
+            return d.price;
+            })]);
+         */
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section>
-							<h2>Aliquam sed mauris</h2>
-							<p>Sed lorem ipsum dolor sit amet et nullam consequat feugiat consequat magna adipiscing tempus etiam dolore veroeros. eget dapibus mauris. Cras aliquet, nisl ut viverra sollicitudin, ligula erat egestas velit, vitae tincidunt odio.</p>
-							<ul class="actions">
-								<li><a href="#" class="button">Learn More</a></li>
-							</ul>
-						</section>
-						<section>
-							<h2>Etiam feugiat</h2>
-							<dl class="alt">
-								<dt>Address</dt>
-								<dd>1234 Somewhere Road &bull; Nashville, TN 00000 &bull; USA</dd>
-								<dt>Phone</dt>
-								<dd>(000) 000-0000 x 0000</dd>
-								<dt>Email</dt>
-								<dd><a href="#">information@untitled.tld</a></dd>
-							</dl>
-							<ul class="icons">
-								<li><a href="#" class="icon fa-twitter alt"><span class="label">Twitter</span></a></li>
-								<li><a href="#" class="icon fa-facebook alt"><span class="label">Facebook</span></a></li>
-								<li><a href="#" class="icon fa-instagram alt"><span class="label">Instagram</span></a></li>
-								<li><a href="#" class="icon fa-github alt"><span class="label">GitHub</span></a></li>
-								<li><a href="#" class="icon fa-dribbble alt"><span class="label">Dribbble</span></a></li>
-							</ul>
-						</section>
-						<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-            <script src="{% static 'assets/js/d3.min.js' %}"></script>
-            <script src="{% static 'assets/js/jquery.min.js' %}"></script>
-			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
-			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
-			<script src="{% static 'assets/js/skel.min.js' %}"></script>
-			<script src="{% static 'assets/js/util.js' %}"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="{% static 'assets/js/main.js'%}"></script>
-            <script id="events" type="application/json">{{ events|safe }}</script>
-            <script>
-            $(document).ready(function() {
-                var events = JSON.parse(document.getElementById('events').innerHTML);
-                // set the dimensions and margins of the graph
-                var margin = {top: 30, right: 150, bottom: 30, left: 50};
-                var width = 1000 - margin.left - margin.right;
-                var height = 900 - margin.top - margin.bottom;
-
-                var popup_width = 150;
-                var popup_height = 20;
-
-                // set the ranges
-                var x = d3.scaleLinear().range([0, width]);
-                var y = d3.scaleLinear().range([height, 0]);
-
-                /* Log Scale
-                 * var y = d3.scaleLog().range([height, 0]).clamp(true);
-                 * Log Domain
-                 * y.domain([0, d3.max(pairs, function (d) {
-                    return d.price;
-                    })]);
-                 */
-
-                // append the svg obgect to the body of the page
-                // appends a 'group' element to 'svg'
-                // moves the 'group' element to the top left margin
-                var svg = d3.select("#content").insert("svg", ":first-child")
-                        .attr("width", width + margin.left + margin.right)
-                        .attr("height", height + margin.top + margin.bottom)
-                        .append("g")
-                        .attr("transform",
-                                "translate(" + margin.left + "," + margin.top + ")");
+        // append the svg obgect to the body of the page
+        // appends a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        var svg = d3.select("#content").insert("svg", ":first-child")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
 
 
-                events.forEach(function(d) {
-                    d.price = parseFloat(d.price);
-                    d.article_influence = parseFloat(d.article_influence);
-                });
+        events.forEach(function(d) {
+            d.price = parseFloat(d.price);
+            d.article_influence = parseFloat(d.article_influence);
+        });
 
-                // Scale the range of the data
-                x.domain([0, d3.max(events, function (d) {
-                    return d.price;
-                })]);
+        // Scale the range of the data
+        x.domain([0, d3.max(events, function (d) {
+            return d.price;
+        })]);
 
-                y.domain([0, d3.max(events, function (d) {
-                    return d.article_influence;
-                })]);
+        y.domain([0, d3.max(events, function (d) {
+            return d.article_influence;
+        })]);
 
-                var node_radius = 8;
-                var highlighted_radius = 2 * node_radius;
+        var node_radius = 8;
+        var highlighted_radius = 2 * node_radius;
 
-                // Add the scatterplot
-                var dots = svg.selectAll("dot")
-                        .data(events).enter().append("g")
-                        .on("mouseover", function (d) {
-                            // nodes fill red when moused over
-                            d3.select(this).select("circle")
-                                    .attr("r", highlighted_radius)
-                                    .attr("fill", "red");
+        // Add the scatterplot
+        var dots = svg.selectAll("dot")
+                .data(events).enter().append("g")
+                .on("mouseover", function (d) {
+                    // nodes fill red when moused over
+                    d3.select(this).select("circle")
+                            .attr("r", highlighted_radius)
+                            .attr("fill", "red");
 
-                            var lines = [
-                                d.journal_name + ": ",
-                                "ISSN: " + d.issn,
-                                "Price: " + d.price,
-                                "AI: " + d.article_influence,
-                                "Date: " + d.date_stamp
-                            ];
+                    var lines = [
+                        d.journal_name + ": ",
+                        "ISSN: " + d.issn,
+                        "Price: " + d.price,
+                        "AI: " + d.article_influence,
+                        "Date: " + d.date_stamp
+                    ];
 
-                            var popup_margin = 8;
-                            var ems_to_px = 16;
-
-
-                            var scaledX = x(d.price);
-                            var scaledY = y(d.article_influence);
-
-                            // transparently highlighting other sections
-                            svg.append("rect")
-                                    .attr("id", "better")
-                                    .attr("x", 0)
-                                    .attr("y", 0)
-                                    .attr("width", scaledX)
-                                    .attr("height", scaledY)
-                                    .attr("fill", "green")
-                                    .attr("opacity", 0.25);
-
-                            svg.append("rect")
-                                    .attr("id", "worse")
-                                    .attr("x", scaledX)
-                                    .attr("y", scaledY)
-                                    .attr("width", width - scaledX)
-                                    .attr("height", height - scaledY)
-                                    .attr("fill", "red")
-                                    .attr("opacity", 0.25);
-
-                            // creating the popup grouping
-                            var popup = svg.append("g")
-                                    .attr("id", "popup");
+                    var popup_margin = 8;
+                    var ems_to_px = 16;
 
 
-                            // popup container (svg rect)
-                            var popupRect = popup.append("rect")
-                                    .attr("fill", "white")
-                                    .attr("stroke", "black");
+                    var scaledX = x(d.price);
+                    var scaledY = y(d.article_influence);
 
-                            // base popup text setup (think 'container')
-                            var text = popup.append("text")
-                                    .attr("font-size", "1em")
-                                    .attr("stroke", "black");
+                    // transparently highlighting other sections
+                    svg.append("rect")
+                            .attr("id", "better")
+                            .attr("x", 0)
+                            .attr("y", 0)
+                            .attr("width", scaledX)
+                            .attr("height", scaledY)
+                            .attr("fill", "green")
+                            .attr("opacity", 0.25);
 
-                            // attaching each line of text to the text container
-                            lines.forEach(function(line, index) {
-                                text.append("tspan")
-                                        .attr("class", "lines")
-                                        .attr("x", popup_margin)
-                                        .attr("dy", ems_to_px + popup_margin)
-                                        .text(line);
-                            });
+                    svg.append("rect")
+                            .attr("id", "worse")
+                            .attr("x", scaledX)
+                            .attr("y", scaledY)
+                            .attr("width", width - scaledX)
+                            .attr("height", height - scaledY)
+                            .attr("fill", "red")
+                            .attr("opacity", 0.25);
 
-                            // getting boundaries of the text
-                            var bbox = text.node().getBBox();
-
-                            // setting the background width and height, using text boundaries
-                            popupRect.attr("width", bbox.width + 2 * popup_margin)
-                                    .attr("height", bbox.height + 2 * popup_margin);
-
-                            // adding the popup with the right offset to appear above the node
-                            popup.attr("transform", function () {
-                                        return "translate(" + (scaledX - (popupRect.attr("width"))/2)  + ","
-                                                + (scaledY - popupRect.attr("height") - ems_to_px) + ")";
-
-                                    });
+                    // creating the popup grouping
+                    var popup = svg.append("g")
+                            .attr("id", "popup");
 
 
+                        // popup container (svg rect)
+                        var popupRect = popup.append("rect")
+                                .attr("fill", "white")
+                                .attr("stroke", "black");
 
+                        // base popup text setup (think 'container')
+                        var text = popup.append("text")
+                                .attr("font-size", "1em")
+                                .attr("stroke", "black");
 
-                        })
-
-                        .on("mouseout", function (d) {
-                            // removing elements from mouseover
-                            d3.select("#popup").remove();
-                            d3.select("#better").remove();
-                            d3.select("#worse").remove();
-                            // reverting color
-                            d3.select(this).select("circle")
-                                    .attr("fill", "blue")
-                                    .attr("r", node_radius);
+                        // attaching each line of text to the text container
+                        lines.forEach(function(line, index) {
+                            text.append("tspan")
+                                    .attr("class", "lines")
+                                    .attr("x", popup_margin)
+                                    .attr("dy", ems_to_px + popup_margin)
+                                    .text(line);
                         });
 
-                dots.append("circle")
-                        .attr("stroke", "black")
-                        .attr("fill", "blue")
-                        .attr("r", node_radius)
-                        .attr("cx", function (d) {
-                            return x(d.price);
-                        })
-                        .attr("cy", function (d) {
-                            return y(d.article_influence);
-                        });
+                        // getting boundaries of the text
+                        var bbox = text.node().getBBox();
 
-                // Add the X Axis
-                svg.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x));
+                        // setting the background width and height, using text boundaries
+                        popupRect.attr("width", bbox.width + 2 * popup_margin)
+                                .attr("height", bbox.height + 2 * popup_margin);
 
-                // Add the Y Axis
-                svg.append("g")
-                    .call(d3.axisLeft(y));
+                        // adding the popup with the right offset to appear above the node
+                        popup.attr("transform", function () {
+                                    return "translate(" + (scaledX - (popupRect.attr("width"))/2)  + ","
+                                            + (scaledY - popupRect.attr("height") - ems_to_px) + ")";
 
-            });
-                    </script>
-                </body>
-</html>
+                                });
+
+
+
+
+                    })
+
+                    .on("mouseout", function (d) {
+                        // removing elements from mouseover
+                        d3.select("#popup").remove();
+                        d3.select("#better").remove();
+                        d3.select("#worse").remove();
+                        // reverting color
+                        d3.select(this).select("circle")
+                                .attr("fill", "blue")
+                                .attr("r", node_radius);
+                    });
+
+            dots.append("circle")
+                    .attr("stroke", "black")
+                    .attr("fill", "blue")
+                    .attr("r", node_radius)
+                    .attr("cx", function (d) {
+                        return x(d.price);
+                    })
+                    .attr("cy", function (d) {
+                        return y(d.article_influence);
+                    });
+
+            // Add the X Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // Add the Y Axis
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+        });
+        </script>
+{% endblock %}
