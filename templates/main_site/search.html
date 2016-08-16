@@ -37,8 +37,8 @@
                                     {{ form }}
                                     <input type="submit" value="Submit" />
                                 </form>
-                                {% for result in results %}
-                                    <li href="/journal/{{ result.issn }}">result.journal_name</li>
+                                {% for a in results %}
+                                    <li><a href="{% url 'result' a.issn %}">{{ a.journal_name }}</a></li>
                                 {% endfor %}
 							</section>
 

@@ -39,7 +39,7 @@ class VisualizationView(TemplateView):
 class SearchView(TemplateView):
     template_name = 'main_site/search.html'
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         form = SearchForm(request.GET)
         if form.is_valid():
             results = []
@@ -48,8 +48,9 @@ class SearchView(TemplateView):
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
 
+
 class ResultView(TemplateView):
     template_name = 'main_site/result.html'
 
-    def get(self, request):
-        return render(request, 'main_site/result.html', {'journal': })
+    def get(self, request, **kwargs):
+        return render(request, 'main_site/result.html', {"journal": Journal.objects.get(issn=kwargs['issn'])})

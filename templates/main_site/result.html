@@ -31,8 +31,10 @@
 
 						<!-- Content -->
 							<section id="content" class="main">
-								<h2>PriceSleuth Journal Results</h2>
-                                <p></p>
+								<h2>{{ journal.journal_name }}</h2>
+                                <p>ISSN: {{ journal.issn }}</p>
+                                <p>This journal is a hybrid: {{ journal.is_hybrid }}</p>
+                                <p>Category: {{ journal.category }}</p>
 							</section>
 
 					</div>
