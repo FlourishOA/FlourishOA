@@ -44,8 +44,12 @@ class SearchView(TemplateView):
         if form.is_valid():
             results = []
             for journal in Journal.objects.filter(journal_name__contains=form.cleaned_data['search_query']):
-                results.append(journal.journal_name)
-            print form.cleaned_data['search_query']
+                results.append(journal)
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
 
+class ResultView(TemplateView):
+    template_name = 'main_site/result.html'
+
+    def get(self, request):
+        return render(request, 'main_site/result.html', {'journal': })

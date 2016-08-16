@@ -31,15 +31,8 @@
 
 						<!-- Content -->
 							<section id="content" class="main">
-								<h2>PriceSleuth Search</h2>
-                                <form action="/search/" method="get">
-                                    {% csrf_token %}
-                                    {{ form }}
-                                    <input type="submit" value="Submit" />
-                                </form>
-                                {% for result in results %}
-                                    <li href="/journal/{{ result.issn }}">result.journal_name</li>
-                                {% endfor %}
+								<h2>PriceSleuth Journal Results</h2>
+                                <p></p>
 							</section>
 
 					</div>
