@@ -23,9 +23,12 @@ class VisualizationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(VisualizationView, self).get_context_data(**kwargs)
+
         events = []
-        for price in Price.objects.filter(influence__article_influence__isnull=False,
-                                          date_stamp__year__gte=2012):
+
+        valid_prices = Price.objects.filter(influence__article_influence__isnull=False,
+                                            date_stamp__year__gte=2012)
+        for price in valid_prices:
             event = PriceSerializer(price).data
             event.update(JournalSerializer(price.journal).data)
             event["article_influence"] = price.influence.article_influence
@@ -33,6 +36,8 @@ class VisualizationView(TemplateView):
             events.append(event)
 
         context['events'] = json.dumps(events)
+        context['num_valid_pairs'] = valid_prices.count()
+
         return context
 
 
