@@ -1,5 +1,6 @@
 from django.test import TestCase
 from api.models import Journal, Price
+from unittest import skip
 
 """
 Overall testing plan:
@@ -38,6 +39,7 @@ class TestJournalModel(TestCase):
                          "5553-1519: Journal 2")
 
 
+@skip("Journal tests unimplemented")
 class TestPriceModel(TestCase):
     """
     testing behavior of the Price model
