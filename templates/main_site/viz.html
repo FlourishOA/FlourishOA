@@ -22,6 +22,8 @@
     <script>
     $(document).ready(function() {
         var events = JSON.parse(document.getElementById('events').innerHTML);
+
+        var dim = d3.select("#content").node().getBoundingClientRect();
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 40, bottom: 40, left: 40};
         var width = 1200 - margin.left - margin.right;

@@ -7,11 +7,10 @@
 <!-- Content -->
     <section id="content" class="main">
         <h2>{{ journal.journal_name }}</h2>
-        <p>ISSN: {{ journal.issn }}</p>
-        <p>This journal is a hybrid: {{ journal.is_hybrid }}</p>
-        <p>Category: {{ journal.category }}</p>
-        <p>Prices:</p>
-        <ul>
+        <p>ISSN: {{ journal.issn }} <br/>
+        This journal is {% if not journal.is_hybrid %} not {% endif %} a hybrid. <br/>
+            Category: {{ journal.category }}</p>
+        <ul> Prices:
         {% for price in prices %}
             <li>{{ price.date_stamp }}: ${{ price.price }}</li>
         {% endfor %}
