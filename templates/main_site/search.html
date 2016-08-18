@@ -12,19 +12,16 @@
 {% block content %}
 <!-- Main -->
 <div id="main">
-
     <!-- Content -->
         <section id="content" class="main">
-            <h2>PriceSleuth Search</h2>
             <form action="/search/" method="get">
                 {% csrf_token %}
-                {{ form }}
-                <input type="submit" value="Submit" />
+                {{ form.search_query }}
+                <input type="submit" value="Search" />
             </form>
             {% for a in results %}
                 <li><a href="{% url 'result' a.issn %}">{{ a.journal_name }}</a></li>
             {% endfor %}
         </section>
-
 </div>
 {% endblock %}
