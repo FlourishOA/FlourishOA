@@ -17,7 +17,8 @@
             <li><a href="#intro" class="active">Introduction</a></li>
             <li><a href="#first">Our Data</a></li>
             <li><a href="#second">Our Vision</a></li>
-            <li><a href="#cta">Get Started</a></li>
+            <li><a href="/viz.html">Explore Visualizations</a></li>
+            <li><a href="/search">Search Our Catalog</a></li>
         </ul>
 </nav>
 {% endblock %}
@@ -33,21 +34,21 @@
                     <header class="major">
                         <h2>Welcome to the Future of Publishing</h2>
                     </header>
-                    <p>The OpenAccess movementt has changed a three hundred year old publishing model
+                    <p>The OpenAccess movement has changed a three hundred year old publishing model
                     that exploits academics and allows publishers to have some of the highest
                     profit margins of any corporations in the world. </p>
                     <p>Still, some publishers and
                     journals take advantage of the lack of clear information about article publishing
                     costs. With simple, no-nonsense data analysis and visualization, PriceSleuth
                     fixes this problem. </p>
-                    <ul>
+                    <!--<ul>
                         <b>Most Expensive Journals to Publish in:</b>
                         {% for price in most_expensive %}
                             <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
                         {% endfor %}
-                    </ul>
+                    </ul>-->
                     <ul class="actions">
-                        <li><a href="{% static "generic.html" %}" class="button">Learn More</a></li>
+                        <li><a href="{% static "generic.html" %}" class="button">Learn more about </a></li>
                     </ul>
                 </div>
                 <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
