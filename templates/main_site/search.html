@@ -14,10 +14,7 @@
         <section id="content" class="main">
             <form action="/search/" method="get">
                 {% csrf_token %}
-                <p>Include:</p>
-                <input type="checkbox" value="Journal names">
-                <input type="checkbox" value="Journal ISSN">
-                <input type="checkbox" value="Categories">
+                <p>Search By:{{ form.search_by }}</p>
                 {{ form.search_query }}
                 <input type="submit" value="Search" />
             </form>

@@ -48,7 +48,18 @@ class SearchView(TemplateView):
         form = SearchForm(request.GET)
         if form.is_valid():
             results = []
-            for journal in Journal.objects.filter(journal_name__contains=form.cleaned_data['search_query']):
+
+            # figuring out which field to filter on
+            search_by_raw = form.cleaned_data['search_by']
+            if search_by_raw == 'Category':
+                search_by = 'category__contains'
+            elif search_by_raw == 'ISSN':
+                search_by = 'issn__contains'
+            else:
+                search_by = 'journal_name__contains'
+
+            # passing correct kwarg to filter
+            for journal in Journal.objects.filter(**{search_by: form.cleaned_data['search_query']}):
                 results.append(journal)
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
