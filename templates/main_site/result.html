@@ -27,12 +27,16 @@
             </ul>
         </div>
         <div id="influences" style="float:left; padding-left: 30px">
-            <ul> Influence Scores:
-            {% for influence in influences %}
-                {% if influence.article_influence %}
-                <li>{{ influence.date_stamp.year }}: {{ influence.article_influence }}</li>
-                {% endif %}
-            {% endfor %}
+            {% if has_influence %}
+                <ul> Influence Scores:
+                {% for influence in influences %}
+                    {% if influence.article_influence %}
+                    <li>{{ influence.date_stamp.year }}: {{ influence.article_influence }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>This journal has no influence <br>scores in our database.</p>
+            {% endif %}
             </ul>
         </div>
     </section>
