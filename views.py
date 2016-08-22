@@ -51,9 +51,9 @@ class SearchView(TemplateView):
 
             # figuring out which field to filter on
             search_by_raw = form.cleaned_data['search_by']
-            if search_by_raw == 'Category':
+            if search_by_raw == 'cat':
                 search_by = 'category__contains'
-            elif search_by_raw == 'ISSN':
+            elif search_by_raw == 'issn':
                 search_by = 'issn__contains'
             else:
                 search_by = 'journal_name__contains'
@@ -72,4 +72,5 @@ class ResultView(TemplateView):
         context = super(ResultView, self).get_context_data(**kwargs)
         context['journal'] = Journal.objects.get(issn=kwargs['issn'])
         context['prices'] = Price.objects.filter(journal__issn=kwargs['issn'])
+        context['influences'] = Influence.objects.filter(journal__issn=kwargs['issn'])
         return render(request, 'main_site/result.html', context)

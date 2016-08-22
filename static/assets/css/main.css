@@ -3599,10 +3599,12 @@
 		#main > .main {
 			padding: 5em 5em 3em 5em ;
 			border-top: solid 1px #dddddd;
+			overflow: hidden;
 		}
 
 			#main > .main:first-child {
 				border-top: 0;
+
 			}
 
 			#main > .main > .image.main:first-child {

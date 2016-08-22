@@ -3,7 +3,8 @@
 {% load staticfiles %}
 {% block header %}
 <header id="header" class="alt">
-    <h1><a href="/">PriceSleuth</a></h1>
+    <h2><a href="/">PriceSleuth</a></h2>
+    <p><a href="/search" class="button">Return to search</a></p>
 </header>
 {% endblock %}
 {% block content %}
@@ -11,15 +12,38 @@
 <!-- Content -->
     <section id="content" class="main">
         <h2>{{ journal.journal_name }}</h2>
-        <p>ISSN: {{ journal.issn }} <br/>
-        This journal is {% if not journal.is_hybrid %} not {% endif %} a hybrid. <br/>
-            Category: {{ journal.category }}</p>
-        <ul> Prices:
-        {% for price in prices %}
-            <li>{{ price.date_stamp }}: ${{ price.price }}</li>
-        {% endfor %}
-        </ul>
+        <div id="info" style="float:left;">
+
+            <p>ISSN: {{ journal.issn }} <br/>
+            This journal is {% if not journal.is_hybrid %} not {% endif %} a hybrid. <br/>
+                Category: {{ journal.category }}</p>
+        </div>
+        <div id="prices" style="float:left; padding-left: 30px">
+
+            <ul> Prices:
+            {% for price in prices %}
+                <li>{{ price.date_stamp }}: ${{ price.price }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div id="influences" style="float:left; padding-left: 30px">
+            <ul> Influence Scores:
+            {% for influence in influences %}
+                {% if influence.article_influence %}
+                <li>{{ influence.date_stamp.year }}: {{ influence.article_influence }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
     </section>
 
 </div>
+{% endblock %}
+{% block extra_scripts %}
+    <style>
+    /* Making the default width smaller specifically for the result page */
+        #wrapper {
+		    width: 50em;
+	    }
+    </style>
 {% endblock %}
