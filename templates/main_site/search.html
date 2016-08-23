@@ -14,7 +14,11 @@
         <section id="content" class="main">
             <form action="/search/" method="get">
                 {% csrf_token %}
-                <p>Search By:{{ form.search_by }}</p>
+                <div id="search-params">
+                    <p style="float:left;padding-right: 30px">Search By:{{ form.search_by }}</p>
+                    <p style="float:left;padding-right: 30px">Sort By:{{ form.sort_by }}</p>
+                    <p style="float:left;padding-right: 30px">Order:{{ form.order }}</p>
+                </div>
                 {{ form.search_query }}
                 <input type="submit" value="Search" />
             </form>
@@ -23,4 +27,12 @@
             {% endfor %}
         </section>
 </div>
+{% endblock %}
+{% block extra_scripts %}
+    <style>
+    /* Making the default width smaller specifically for the result page */
+        #wrapper {
+		    width: 45em;
+	    }
+    </style>
 {% endblock %}

@@ -6,3 +6,8 @@ class SearchForm(forms.Form):
     search_by = forms.ChoiceField(choices=(("name", "Journal name"),
                                             ("issn", "ISSN"),
                                             ("cat", "Category (coming soon!)")))
+    sort_by = forms.ChoiceField(choices=(("price", "APC (price)"),
+                                         ("infl", "ArticleInfluence")))
+    order = forms.ChoiceField(choices=(('asc', 'Ascending'),
+                                       ('dsc', 'Descending')))
+
