@@ -15,10 +15,10 @@
     <nav id="nav">
         <ul>
             <li><a href="#intro" class="active">Introduction</a></li>
-            <li><a href="#first">Our Data</a></li>
-            <li><a href="#second">Our Vision</a></li>
-            <li><a href="/viz.html">Explore Visualizations</a></li>
-            <li><a href="/search">Search Our Catalog</a></li>
+            <li><a href="#first">Our Vision</a></li>
+            <li><a href="#second">Our Data</a></li>
+            <li><a href="/viz.html">Compare Journals</a></li>
+            <li><a href="/search" style="background-color:#ff751a;color:white;">Search Our Catalog</a></li>
         </ul>
 </nav>
 {% endblock %}
@@ -48,7 +48,7 @@
                         {% endfor %}
                     </ul>-->
                     <ul class="actions">
-                        <li><a href="{% static "generic.html" %}" class="button">Learn more about </a></li>
+                        <li><a href="/about" class="button">Learn more</a></li>
                     </ul>
                 </div>
                 <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
@@ -58,7 +58,7 @@
     <!-- First Section -->
         <section id="first" class="main special">
             <header class="major">
-                <h2>Our Data: Philosphy and Approach</h2>
+                <h2>Our Vision: Current and Future</h2>
             </header>
             <ul class="features">
                 <li>
@@ -82,7 +82,7 @@
             </ul>
             <footer class="major">
                 <ul class="actions">
-                    <li><a href="{% static "generic.html" %}" class="button">Learn More</a></li>
+                    <li><a href="/vision" class="button">Learn More</a></li>
                 </ul>
             </footer>
         </section>
@@ -90,7 +90,7 @@
     <!-- Second Section -->
         <section id="second" class="main special">
             <header class="major">
-                <h2>Our Vision: Current and Future</h2>
+                <h2>Our Data: Philosphy and Approach</h2>
                 <p>Data is nothing without context. We seek to not only increase the volume of
                 data we maintain, but also its sophistication. </p>
             </header>
@@ -111,10 +111,7 @@
                     <span class="icon fa-laptop"></span>
                     <strong>3</strong> Ways to Access Data
                 </li>
-                <li class="style5">
-                    <span class="icon fa-diamond"></span>
-                    <strong>0</strong> Reasons to Wait
-                </li>
+
             </ul>
             <p class="content">Our data comes from a variety of sources, including researchers, web scraping, and
             the publishers themselves. All data is cleaned and reviewed to ensure its validity and integrity. Our catalog
@@ -123,7 +120,7 @@
             work and expansion.</p>
             <footer class="major">
                 <ul class="actions">
-                    <li><a href="{% static "generic.html" %}" class="button">Learn More</a></li>
+                    <li><a href="/data" class="button">Learn More</a></li>
                 </ul>
             </footer>
         </section>
@@ -136,7 +133,8 @@
             </header>
             <footer class="major">
                 <ul class="actions">
-                    <li><a href="viz.html" class="button special">Explore Visualizations</a></li>
+                    <li><a href="viz.html" class="button"
+                           style="background-color:#ff751a;color:white !important;">Compare Journals</a></li>
                     <li><a href="/docs" class="button">Read API Documentation</a></li>
                 </ul>
             </footer>
