@@ -3,3 +3,4 @@
 *.pyc
 htmlcov/*
 pricesleuth_rest/dev_settings.py
+cover/*
