@@ -50,6 +50,15 @@ class Price(models.Model):
     influence = models.ForeignKey(Influence, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return (self.journal.issn + ": " + str(self.price) + ", " +
-                str(self.date_stamp) + "," + str(self.influence.article_influence)
-                if self.influence.article_influence else str(self.influence.est_article_influence) + ";")
+        result = self.journal.issn + ": "
+        if self.influence:
+            if self.influence.article_influence:
+                result += str(self.influence.article_influence)
+            elif self.influence.est_article_influence:
+                result += "(est) " + str(self.influence.est_article_influence)
+            else:
+                result += "No influence value"
+        else:
+            result += "No influence value"
+        result += " - " + str(self.date_stamp)
+        return result
