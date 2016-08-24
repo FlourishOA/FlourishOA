@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^api/', include('api.urls')),
     url(r'^api-token-auth/', auth_views.ObtainAuthToken.as_view()),
     url(r'^admin/', admin.site.urls),
-    url(r'', include('main_site.urls')),
+    url(r'^', include('main_site.urls')),
 ]
