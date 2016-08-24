@@ -22,8 +22,25 @@
                 {{ form.search_query }}
                 <input type="submit" value="Search" />
             </form>
-            {% for a in results %}
-                <li><a href="{% url 'result' a.issn %}">{{ a.journal_name }}</a></li>
+            {% for result in results %}
+                <div class="result">
+                    <li style="list-style: none;">
+                        <a href="{% url 'result' result.journal.issn %}">
+                            <strong>{{ result.journal.journal_name }}</strong>
+                        </a>
+                        <div class="most-rec">
+                            <p>
+                                <b>Most Recent Price:</b> {{ result.mrp.price }} --
+                                <b>Most Recent AI: </b>
+                                {% if result.mri.article_influence %}
+                                    {{ result.mri.article_influence }}
+                                {% else %}
+                                    (No ArticleInfluence on file)
+                                {% endif %}
+                            </p>
+                        </div>
+                    </li>
+                </div>
             {% endfor %}
         </section>
 </div>

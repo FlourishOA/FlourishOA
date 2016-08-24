@@ -51,41 +51,72 @@ class VisualizationView(TemplateView):
 class SearchView(TemplateView):
     template_name = 'main_site/search.html'
 
+    @staticmethod
+    def _reorder(cleaned_data, results):
+        # ^^ okay so there are our results now its just a matter of ordering them correctly
+
+        # figuring out which direction to order the results
+        rev = True if cleaned_data['order'] == "dsc" else False # default to ascending
+
+        def sort_on(result):
+            # figuring out which field to sort on
+            sort_by_raw = cleaned_data['sort_by']
+            if sort_by_raw == 'price':
+                return result['mrp'].price
+            elif sort_by_raw == 'infl':
+                mri = result['mri']
+                if mri:
+                    return mri.article_influence
+                else:
+                    return 0
+            else:  # default to alphabetical order
+                return result['journal'].journal_name
+
+        return sorted(results, reverse=rev, key=sort_on)
+
+    @staticmethod
+    def _get_mrp(journal):
+        """
+        Getting mrp (most recent price)
+
+        Returns None if no price exists
+        """
+        try:
+            return Price.objects.filter(journal__issn=journal.issn).order_by('-date_stamp')[0]
+        except IndexError:
+            return None
+
+    @staticmethod
+    def _get_mri(journal):
+        """
+        Getting mri (most recent influence)
+
+        Returns 0 if no influence exists
+        """
+        try:
+            return Influence.objects.filter(journal__issn=journal.issn).order_by('-date_stamp')[0]
+        except IndexError:
+            return 0
+
+    @staticmethod
+    def _get_results(cleaned_data):
+        # figuring out which field to filter on
+        search_by_raw = cleaned_data['search_by']
+        if search_by_raw == 'cat':
+            search_by = 'category__icontains'
+        elif search_by_raw == 'issn':
+            search_by = 'issn__icontains'
+        else:  # default to the journal name
+            search_by = 'journal_name__icontains'
+
+        return [{'journal': result, 'mrp': SearchView._get_mrp(result), 'mri': SearchView._get_mri(result)}
+                for result in Journal.objects.filter(**{search_by: cleaned_data['search_query']})]
+
     def get(self, request, **kwargs):
         form = SearchForm(request.GET)
         if form.is_valid():
-            results = []
+            results = self._reorder(form.cleaned_data, self._get_results(form.cleaned_data))
 
-            # figuring out which field to filter on
-            search_by_raw = form.cleaned_data['search_by']
-            if search_by_raw == 'cat':
-                search_by = 'category__icontains'
-            elif search_by_raw == 'issn':
-                search_by = 'issn__icontains'
-            else:  # default to the journal name
-                search_by = 'journal_name__icontains'
-
-            # figuring out which direction to order the results
-            order_raw = form.cleaned_data['order']
-            order_symbol = "-" if order_raw == "dsc" else ""  # default to ascending
-
-            # start of the sort_by argument
-            sort_by = order_symbol
-
-            # figuring out which field to sort on
-            sort_by_raw = form.cleaned_data['sort_by']
-            if sort_by_raw == 'price':
-                sort_by += "price"
-            elif sort_by_raw == 'infl':
-                sort_by += "influence"
-            else:   # default to alphabetical order
-                sort_by += 'journal_name'
-
-            # passing correct kwarg to filter
-            journal_set = Journal.objects.filter(**{search_by: form.cleaned_data['search_query']})
-            journal_set.order_by(*sort_by)
-            for journal in journal_set:
-                results.append(journal)
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
 
