@@ -4,9 +4,6 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^about', TemplateView.as_view(template_name='main_site/about.html')),
-    url(r'^data', TemplateView.as_view(template_name='main_site/our-data.html')),
-    url(r'^vision', TemplateView.as_view(template_name='main_site/our-vision.html')),
-    url(r'^team', TemplateView.as_view(template_name='main_site/team.html')),
     url(r'^viz', views.VisualizationView.as_view(), name='viz'),
     url(r'^search', views.SearchView.as_view(), name='search'),
     url(r'^journal/(?P<issn>\d{4}-\d{3}[\dxX])/$', views.ResultView.as_view(), name='result'),

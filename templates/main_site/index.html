@@ -34,21 +34,14 @@
                     <header class="major">
                         <h2>Welcome to the Future of Publishing</h2>
                     </header>
-                    <p>The OpenAccess movement has changed a three hundred year old publishing model
-                    that exploits academics and allows publishers to have some of the highest
-                    profit margins of any corporations in the world. </p>
-                    <p>Still, some publishers and
-                    journals take advantage of the lack of clear information about article publishing
-                    costs. With simple, no-nonsense data analysis and visualization, PriceSleuth
-                    fixes this problem. </p>
-                    <!--<ul>
-                        <b>Most Expensive Journals to Publish in:</b>
-                        {% for price in most_expensive %}
-                            <li>{{ price.journal.journal_name }}: {{ price.price }}</li>
-                        {% endfor %}
-                    </ul>-->
+                    <p>The OpenAccess movement has changed a three hundred year old publishing model, allowing
+                        authors more flexibility in how and where they publish their findings. Still, the fledgling
+                        nature of the movement presents issues.</p>
+                    <p>Some so-called 'predatory' publishers and journals take advantage of the lack of clear
+                        information about article publishing costs. With simple, no-nonsense data analysis
+                        and visualization, PriceSleuth fixes this problem.</p>
                     <ul class="actions">
-                        <li><a href="/about" class="button">Learn more</a></li>
+                        <li><a href="/about/#background" class="button">Learn more</a></li>
                     </ul>
                 </div>
                 <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
@@ -64,25 +57,25 @@
                 <li>
                     <span class="icon major style1 fa-code"></span>
                     <h3>Current</h3>
-                    <p>Many of the prices in our database are pulled directly from the publisher's webistes, updated within
-                    the last few months. </p>
+                    <p>Many of the prices in our database are pulled directly from the publisher's websites,
+                        updated within the last few months. </p>
                 </li>
                 <li>
                     <span class="icon major style3 fa-copy"></span>
                     <h3>Archived</h3>
-                    <p>Our data has journal prices for some journals as far back as 2012, and more historical prices are
-                    being added for more effective analysis.</p>
+                    <p>Our data has journal prices for some journals as far back as 2012, and more historical
+                        prices are being added for more effective analysis.</p>
                 </li>
                 <li>
                     <span class="icon major style5 fa-diamond"></span>
                     <h3>Easily Updated</h3>
-                    <p>We provide a simple API for authorized publishers and other known authorities to add data to our
-                        database with a simple GUI.</p>
+                    <p>We provide a simple API for authorized publishers and other known authorities to add
+                        data to our database.</p>
                 </li>
             </ul>
             <footer class="major">
                 <ul class="actions">
-                    <li><a href="/vision" class="button">Learn More</a></li>
+                    <li><a href="/about/#vision" class="button">Learn More</a></li>
                 </ul>
             </footer>
         </section>
@@ -105,13 +98,16 @@
                 </li>
                 <li class="style3">
                     <span class="icon fa-signal"></span>
-                    <strong>15,000</strong> Journals by 2017
+                    <strong>{{ num_influences }}</strong> Influence Scores
                 </li>
                 <li class="style4">
+                    <span class="icon fa-diamond"></span>
+                    <strong>{{ most_recent_update }}</strong> Most Recent Update
+                </li>
+                <li class="style5">
                     <span class="icon fa-laptop"></span>
                     <strong>3</strong> Ways to Access Data
                 </li>
-
             </ul>
             <p class="content">Our data comes from a variety of sources, including researchers, web scraping, and
             the publishers themselves. All data is cleaned and reviewed to ensure its validity and integrity. Our catalog
@@ -120,7 +116,7 @@
             work and expansion.</p>
             <footer class="major">
                 <ul class="actions">
-                    <li><a href="/data" class="button">Learn More</a></li>
+                    <li><a href="/about/#data" class="button">Learn More</a></li>
                 </ul>
             </footer>
         </section>
