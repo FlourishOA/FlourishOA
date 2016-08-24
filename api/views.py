@@ -6,6 +6,19 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
+from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+from rest_framework.views import APIView
+from rest_framework import response, schemas
+
+
+class SchemaView(APIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    renderer_classes = [SwaggerUIRenderer, OpenAPIRenderer]
+
+    def get(self, request):
+        generator = schemas.SchemaGenerator(title='PriceSleuth API')
+        return response.Response(generator.get_schema(request=request))
+
 
 class JournalViewSet(mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,

@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_swagger',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
     'api',
     'main_site',
 ]
@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False
+    'USE_SESSION_AUTH': False,
 }
 
 # grabbing development settings

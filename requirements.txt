@@ -5,7 +5,7 @@ colorama==0.3.7
 Django==1.9.7
 django-filter==0.13.0
 django-rest-swagger>=0.3.8
-djangorestframework==3.3.3
+djangorestframework>=3.4
 docker-py==1.7.2
 dockerpty==0.4.1
 docopt==0.6.2
