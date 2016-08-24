@@ -37,6 +37,15 @@
                                 {% else %}
                                     (No ArticleInfluence on file)
                                 {% endif %}
+                                <br/>
+                                <b>Cost Effectiveness: </b>
+                                {% if result.ce %}
+                                    {{ result.ce }}
+                                {% else %}
+                                    (Unable to calculate)
+                                {% endif %}
+                            </p>
+
                             </p>
                         </div>
                     </li>

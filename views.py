@@ -63,6 +63,8 @@ class SearchView(TemplateView):
             sort_by_raw = cleaned_data['sort_by']
             if sort_by_raw == 'price':
                 return result['mrp'].price
+            elif sort_by_raw == 'ce':
+                return result['ce']
             elif sort_by_raw == 'infl':
                 mri = result['mri']
                 if mri:
@@ -99,6 +101,15 @@ class SearchView(TemplateView):
             return 0
 
     @staticmethod
+    def _get_ce(price, influence):
+        if not price or not influence or not influence.article_influence:
+            return None
+
+        if price.price == 0:
+            return 0
+        return (1000 * float(influence.article_influence)) / float(price.price)
+
+    @staticmethod
     def _get_results(cleaned_data):
         # figuring out which field to filter on
         search_by_raw = cleaned_data['search_by']
@@ -109,7 +120,11 @@ class SearchView(TemplateView):
         else:  # default to the journal name
             search_by = 'journal_name__icontains'
 
-        return [{'journal': result, 'mrp': SearchView._get_mrp(result), 'mri': SearchView._get_mri(result)}
+
+        return [{'journal': result,
+                 'mrp': SearchView._get_mrp(result),
+                 'mri': SearchView._get_mri(result),
+                 'ce': SearchView._get_ce(SearchView._get_mrp(result), SearchView._get_mri(result))}
                 for result in Journal.objects.filter(**{search_by: cleaned_data['search_query']})]
 
     def get(self, request, **kwargs):

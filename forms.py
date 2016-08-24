@@ -8,7 +8,8 @@ class SearchForm(forms.Form):
                                             ("cat", "Category (coming soon!)")))
     sort_by = forms.ChoiceField(choices=(("alpha", "Alphabetical"),
                                          ("price", "APC (price)"),
-                                         ("infl", "ArticleInfluence")))
+                                         ("infl", "ArticleInfluence"),
+                                         ("ce", "Cost Effectiveness")))
     order = forms.ChoiceField(choices=(('asc', 'Ascending'),
                                        ('dsc', 'Descending')))
 
