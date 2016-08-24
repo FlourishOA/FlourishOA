@@ -120,7 +120,6 @@ class SearchView(TemplateView):
         else:  # default to the journal name
             search_by = 'journal_name__icontains'
 
-
         return [{'journal': result,
                  'mrp': SearchView._get_mrp(result),
                  'mri': SearchView._get_mri(result),
