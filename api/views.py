@@ -49,7 +49,7 @@ class JournalViewSet(mixins.ListModelMixin,
         Updates/creates information about journal with given ISSN
         """
         # if the given ISSN and the ISSN in the new request.data aren't the same
-        if not issn or (issn != request.data['issn']):
+        if not issn or ('issn' in request.data and issn != request.data['issn']):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # creating new Journal model
