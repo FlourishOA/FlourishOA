@@ -15,7 +15,7 @@
         <div id="info" style="float:left;">
 
             <p>ISSN: {{ journal.issn }} <br/>
-            This journal is {% if not journal.is_hybrid %} not {% endif %} a hybrid. <br/>
+            Type: {% if not journal.is_hybrid %} Hybrid {% endif %} Fully OpenAccess <br/>
             Publisher: {{ journal.pub_name }}<br/>
                 Category: {{ journal.category }}</p>
         </div>
