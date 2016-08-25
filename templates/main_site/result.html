@@ -16,6 +16,7 @@
 
             <p>ISSN: {{ journal.issn }} <br/>
             This journal is {% if not journal.is_hybrid %} not {% endif %} a hybrid. <br/>
+            Publisher: {{ journal.pub_name }}<br/>
                 Category: {{ journal.category }}</p>
         </div>
         <div id="prices" style="float:left; padding-left: 30px">
