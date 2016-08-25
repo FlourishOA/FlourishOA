@@ -43,6 +43,10 @@ class TestJournalViewSet(APITestCase):
             'category': None,
         }
 
+        self.partially_update_j1_data ={
+            'pub_name': u'Publisher 3'
+        }
+
     def test_get_list_empty(self):
         """
         Checking whether empty list is returned
@@ -118,7 +122,6 @@ class TestJournalViewSet(APITestCase):
         self.client.force_authenticate(user=user)
 
         # rendering the changes into the Django view (and by proxy, the model)
-        tmp = reverse('journal-detail', kwargs={'issn': '5553-1519'}),
         response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
                                    data=self.updated_journal1_data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -143,12 +146,48 @@ class TestJournalViewSet(APITestCase):
                                    data=self.journal2_data, format='json')
         self.assertEqual(response.status_code, 400)
 
+    def test_partial_update_valid(self):
+        # creating journal so there is something in the database
+        Journal.objects.create(**self.journal1_data)
+
+        response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
+
+        # data received should be the same as the original dict
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data,
+            self.journal1_data
+        )
+
+        # setting up user and info to be update
+        user = User.objects.create_user(username='test1', password='passw')
+        self.client.force_authenticate(user=user)
+
+        # rendering the changes into the Django view (and by proxy, the model)
+        response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
+                                   data=self.partially_update_j1_data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        # data retrieved should be the same as the data we had before
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.data,
+            {
+                'issn': u'5553-1519',
+                'journal_name': u'Journal 2',
+                'pub_name': u'Publisher 3',
+                'is_hybrid': False,
+                'category': None,
+            }
+        )
+
     def test_no_auth_update(self):
         # trying to update data with no authenication, should result in 'Unauthorized'
         # response from the server
         response = self.client.put(reverse('journal-detail', kwargs={'issn': '5553-1519'}),
                                    data=json.dumps(self.journal1_data), format='json')
         self.assertEqual(response.status_code, 401)
+
 
 
 
