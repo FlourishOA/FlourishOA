@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def gen_secret_key():
     return "".join([random.SystemRandom().choice(string.printable) for i in range(50)])
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = gen_secret_key()
 
