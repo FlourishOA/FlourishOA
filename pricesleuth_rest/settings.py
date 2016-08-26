@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-
+import random
+import string
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,8 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
+def gen_secret_key():
+    return "".join([random.SystemRandom().choice(string.printable) for i in range(50)])
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(pey#zu#!$06n(!#!47gvar@fhv&x3k-hl)%tlw%j#i_l$7@=$'
+SECRET_KEY = gen_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
