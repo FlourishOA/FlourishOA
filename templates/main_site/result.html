@@ -30,7 +30,7 @@
         </div>
         <div id="influences" style="float:left; padding-left: 30px">
             {% if has_influence %}
-                <ul> Influence Scores:
+                <ul> ArticleInfluence Scores:
                 {% for influence in influences %}
                     {% if influence.article_influence %}
                     <li>{{ influence.date_stamp.year }}: {{ influence.article_influence|to_three_sigfigs }}</li>

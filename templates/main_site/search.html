@@ -32,11 +32,11 @@
                         <div class="most-rec">
                             <p>
                                 <b>Most Recent Price:</b> ${{ result.mrp.price }} --
-                                <b>Most Recent AI: </b>
+                                <b>Most Recent ArticleInfluence: </b>
                                 {% if result.mri.article_influence %}
                                     {{ result.mri.article_influence|to_three_sigfigs }}
                                 {% else %}
-                                    (No ArticleInfluence on file)
+                                    (None on file)
                                 {% endif %}
                                 <br/>
                                 <b>Cost Effectiveness: </b>
