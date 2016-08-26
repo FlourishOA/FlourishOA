@@ -84,13 +84,17 @@ WSGI_APPLICATION = 'pricesleuth_rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+with open(BASE_DIR + "/pricesleuth_rest/pw.txt") as f:
+    db_name = f.readline().strip()
+    un = f.readline().strip()
+    pw = f.readline().strip()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'price_sleuth',
-        'USER': 'pspieker',
-        'PASSWORD': 'test623test326',
+        'NAME': db_name,
+        'USER': un,
+        'PASSWORD': pw,
         'HOST': 'localhost',
     }
 }
