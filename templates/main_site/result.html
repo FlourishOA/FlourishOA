@@ -1,6 +1,7 @@
 {% extends 'main_site/base.html' %}
 
 {% load staticfiles %}
+{% load data_extras %}
 {% block header %}
 <header id="header" class="alt">
     <h2><a href="/">PriceSleuth</a></h2>
@@ -32,7 +33,7 @@
                 <ul> Influence Scores:
                 {% for influence in influences %}
                     {% if influence.article_influence %}
-                    <li>{{ influence.date_stamp.year }}: {{ influence.article_influence }}</li>
+                    <li>{{ influence.date_stamp.year }}: {{ influence.article_influence|to_three_sigfigs }}</li>
                     {% endif %}
                 {% endfor %}
             {% else %}

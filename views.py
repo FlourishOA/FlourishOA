@@ -144,5 +144,5 @@ class ResultView(TemplateView):
         context['prices'] = Price.objects.filter(journal__issn=kwargs['issn'])
         infl_set = Influence.objects.filter(journal__issn=kwargs['issn'])
         context['has_influence'] = infl_set.exists()
-        context['influences'] = infl_set
+        context['influences'] = sorted(infl_set, key=lambda infl: infl.date_stamp)
         return render(request, 'main_site/result.html', context)

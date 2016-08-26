@@ -1,6 +1,7 @@
 {% extends 'main_site/base.html' %}
 
 {% load staticfiles %}
+{% load data_extras %}
 
 {% block header %}
 <header id="header" class="alt">
@@ -30,17 +31,17 @@
                         </a>
                         <div class="most-rec">
                             <p>
-                                <b>Most Recent Price:</b> {{ result.mrp.price }} --
+                                <b>Most Recent Price:</b> ${{ result.mrp.price }} --
                                 <b>Most Recent AI: </b>
                                 {% if result.mri.article_influence %}
-                                    {{ result.mri.article_influence }}
+                                    {{ result.mri.article_influence|to_three_sigfigs }}
                                 {% else %}
                                     (No ArticleInfluence on file)
                                 {% endif %}
                                 <br/>
                                 <b>Cost Effectiveness: </b>
                                 {% if result.ce %}
-                                    {{ result.ce }}
+                                    {{ result.ce|to_three_sigfigs }}
                                 {% else %}
                                     (Unable to calculate)
                                 {% endif %}

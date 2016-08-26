@@ -72,6 +72,15 @@
         var popup_margin = 8;
         var ems_to_px = 16;
 
+
+        var format_price = function(p) {
+            return "$" + Number(p).toLocaleString('en');
+        };
+
+        var format_ai = function(ai) {
+            return Number(ai).toPrecision(3);
+        };
+
         // Add the scatterplot
         var dots = svg.selectAll("dot")
                 .data(events).enter().append("g")
@@ -84,8 +93,8 @@
                     var lines = [
                         d.journal_name + ": ",
                         "ISSN: " + d.issn,
-                        "Price: " + d.price,
-                        "AI: " + d.article_influence,
+                        "Price: " + format_price(d.price),
+                        "AI: " + format_ai(d.article_influence),
                         "Date: " + d.date_stamp
                     ];
 
