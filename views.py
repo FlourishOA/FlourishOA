@@ -56,7 +56,7 @@ class SearchView(TemplateView):
         # ^^ okay so there are our results now its just a matter of ordering them correctly
 
         # figuring out which direction to order the results
-        rev = True if cleaned_data['order'] == "dsc" else False # default to ascending
+        rev = cleaned_data['order'] == "dsc"  # default to ascending
 
         def sort_on(result):
             # figuring out which field to sort on
