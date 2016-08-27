@@ -2,8 +2,14 @@
 {% load staticfiles %}
 {% block header %}
 <!-- Header -->
-<header id="header">
-    <h1>About PriceSleuth</h1>
+
+
+<header id="header" class="alt">
+    <div style="overflow: hidden;display: inline-block">
+        <img style="float: left;padding-right: 15px" src="{% static "images/dl-logo.png" %}"
+         width="85" height="70">
+        <h1 style="float: left"><a href="/">About PriceSleuth</a></h1>
+    </div>
 </header>
 {% endblock %}
 {% block content %}

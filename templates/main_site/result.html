@@ -4,8 +4,11 @@
 {% load data_extras %}
 {% block header %}
 <header id="header" class="alt">
-    <h2><a href="/">PriceSleuth</a></h2>
-    <p><a href="/search" class="button">Return to search</a></p>
+    <div style="overflow: hidden;display: inline-block">
+        <img style="float: left" src="{% static "images/dl-logo.png" %}"
+         width="40" height="40">
+        <h2 style="float: left"><a href="/">PriceSleuth</a></h2>
+    </div>
 </header>
 {% endblock %}
 {% block content %}
@@ -16,7 +19,7 @@
         <div id="info" style="float:left;">
 
             <p>ISSN: {{ journal.issn }} <br/>
-            Type: {% if not journal.is_hybrid %} Hybrid {% endif %} Fully OpenAccess <br/>
+            Type: <a id="about-hybrid">{% if not journal.is_hybrid %} Hybrid {% endif %} Fully OpenAccess</a> <br/>
             Publisher: {{ journal.pub_name }}<br/>
                 Category: {{ journal.category }}</p>
         </div>
@@ -52,4 +55,19 @@
 		    width: 50em;
 	    }
     </style>
+    <script src="{% static "assets/js/d3.min.js" %}"></script>
+    <script>
+        $(document).ready(function() {
+            var anchor = d3.select("#about-hybrid")
+                    .on("mouseover", function() {
+                        anchor.append("div")
+                                .text("Text about hybrid journals to go here.")
+                                .attr("id", "popup");
+
+                    })
+                    .on("mouseout", function() {
+                        d3.select("#popup").remove();
+                    });
+        });
+    </script>
 {% endblock %}

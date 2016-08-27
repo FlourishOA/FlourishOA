@@ -5,7 +5,11 @@
 
 {% block header %}
 <header id="header" class="alt">
-    <h2><a href="/">PriceSleuth</a></h2>
+    <div style="overflow: hidden;display: inline-block">
+        <img style="float: left" src="{% static "images/dl-logo.png" %}"
+         width="40" height="40">
+        <h2 style="float: left"><a href="/">PriceSleuth</a></h2>
+    </div>
 </header>
 {% endblock %}
 {% block content %}
@@ -62,4 +66,9 @@
 		    width: 45em;
 	    }
     </style>
+    <script>
+        $(document).ready(function() {
+
+        });
+    </script>
 {% endblock %}
