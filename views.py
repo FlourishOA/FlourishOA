@@ -141,6 +141,10 @@ class SearchView(TemplateView):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 results = paginator.page(paginator.num_pages)
+            print request.GET['page']
+            next_page = request
+            next_page.GET['page'] = int(next_page.GET['page']) + 1
+            print next_page.GET
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
 
