@@ -6,3 +6,10 @@ register = template.Library()
 @register.filter
 def to_three_sigfigs(value):
     return str.format('{0:.3f}', value)
+
+
+@register.simple_tag
+def url_replace(request, field, value):
+    params = request.GET.copy()
+    params[field] = value
+    return params.urlencode()

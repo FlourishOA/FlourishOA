@@ -58,12 +58,17 @@
             {% endfor %}
             <div class="pagination">
                 <span class="step-links">
-
+                    {% if results.has_previous %}
+                        <a href="?{% url_replace request 'page' results.previous_page_number %}">Previous</a> --
+                    {% endif %}
+            
                     <span class="current">
-                        Page {{ results.number }} of {{ results.paginator.num_pages }}:
+                        Page {{ results.number }} of {{ results.paginator.num_pages }}
                     </span>
-
-
+            
+                    {% if results.has_next %}
+                        -- <a href="?{% url_replace request 'page' results.next_page_number %}">Next</a>
+                    {% endif %}
                 </span>
             </div>
         </section>
@@ -76,21 +81,4 @@
 		    width: 45em;
 	    }
     </style>
-    <script>
-        $(document).ready(function() {
-            {% if results.has_next %}
-                 console.log(document.URL + "&page=" + {{ results.next_page_number }});
-                 $(".current").after(function () {
-                     return "<b><a id=next href=" + document.URL + "&page=" + {{ results.next_page_number }}+ ">"
-                             + "Next</a></b>"
-                 });
-             {% endif %}
-             {% if results.has_previous %}
-                 $(".current").after(function () {
-                     return "<b><a id=prev href=" + document.URL + "&page=" + {{ results.previous_page_number }}+ ">"
-                             + "Previous </a></b>"
-                 });
-             {% endif %}
-        });
-    </script>
 {% endblock %}
