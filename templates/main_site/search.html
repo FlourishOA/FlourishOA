@@ -61,10 +61,12 @@
                     {% if results.has_previous %}
                         <a href="?{% url_replace request 'page' results.previous_page_number %}">Previous</a> --
                     {% endif %}
-            
-                    <span class="current">
-                        Page {{ results.number }} of {{ results.paginator.num_pages }}
-                    </span>
+
+                    {% if results.number %}
+                        <span class="current">
+                            <b>Page {{ results.number }} of {{ results.paginator.num_pages }}</b>
+                        </span>
+                    {% endif %}
             
                     {% if results.has_next %}
                         -- <a href="?{% url_replace request 'page' results.next_page_number %}">Next</a>
