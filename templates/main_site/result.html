@@ -19,13 +19,14 @@
         <div id="info" style="float:left;">
 
             <p>ISSN: {{ journal.issn }} <br/>
-            Type: <a id="about-hybrid">{% if not journal.is_hybrid %} Hybrid
-                 {% else %}Fully OpenAccess{% endif %}</a> <br/>
+            Type: <a href="/about/#type">
+                    {% if not journal.is_hybrid %} Hybrid
+                    {% else %}Fully OpenAccess{% endif %}
+                </a> <br/>
             Publisher: {{ journal.pub_name }}<br/>
                 Category: {{ journal.category }}</p>
         </div>
         <div id="prices" style="float:left; padding-left: 30px">
-
             <ul> Prices:
             {% for price in prices %}
                 <li>{{ price.date_stamp }}: ${{ price.price }}</li>
@@ -52,9 +53,9 @@
 {% block extra_scripts %}
     <style>
     /* Making the default width smaller specifically for the result page */
-        #wrapper {
-		    width: 50em;
-	    }
+    #wrapper {
+        width: 50em;
+    }
     </style>
-    <script src="{% static "assets/js/d3.min.js" %}"></script>
+
 {% endblock %}

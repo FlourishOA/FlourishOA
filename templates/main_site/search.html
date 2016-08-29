@@ -56,6 +56,16 @@
                     </li>
                 </div>
             {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+
+                    <span class="current">
+                        Page {{ results.number }} of {{ results.paginator.num_pages }}:
+                    </span>
+
+
+                </span>
+            </div>
         </section>
 </div>
 {% endblock %}
@@ -68,7 +78,19 @@
     </style>
     <script>
         $(document).ready(function() {
-
+            {% if results.has_next %}
+                 console.log(document.URL + "&page=" + {{ results.next_page_number }});
+                 $(".current").after(function () {
+                     return "<b><a id=next href=" + document.URL + "&page=" + {{ results.next_page_number }}+ ">"
+                             + "Next</a></b>"
+                 });
+             {% endif %}
+             {% if results.has_previous %}
+                 $(".current").after(function () {
+                     return "<b><a id=prev href=" + document.URL + "&page=" + {{ results.previous_page_number }}+ ">"
+                             + "Previous </a></b>"
+                 });
+             {% endif %}
         });
     </script>
 {% endblock %}

@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from api.models import Journal, Price, Influence
 from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.serializers import JournalSerializer, PriceSerializer, InfluenceSerializer
 from main_site.forms import SearchForm
 import simplejson as json
@@ -130,7 +131,16 @@ class SearchView(TemplateView):
         form = SearchForm(request.GET)
         if form.is_valid():
             results = self._reorder(form.cleaned_data, self._get_results(form.cleaned_data))
-
+            paginator = Paginator(results, 15)
+            page = request.GET.get('page')
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                results = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                results = paginator.page(paginator.num_pages)
             return render(request, 'main_site/search.html', {'form': form, 'results': results})
         return render(request, 'main_site/search.html', {'form': form})
 
