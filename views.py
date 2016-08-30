@@ -157,5 +157,15 @@ class ResultView(TemplateView):
         context['prices'] = Price.objects.filter(journal__issn=kwargs['issn'])
         infl_set = Influence.objects.filter(journal__issn=kwargs['issn'])
         context['has_influence'] = infl_set.exists()
-        context['influences'] = sorted(infl_set, key=lambda infl: infl.date_stamp)
+        context['num_valid_influences'] = len(infl_set)
+        sorted_infl = sorted(infl_set, key=lambda infl: infl.date_stamp)
+        context['influences'] = sorted_infl
+
+        infl_events = []
+        for infl in sorted_infl:
+            event = {"infl": infl.article_influence, "date": infl.date_stamp}
+            infl_events.append(event)
+        context['events'] = json.dumps(infl_events)
+
+
         return render(request, 'main_site/result.html', context)

@@ -57,5 +57,16 @@
         width: 50em;
     }
     </style>
+    {% if num_valid_influences > 1 %}
+        <script src="{% static "assets/js/d3.min.js" %}"></script>
+        <script id="events" type="application/json">{{ events|safe }}</script>
+        <script>
+            var events = JSON.parse(document.getElementById('events').innerHTML);
+            var svg = d3.select("#influences").append("svg");
+            events.forEach(function(d) {
+                d.infl = parseFloat(d.infl);
+            })
+        </script>
+    {% endif %}
 
 {% endblock %}
