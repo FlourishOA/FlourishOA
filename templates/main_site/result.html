@@ -36,21 +36,18 @@
         <div id="influences" style="float:left; padding-left: 30px">
             {% if has_influence %}
                 <ul> ArticleInfluence Scores:
-                {% for influence in influences %}
-                    {% if influence.article_influence %}
-                    <li>{{ influence.date_stamp.year }}: {{ influence.article_influence|to_three_sigfigs }}</li>
-                    {% endif %}
-                {% endfor %}
+                {% if num_valid_influences <= 1 %}
+                    {% for influence in influences %}
+                        {% if influence.article_influence %}
+                        <li>{{ influence.date_stamp.year }}: {{ influence.article_influence|to_three_sigfigs }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             {% else %}
                 <p>This journal has no influence <br>scores in our database.</p>
             {% endif %}
             </ul>
         </div>
-        {% if num_valid_influences > 1 %}
-            <div id="infl-viz">
-
-            </div>
-        {% endif %}
     </section>
 
 </div>
@@ -59,7 +56,7 @@
     <style>
     /* Making the default width smaller specifically for the result page */
     #wrapper {
-        width: 50em;
+        width: 55em;
     }
     </style>
     {% if num_valid_influences > 1 %}
@@ -69,7 +66,7 @@
         var events = JSON.parse(document.getElementById('events').innerHTML);
         var svg_width = 300;
         var svg_height = 300;
-        var svg = d3.select("#infl-viz").append("svg")
+        var svg = d3.select("#influences").append("svg")
                 .attr("width", svg_width)
                 .attr("height", svg_height)
                 .attr("overflow", "visible");
