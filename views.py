@@ -163,7 +163,7 @@ class ResultView(TemplateView):
 
         infl_events = []
         for infl in sorted_infl:
-            event = {"infl": infl.article_influence, "date": infl.date_stamp}
+            event = {"infl": infl.article_influence, "date": infl.date_stamp.strftime("%Y-%m-%d")}
             infl_events.append(event)
         context['events'] = json.dumps(infl_events)
 
