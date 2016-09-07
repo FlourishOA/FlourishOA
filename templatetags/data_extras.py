@@ -4,6 +4,11 @@ register = template.Library()
 
 
 @register.filter
+def add_comma(value):
+    return str.format("{0:,.2f}", value)
+
+
+@register.filter
 def to_three_sigfigs(value):
     return str.format('{0:.3f}', value)
 

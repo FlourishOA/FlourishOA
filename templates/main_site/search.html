@@ -6,8 +6,6 @@
 {% block header %}
 <header id="header" class="alt">
     <div style="overflow: hidden;display: inline-block">
-        <img style="float: left;padding-right: 15px;" src="{% static "images/dl-logo.png" %}"
-         width="45" height="30">
         <h2 style="float: left"><a href="/">PriceSleuth</a></h2>
     </div>
 </header>
@@ -35,7 +33,7 @@
                         </a>
                         <div class="most-rec">
                             <p>
-                                <b>Most Recent Price:</b> ${{ result.mrp.price }} --
+                                <b>Most Recent Price:</b> ${{ result.mrp.price|add_comma }} --
                                 <b>Most Recent ArticleInfluence: </b>
                                 {% if result.mri.article_influence %}
                                     {{ result.mri.article_influence|to_three_sigfigs }}

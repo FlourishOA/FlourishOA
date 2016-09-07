@@ -118,6 +118,8 @@ class SearchView(TemplateView):
             search_by = 'category__icontains'
         elif search_by_raw == 'issn':
             search_by = 'issn__icontains'
+        elif search_by_raw == 'pub':
+            search_by = 'pub_name__icontains'
         else:  # default to the journal name
             search_by = 'journal_name__icontains'
 
@@ -141,7 +143,6 @@ class SearchView(TemplateView):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 results = paginator.page(paginator.num_pages)
-            print results.number
             return render(request, 'main_site/search.html', {'form': form,
                                                              'results': results,
                                                              'request': request})
