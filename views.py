@@ -1,9 +1,8 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from api.models import Journal, Price, Influence
-from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from api.serializers import JournalSerializer, PriceSerializer, InfluenceSerializer
+from api.serializers import JournalSerializer, PriceSerializer
 from main_site.forms import SearchForm
 import simplejson as json
 
@@ -120,6 +119,8 @@ class SearchView(TemplateView):
             search_by = 'issn__icontains'
         elif search_by_raw == 'pub':
             search_by = 'pub_name__icontains'
+        elif search_by_raw == 'cat':
+            search_by = 'category__icontains'
         else:  # default to the journal name
             search_by = 'journal_name__icontains'
 
