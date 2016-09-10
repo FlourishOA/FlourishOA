@@ -38,7 +38,7 @@
                                 <br/>
                                 <b>Most Recent Price:</b>
                                 {% if result.mrp.price %}
-                                    ${{ result.mrp.price|add_comma }} --
+                                    ${{ result.mrp.price|format_price}}--
                                 {% else %}
                                     (None on file)
                                 {% endif %}
@@ -89,4 +89,11 @@
 		    width: 45em;
 	    }
     </style>
+    <script>
+    $("#id_search_by").change(function() {
+        if ($(this).val() == "cat") {
+
+        }
+    })
+    </script>
 {% endblock %}

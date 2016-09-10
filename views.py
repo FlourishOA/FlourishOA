@@ -119,8 +119,6 @@ class SearchView(TemplateView):
             search_by = 'issn__icontains'
         elif search_by_raw == 'pub':
             search_by = 'pub_name__icontains'
-        elif search_by_raw == 'cat':
-            search_by = 'category__icontains'
         else:  # default to the journal name
             search_by = 'journal_name__icontains'
 

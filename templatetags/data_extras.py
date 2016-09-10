@@ -4,8 +4,8 @@ register = template.Library()
 
 
 @register.filter
-def add_comma(value):
-    return str.format("{0:,.2f}", value)
+def format_price(value):
+    return str.format("{0:,}", int(value))
 
 
 @register.filter
