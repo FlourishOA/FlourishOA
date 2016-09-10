@@ -1,10 +1,11 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.shortcuts import render
 from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.serializers import JournalSerializer, PriceSerializer
-from main_site.forms import SearchForm
+from main_site.forms import JournalNameSearchForm
 import simplejson as json
+from dal import autocomplete
 
 
 class IndexView(TemplateView):
@@ -129,7 +130,8 @@ class SearchView(TemplateView):
                 for result in Journal.objects.filter(**{search_by: cleaned_data['search_query']})]
 
     def get(self, request, **kwargs):
-        form = SearchForm(request.GET)
+
+        form = JournalNameSearchForm(request.GET)
         if form.is_valid():
             results = self._reorder(form.cleaned_data, self._get_results(form.cleaned_data))
             paginator = Paginator(results, 15)
@@ -147,6 +149,13 @@ class SearchView(TemplateView):
                                                              'request': request})
         return render(request, 'main_site/search.html', {'form': form})
 
+
+class JournalNameAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if self.q:
+            return Journal.objects.filter(journal_name__istartswith=self.q)
+        else:
+            return Journal.objects.all()
 
 class ResultView(TemplateView):
     template_name = 'main_site/result.html'

@@ -88,12 +88,9 @@
         #wrapper {
 		    width: 45em;
 	    }
-    </style>
-    <script>
-    $("#id_search_by").change(function() {
-        if ($(this).val() == "cat") {
-
+        .select2-results {
+            background-color: gray;
         }
-    })
-    </script>
+    </style>
+    {{ form.media }}
 {% endblock %}
