@@ -36,7 +36,12 @@
                                 <b>Publisher:</b> {{ result.journal.pub_name }} --
                                 <b>Category:</b> {{ result.journal.category|format_category }}
                                 <br/>
-                                <b>Most Recent Price:</b> ${{ result.mrp.price|add_comma }} --
+                                <b>Most Recent Price:</b>
+                                {% if result.mrp.price %}
+                                    ${{ result.mrp.price|add_comma }} --
+                                {% else %}
+                                    (None on file)
+                                {% endif %}
                                 <b>Most Recent ArticleInfluence: </b>
                                 {% if result.mri.article_influence %}
                                     {{ result.mri.article_influence|to_three_sigfigs }}

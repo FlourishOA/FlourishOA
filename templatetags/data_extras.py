@@ -5,8 +5,6 @@ register = template.Library()
 
 @register.filter
 def add_comma(value):
-    if type(value) == str:
-        return "BOOO"
     return str.format("{0:,.2f}", value)
 
 
