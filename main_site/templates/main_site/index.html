@@ -1,0 +1,140 @@
+{% extends 'main_site/base.html' %}
+
+{% load staticfiles %}
+
+{% block header %}
+<!-- Header -->
+    <header id="header" class="alt">
+        <span class="logo"><img src="{% static "images/logo.png" %}" alt="" /></span>
+        <h1>PriceSleuth</h1>
+        <p>Empowering researchers to maximize their published impact at any price level. <br />
+        Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
+    </header>
+
+<!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li><a href="#intro" class="active">Introduction</a></li>
+            <li><a href="#first">Our Vision</a></li>
+            <li><a href="#second">Our Data</a></li>
+            <li><a href="/viz.html">Compare Journals</a></li>
+            <li><a href="/search" style="background-color:#ff751a;color:white;">Search Our Catalog</a></li>
+        </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<!-- Main -->
+<div id="main">
+
+    <!-- Introduction -->
+        <section id="intro" class="main">
+            <div class="spotlight">
+                <div class="content">
+                    <header class="major">
+                        <h2>Welcome to the Future of Publishing</h2>
+                    </header>
+                    <p>The OpenAccess movement has changed a three hundred year old publishing model, allowing
+                        authors more flexibility in how and where they publish their findings. Still, the fledgling
+                        nature of the movement presents issues.</p>
+                    <p>Some so-called 'predatory' publishers and journals take advantage of the lack of clear
+                        information about article publishing costs. With simple, no-nonsense data analysis
+                        and visualization, PriceSleuth fixes this problem.</p>
+                    <ul class="actions">
+                        <li><a href="/about/#background" class="button">Learn more</a></li>
+                    </ul>
+                </div>
+                <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
+            </div>
+        </section>
+
+    <!-- First Section -->
+        <section id="first" class="main special">
+            <header class="major">
+                <h2>Our Vision: Current and Future</h2>
+            </header>
+            <ul class="features">
+                <li>
+                    <span class="icon major style1 fa-code"></span>
+                    <h3>Current</h3>
+                    <p>Many of the prices in our database are pulled directly from the publisher's websites,
+                        updated within the last few months. </p>
+                </li>
+                <li>
+                    <span class="icon major style3 fa-copy"></span>
+                    <h3>Archived</h3>
+                    <p>Our data has journal prices for some journals as far back as 2012, and more historical
+                        prices are being added for more effective analysis.</p>
+                </li>
+                <li>
+                    <span class="icon major style5 fa-diamond"></span>
+                    <h3>Easily Updated</h3>
+                    <p>We provide a simple API for authorized publishers and other known authorities to add
+                        data to our database.</p>
+                </li>
+            </ul>
+            <footer class="major">
+                <ul class="actions">
+                    <li><a href="/about/#vision" class="button">Learn More</a></li>
+                </ul>
+            </footer>
+        </section>
+
+    <!-- Second Section -->
+        <section id="second" class="main special">
+            <header class="major">
+                <h2>Our Data: Philosphy and Approach</h2>
+                <p>Data is nothing without context. We seek to not only increase the volume of
+                data we maintain, but also its sophistication. </p>
+            </header>
+            <ul class="statistics">
+                <li class="style1">
+                    <span class="icon fa-code-fork"></span>
+                    <strong>{{ num_journals }}</strong> Journals
+                </li>
+                <li class="style2">
+                    <span class="icon fa-folder-open-o"></span>
+                    <strong>{{ num_prices }}</strong> Prices
+                </li>
+                <li class="style3">
+                    <span class="icon fa-signal"></span>
+                    <strong>{{ num_influences }}</strong> Influence Scores
+                </li>
+                <li class="style4">
+                    <span class="icon fa-diamond"></span>
+                    <strong>{{ most_recent_update }}</strong> Most Recent Update
+                </li>
+                <li class="style5">
+                    <span class="icon fa-laptop"></span>
+                    <strong>3</strong> Ways to Access Data
+                </li>
+            </ul>
+            <p class="content">Our data comes from a variety of sources, including researchers, web scraping, and
+            the publishers themselves. All data is cleaned and reviewed to ensure its validity and integrity. Our catalog
+            expands regularly, as does the number of features our data contains. We strive to maintain the most complete
+            and sophisticated store of OpenAccess data in the world, and it is this mission that drives our continued
+            work and expansion.</p>
+            <footer class="major">
+                <ul class="actions">
+                    <li><a href="/about/#data" class="button">Learn More</a></li>
+                </ul>
+            </footer>
+        </section>
+
+    <!-- Get Started -->
+        <section id="cta" class="main special">
+            <header class="major">
+                <h2>Get Started</h2>
+                <p>Check out what we've already built with our data or dig in to a project of your own.</p>
+            </header>
+            <footer class="major">
+                <ul class="actions">
+                    <li><a href="viz.html" class="button"
+                           style="background-color:#ff751a;color:white !important;">Compare Journals</a></li>
+                    <li><a href="/api/docs" class="button">Read API Documentation</a></li>
+                </ul>
+            </footer>
+        </section>
+
+</div>
+{% endblock %}

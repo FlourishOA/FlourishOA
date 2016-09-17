@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+{% load staticfiles %}
+<html>
+	<head>
+		<title>{% block title %}PriceSleuth | OpenAccess Journal Finder{% endblock %}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="{% static "main_site/assets/css/main.css" %}" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="{% static "main_site/assets/css/ie9.css" %}" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static "main_site/assets/css/ie8.css" %}" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+                <!-- Header -->
+                {% block header %}
+                <header id="header" class="alt">
+                    <span class="logo"><img src="{% static "images/logo.png" %}" alt="" /></span>
+                    <h1><a href="/">PriceSleuth</a></h1>
+                    <p>Empowering researchers to maximize their published impact at any price level. <br />
+                    Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
+                </header>
+                {% endblock %}
+                {% block content %}{% endblock %}
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<h2>Funding support</h2>
+                            <a href="http://www.sloan.org/"><img width="40%" height="40%"
+                                 src="{% static "images/SloanLogo-primary-black.png" %}" alt="Sloan Logo"></a>
+                            <p><a href="/about/#funding" class="button">Learn More</a></p>
+						</section>
+						<section>
+                            <a href="http://datalab.ischool.uw.edu">
+                                <h2>University of Washington DataLab</h2>
+                            </a>
+							<dl class="alt">
+								<dt>Email</dt>
+								<dd><a href="#">eigenfac@uw.edu</a></dd>
+							</dl>
+                            <p><a href="/about/#team" class="button">Learn More</a></p>
+							<ul class="icons">
+								<li><a href="https://twitter.com/eigenfactor" class="icon fa-twitter alt"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon fa-github alt"><span class="label">GitHub</span></a></li>
+							</ul>
+						</section>
+						<p class="copyright">&copy; UW DataLab. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static "assets/js/jquery.min.js" %}"></script>
+			<script src="{% static "assets/js/jquery.scrollex.min.js" %}"></script>
+			<script src="{% static "assets/js/jquery.scrolly.min.js" %}"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			{% block extra_scripts %}{% endblock %}
+
+	</body>
+</html>

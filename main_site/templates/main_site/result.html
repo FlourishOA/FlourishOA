@@ -1,0 +1,201 @@
+{% extends 'main_site/base.html' %}
+
+{% load staticfiles %}
+{% load data_extras %}
+{% block header %}
+<header id="header" class="alt">
+    <div style="overflow: hidden;display: inline-block">
+        <h2 style="float: left"><a href="/">PriceSleuth</a></h2>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+<div id="main">
+<!-- Content -->
+    <section id="content" class="main">
+        <h2>{{ journal.journal_name }}</h2>
+        <div id="info" style="float:left;">
+
+            <p>ISSN: {{ journal.issn }} <br/>
+            Type: <a href="/about/#type">
+                    {% if not journal.is_hybrid %} Hybrid
+                    {% else %}Fully OpenAccess{% endif %}
+                </a> <br/>
+            Publisher: {{ journal.pub_name }}<br/>
+                Category: {{ journal.category }}</p>
+        </div>
+        <div id="prices" style="float:left; padding-left: 30px">
+            <ul> Prices:
+            {% for price in prices %}
+                <li>{{ price.date_stamp }}: ${{ price.price|add_comma }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div id="influences" style="float:left; padding-left: 30px">
+            {% if has_influence %}
+                <ul> ArticleInfluence Scores:
+                {% if num_valid_influences <= 1 %}
+                    {% for influence in influences %}
+                        {% if influence.article_influence %}
+                        <li>{{ influence.date_stamp.year }}: {{ influence.article_influence|to_three_sigfigs }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <p>This journal has no influence <br>scores in our database.</p>
+            {% endif %}
+            </ul>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+{% block extra_scripts %}
+    <style>
+    /* Making the default width smaller specifically for the result page */
+    #wrapper {
+        width: 55em;
+    }
+    </style>
+    {% if num_valid_influences > 1 %}
+        <script src="{% static "assets/js/d3.min.js" %}"></script>
+        <script id="events" type="application/json">{{ events|safe }}</script>
+        <script>
+        var events = JSON.parse(document.getElementById('events').innerHTML);
+        var svg_width = 300;
+        var svg_height = 300;
+        var svg = d3.select("#influences").append("svg")
+                .attr("width", svg_width)
+                .attr("height", svg_height)
+                .attr("overflow", "visible");
+
+        events.forEach(function(d) {
+            d.infl = parseFloat(d.infl);
+            d.date = new Date(d.date);
+        });
+
+        var margins = {top: 20, right: 20, bottom: 20, left: 20};
+
+        var scale_width = svg_width - margins.left - margins.right;
+        var scale_height = svg_height - margins.top - margins.bottom;
+
+        var xScale = d3.scaleTime()
+                .range([0, scale_width])
+                .domain([
+                    d3.min(events, function(d){return d.date}),
+                    d3.max(events, function(d){return d.date})
+                ]);
+        var yScale = d3.scaleLinear()
+                .range([scale_height, 0])
+                .domain([
+                    d3.min(events, function(d){return d.infl}),
+                    d3.max(events, function(d){return d.infl})
+                ]);
+
+
+        events.forEach(function(d) {
+           console.log(xScale(d.date));
+        });
+        var dots = svg.selectAll("dot")
+                .data(events).enter().append("g")
+                .on("mouseover", function (d) {
+                    // nodes fill red when moused over
+                    d3.select(this).select("circle")
+                            .attr("fill", "red");
+
+                    var lines = [
+                        "AI: " + d.infl,
+                        "Year: " + d.date.getFullYear()
+                    ];
+
+                    var scaledX = xScale(d.date);
+                    var scaledY = yScale(d.infl);
+
+                    var popup_margin = 2;
+                    var ems_to_px = 16;
+                    // creating the popup grouping
+                    var popup = svg.append("g")
+                            .attr("id", "popup");
+
+
+                    // popup container (svg rect)
+                    var popupRect = popup.append("rect")
+                            .attr("fill", "white")
+                            .attr("stroke", "black");
+
+                    // base popup text setup (think 'container')
+                    var text = popup.append("text")
+                            .attr("font-size", "1em")
+                            .attr("stroke", "black");
+
+                    // attaching each line of text to the text container
+                    lines.forEach(function (line, index) {
+                        text.append("tspan")
+                                .attr("class", "lines")
+                                .attr("x", popup_margin)
+                                .attr("dy", ems_to_px + popup_margin)
+                                .text(line);
+                    });
+
+                    // getting boundaries of the text
+                    var bbox = text.node().getBBox();
+
+                    // setting the background width and height, using text boundaries
+                    popupRect.attr("width", bbox.width + 2 * popup_margin)
+                            .attr("height", bbox.height + 2 * popup_margin);
+
+                    // adding the popup with the offset to appear directly above the node
+                    popup.attr("transform", function () {
+                        return "translate(" + (scaledX - (popupRect.attr("width")) / 2) + ","
+                                + (scaledY - popupRect.attr("height") - ems_to_px) + ")";
+                    });
+                })
+
+                .on("mouseout", function (d) {
+                    // removing elements from mouseover
+                    d3.select("#popup").remove();
+                    d3.select("#better").remove();
+                    d3.select("#worse").remove();
+                    // reverting color
+                    d3.select(this).select("circle")
+                            .attr("fill", "#6699ff");
+                });
+
+        dots.append("circle")
+                .attr("stroke", "black")
+                .attr("fill", "#6699ff")
+                .attr("r", 5)
+                .attr("cx", function (d) {
+                    return xScale(d.date);
+                })
+                .attr("cy", function (d) {
+                    return yScale(d.infl);
+                });
+
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+        // Add the X Axis
+        var gX = svg.append("g")
+                .attr("transform", "translate(0," + scale_height + ")")
+                .call(xAxis);
+
+        // Add the Y Axis
+        var gY = svg.append("g")
+                .call(yAxis);
+
+        // appending X axis label
+        svg.append("text")
+                .attr("transform", "translate(" + scale_width/2 + "," + (scale_height + 40) + ")")
+                .style("text-anchor", "middle")
+                .text("Date");
+
+        // appending Y axis label
+        svg.append("text")
+                .attr("transform", "translate(-35," + scale_height/2 + ")rotate(-90)")
+                .style("text-anchor", "middle")
+                .text("ArticleInfluence");
+        </script>
+    {% endif %}
+
+{% endblock %}

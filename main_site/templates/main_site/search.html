@@ -1,0 +1,96 @@
+{% extends 'main_site/base.html' %}
+
+{% load staticfiles %}
+{% load data_extras %}
+
+{% block header %}
+<header id="header" class="alt">
+    <div style="overflow: hidden;display: inline-block">
+        <h2 style="float: left"><a href="/">PriceSleuth</a></h2>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+<!-- Main -->
+<div id="main">
+    <!-- Content -->
+        <section id="content" class="main">
+            <form action="/search/" method="get">
+                {% csrf_token %}
+                <div id="search-params">
+                    <p style="float:left;padding-right: 30px">Search By:{{ form.search_by }}</p>
+                    <p style="float:left;padding-right: 30px">Sort By:{{ form.sort_by }}</p>
+                    <p style="float:left;padding-right: 30px">Order:{{ form.order }}</p>
+                </div>
+                {{ form.search_query }}
+                <input type="submit" value="Search" />
+            </form>
+            {% for result in results %}
+                <div class="result">
+                    <li style="list-style: none;">
+                        <a href="{% url 'result' result.journal.issn %}">
+                            <strong>{{ result.journal.journal_name }}</strong>
+                        </a>
+                        <div class="most-rec">
+                            <p>
+                                <b>Publisher:</b> {{ result.journal.pub_name }} --
+                                <b>Category:</b> {{ result.journal.category|format_category }}
+                                <br/>
+                                <b>Most Recent Price:</b>
+                                {% if result.mrp.price %}
+                                    ${{ result.mrp.price|add_comma }} --
+                                {% else %}
+                                    (None on file)
+                                {% endif %}
+                                <b>Most Recent ArticleInfluence: </b>
+                                {% if result.mri.article_influence %}
+                                    {{ result.mri.article_influence|to_three_sigfigs }}
+                                {% else %}
+                                    (None on file)
+                                {% endif %}
+                                <br/>
+                                <b>Cost Effectiveness: </b>
+                                {% if result.ce %}
+                                    {{ result.ce|to_three_sigfigs }}
+                                {% else %}
+                                    (Unable to calculate)
+                                {% endif %}
+                            </p>
+
+                            </p>
+                        </div>
+                    </li>
+                </div>
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if results.has_previous %}
+                        <a href="?{% url_replace request 'page' results.previous_page_number %}">Previous</a> --
+                    {% endif %}
+
+                    {% if results.number %}
+                        <span class="current">
+                            <b>Page {{ results.number }} of {{ results.paginator.num_pages }}</b>
+                        </span>
+                    {% endif %}
+            
+                    {% if results.has_next %}
+                        -- <a href="?{% url_replace request 'page' results.next_page_number %}">Next</a>
+                    {% endif %}
+                </span>
+            </div>
+        </section>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+    <style>
+    /* Making the default width smaller specifically for the result page */
+        #wrapper {
+		    width: 45em;
+	    }
+        .select2-results {
+            background-color: gray;
+        }
+    </style>
+    {{ form.media }}
+{% endblock %}
