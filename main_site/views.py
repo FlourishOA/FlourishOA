@@ -3,7 +3,7 @@ from django.shortcuts import render
 from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.serializers import JournalSerializer, PriceSerializer
-from main_site.forms import JournalNameSearchForm
+from main_site.forms import JournalNameSearchForm, SearchForm
 import simplejson as json
 from dal import autocomplete
 
@@ -133,7 +133,7 @@ class SearchView(TemplateView):
 
     def get(self, request, **kwargs):
 
-        form = JournalNameSearchForm(request.GET)
+        form = SearchForm(request.GET) #JournalNameSearchForm(request.GET)
         if form.is_valid():
             results = self._reorder(form.cleaned_data, self._get_results(form.cleaned_data))
             paginator = Paginator(results, 15)
