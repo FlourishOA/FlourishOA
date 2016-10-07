@@ -15,6 +15,15 @@
 <div id="main">
     <!-- Content -->
     <section id="content" class="main">
+        <div class="dropdown">
+            <h3>Category Select</h3>
+            <select class="drop">
+                {% for cat in categories %}
+                    <option tabindex="-1" href="#">{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </br>
+        </div>
         <h2>Buying Influence: Maximizing your impact at any price</h2>
         <p>The above visualization plots the article publishing price (APC) of a given journal against its
         ArticleInfluence score. When a given journal is selected via mouseover, information about the journal is shown
@@ -26,9 +35,15 @@
 
 {% block extra_scripts %}
     <script src="{% static "assets/js/d3.min.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script id="events" type="application/json">{{ events|safe }}</script>
     <script>
     $(document).ready(function() {
+        $(".drop").change(function() {
+            var cat = $(".drop :selected").text();
+            window.location.href += "?category=" + cat
+            location.reload();
+        });
         var events = JSON.parse(document.getElementById('events').innerHTML);
 
         var dim = d3.select("#wrapper").node().getBoundingClientRect();
