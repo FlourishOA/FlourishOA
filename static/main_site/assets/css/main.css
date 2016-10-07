@@ -1623,7 +1623,7 @@
 	}
 
 	body {
-		background-color: #935d8c;
+		background-color: #ff947d;
 		background-image: url("images/overlay.png"), -moz-linear-gradient(45deg, #ffcc99 15%, #ff944d 85%);
 		background-image: url("images/overlay.png"), -webkit-linear-gradient(45deg, #ffcc99 15%, #ff944d 85%);
 		background-image: url("images/overlay.png"), -ms-linear-gradient(45deg, #ffcc99 15%, #ff944d 85%);
@@ -1644,7 +1644,7 @@
 /* Type */
 
 	body {
-		background-color: #935d8c;
+		background-color: #ff947d;
 		color: rgba(255, 255, 255, 0.65);
 	}
 
@@ -2255,7 +2255,7 @@
 	input[type="radio"]:checked + label:before {
 		background-color: #ffffff;
 		border-color: #ffffff;
-		color: #935d8c;
+		color: #ff947d;
 	}
 
 	input[type="checkbox"]:focus + label:before,

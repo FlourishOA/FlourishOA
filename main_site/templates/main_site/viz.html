@@ -41,8 +41,10 @@
     $(document).ready(function() {
         $(".drop").change(function() {
             var cat = $(".drop :selected").text();
-            location.href += "?category=" + cat
-            location.reload();
+            
+            window.location  = "http://pricesleuth.eigenfactor.org/viz?category=" + cat
+            window.location.reload(True);
+          
         });
         var events = JSON.parse(document.getElementById('events').innerHTML);
 
