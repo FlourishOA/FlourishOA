@@ -128,7 +128,8 @@
                             .attr("width", scaledX)
                             .attr("height", scaledY)
                             .attr("fill", "green")
-                            .attr("opacity", 0.25);
+                            .attr("opacity", 0.25)
+                            .style("z-index", -1);
 
                     svg.append("rect")
                             .attr("id", "worse")
@@ -137,7 +138,8 @@
                             .attr("width", width - scaledX)
                             .attr("height", height - scaledY)
                             .attr("fill", "red")
-                            .attr("opacity", 0.25);
+                            .attr("opacity", 0.25)
+                            .style("z-index", -1);
 
                     // creating the popup grouping
                     var popup = svg.append("g")
