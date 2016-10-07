@@ -105,10 +105,6 @@
                 .data(events).enter().append("g")
                 .on("mouseover", function (d) {
                     // nodes fill red when moused over
-                    d3.select(this).select("circle")
-                            .attr("r", highlighted_radius)
-                            .attr("fill", "red");
-
                     var lines = [
                         d.journal_name + ": ",
                         "ISSN: " + d.issn,
@@ -141,6 +137,9 @@
                             .attr("opacity", 0.25)
                             .style("z-index", -1);
 
+                    d3.select(this).select("circle")
+                            .attr("r", highlighted_radius)
+                            .attr("fill", "red");
                     // creating the popup grouping
                     var popup = svg.append("g")
                             .attr("id", "popup");
