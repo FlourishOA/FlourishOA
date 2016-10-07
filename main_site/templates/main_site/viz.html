@@ -41,7 +41,7 @@
     $(document).ready(function() {
         $(".drop").change(function() {
             var cat = $(".drop :selected").text();
-            window.location.href += "?category=" + cat
+            location.href += "?category=" + cat
             location.reload();
         });
         var events = JSON.parse(document.getElementById('events').innerHTML);
