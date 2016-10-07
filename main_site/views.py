@@ -35,7 +35,7 @@ class VisualizationView(TemplateView):
         events = []
 
         valid_prices = Price.objects.filter(influence__article_influence__isnull=False,
-                                            date_stamp__year__gte=2012)
+                                            date_stamp__year__gte=2012, journal__category__isnull=False)
         for price in valid_prices:
             event = PriceSerializer(price).data
             event.update(JournalSerializer(price.journal).data)
