@@ -7,3 +7,4 @@ cover/*
 pw.txt
 .coverage
 subgit
+*_bk
