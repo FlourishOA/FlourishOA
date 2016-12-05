@@ -30,7 +30,7 @@ SECRET_KEY = gen_secret_key()
 DEBUG = False
 
 ALLOWED_HOSTS = [
-        'flourishoa.org',
+    'flourishoa.org',
 	'52.175.212.92',
 ]
 
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'pricesleuth_rest.urls'
+ROOT_URLCONF = 'FlourishOA.urls'
 
 TEMPLATES = [
     {
@@ -82,11 +82,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pricesleuth_rest.wsgi.application'
+WSGI_APPLICATION = 'FlourishOA.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-with open(BASE_DIR + "/pricesleuth_rest/pw.txt") as f:
+with open(BASE_DIR + "/FlourishOA/pw.txt") as f:
     db_name = f.readline().strip()
     un = f.readline().strip()
     pw = f.readline().strip()
@@ -155,7 +155,7 @@ NOSE_ARGS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    ('main_site', '/home/patrick/pricesleuth_rest/main_site/static'),
+    ('main_site', '/home/patrick/FlourishOA/main_site/static'),
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

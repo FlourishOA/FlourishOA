@@ -2,7 +2,7 @@
 .DS_Store
 *.pyc
 htmlcov/*
-pricesleuth_rest/dev_settings.py
+FlourishOA/dev_settings.py
 cover/*
 pw.txt
 .coverage
