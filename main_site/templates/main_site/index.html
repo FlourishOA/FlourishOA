@@ -1,7 +1,7 @@
 {% extends 'main_site/base.html' %}
 
 {% load staticfiles %}
-
+{% load pages_tags %}
 {% block header %}
 <!-- Header -->
     <header id="header" class="alt">
@@ -31,14 +31,21 @@
             <div class="spotlight">
                 <div class="content">
                     <header class="major">
-                        <h2>Welcome to the Future of Publishing</h2>
+                        <h2>
+                           <!-- Welcome to the Future of Publishing -->
+                            {% placeholder "Intro title" with TextInput %}
+                        </h2>
                     </header>
-                    <p>The OpenAccess movement has changed a three hundred year old publishing model, allowing
+                    <!--The OpenAccess movement has changed a three hundred year old publishing model, allowing
                         authors more flexibility in how and where they publish their findings. Still, the fledgling
-                        nature of the movement presents issues.</p>
-                    <p>Some so-called 'predatory' publishers and journals take advantage of the lack of clear
+                        nature of the movement presents issues.
+                        Some so-called 'predatory' publishers and journals take advantage of the lack of clear
                         information about article publishing costs. With simple, no-nonsense data analysis
-                        and visualization, Flourish fixes this problem.</p>
+                        and visualization, Flourish fixes this problem.
+                        -->
+                    <p>
+                        {% placeholder "Intro Paragraph 1" with Textarea %}</p>
+                    <p>{% placeholder "Intro Paragraph 2" with Textarea %}</p>
                     <ul class="actions">
                         <li><a href="/about/#background" class="button">Learn more</a></li>
                     </ul>
@@ -108,11 +115,11 @@
                     <strong>3</strong> Ways to Access Data
                 </li>
             </ul>
-            <p class="content">Our data comes from a variety of sources, including researchers, web scraping, and
+            <p class="content">{% placeholder "Data Description" with Textarea %}}<!--Our data comes from a variety of sources, including researchers, web scraping, and
             the publishers themselves. All data is cleaned and reviewed to ensure its validity and integrity. Our catalog
             expands regularly, as does the number of features our data contains. We strive to maintain the most complete
             and sophisticated store of OpenAccess data in the world, and it is this mission that drives our continued
-            work and expansion.</p>
+            work and expansion.--></p>
             <footer class="major">
                 <ul class="actions">
                     <li><a href="/about/#data" class="button">Learn More</a></li>
@@ -124,7 +131,8 @@
         <section id="cta" class="main special">
             <header class="major">
                 <h2>Get Started</h2>
-                <p>Check out what we've already built with our data or dig in to a project of your own.</p>
+            <p>{% placeholder "Getting Started Paragraph" with Textarea %}<
+                <!--Check out what we've already built with our data or dig in to a project of your own.--></p>
             </header>
             <footer class="major">
                 <ul class="actions">

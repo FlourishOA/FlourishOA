@@ -188,7 +188,7 @@ SWAGGER_SETTINGS = {
 def gettext_noop(s):
     return s
 
-PAGE_DEFAULT_TEMPLATE = os.path.join(BASE_DIR, 'main_site/templates/main_site/base.html')
+PAGE_DEFAULT_TEMPLATE = os.path.join(BASE_DIR, 'main_site/templates/main_site/index.html')
 
 PAGE_LANGUAGES = (
     ('en-us', gettext_noop('US English')),
