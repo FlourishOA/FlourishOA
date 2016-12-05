@@ -5,6 +5,7 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 {% load staticfiles %}
+{% load pages_tags %}
 <html>
 	<head>
 		<title>{% block title %} Flourish | OpenAccess Journal Finder{% endblock %}</title>
@@ -21,14 +22,11 @@
 			<div id="wrapper">
                 <!-- Header -->
                 {% block header %}
-                <header id="header" class="alt">
-                    <span class="logo"><img src="{% static "images/logo.png" %}" alt="" /></span>
-                    <h1><a href="/">PriceSleuth</a></h1>
-                    <p>Empowering researchers to maximize their published impact at any price level. <br />
-                    Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
-                </header>
+
                 {% endblock %}
-                {% block content %}{% endblock %}
+                {% block content %}
+                    {% placeholder "content" with TextInput %}
+                {% endblock %}
 
 				<!-- Footer -->
 					<footer id="footer">

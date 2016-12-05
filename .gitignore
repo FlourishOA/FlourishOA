@@ -4,6 +4,7 @@
 htmlcov/*
 FlourishOA/dev_settings.py
 cover/*
+static/*
 pw.txt
 .coverage
 subgit

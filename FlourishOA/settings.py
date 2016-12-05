@@ -45,12 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django_nose',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'api',
     'main_site',
+    'mptt',
+    'pages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -69,7 +72,7 @@ ROOT_URLCONF = 'FlourishOA.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'main_site/templates/main_site')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pages.context_processors.media',
             ],
         },
     },
@@ -90,6 +94,9 @@ with open(BASE_DIR + "/FlourishOA/pw.txt") as f:
     db_name = f.readline().strip()
     un = f.readline().strip()
     pw = f.readline().strip()
+
+PAGE_USE_SITE_ID = True
+SITE_ID = 1
 
 DATABASES = {
     'default': {
@@ -155,8 +162,11 @@ NOSE_ARGS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    ('main_site', '/home/patrick/FlourishOA/main_site/static'),
+    ('main_site', os.path.join(BASE_DIR, 'main_site/static')),
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
@@ -173,6 +183,18 @@ REST_FRAMEWORK = {
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
 }
+
+
+def gettext_noop(s):
+    return s
+
+PAGE_DEFAULT_TEMPLATE = os.path.join(BASE_DIR, 'main_site/templates/main_site/base.html')
+
+PAGE_LANGUAGES = (
+    ('en-us', gettext_noop('US English')),
+)
+LANGUAGES = list(PAGE_LANGUAGES)
+
 
 # grabbing development settings
 try:
