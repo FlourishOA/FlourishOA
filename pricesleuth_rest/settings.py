@@ -30,8 +30,8 @@ SECRET_KEY = gen_secret_key()
 DEBUG = False
 
 ALLOWED_HOSTS = [
-        '54.183.181.205',
         'flourishoa.org',
+	'52.175.212.92',
 ]
 
 # Application definition
@@ -155,7 +155,7 @@ NOSE_ARGS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    ('main_site', '/home/ubuntu/pricesleuth_rest/main_site/static'),
+    ('main_site', '/home/patrick/pricesleuth_rest/main_site/static'),
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
