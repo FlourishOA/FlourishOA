@@ -1,5 +1,6 @@
 {% extends "main_site/base.html" %}
 {% load staticfiles %}
+{% load pages_tags %}
 {% block header %}
 <!-- Header -->
 
@@ -15,122 +16,28 @@
 <div id="main">
     <!-- Content -->
         <section id="background" class="main">
-            <h2>Background</h2>
-            <p>Flourish is a data-driven web app and API enabling users to discover relevant and reputable
-                Open Access (OA) publications in order to maximize publishing impact. By aggregating price information
-                and impact data, we empower researchers to identify credible OA journals that best fit their publication
-                needs. Our goal is to provide the OA community with the tools they need to separate legitimate OA
-                publications from unethical and predatory publishers. Additionally, we believe that adding transparency
-                to OA markets will produce downward price pressure, further lowering economic barriers to entry in
-                scholarly publishing.
-            </p>
-            <p>
-                The Open Access (OA) movement grew from the traditional idea of research and scholarship as a public
-                good. As the rapid growth of the Internet revolutionized our ability distribute and consume information,
-                a set of principles began forming around the notion of "free and unrestricted access" to scholarly
-                literature. On February 14, 2002, the <a href="http://www.budapestopenaccessinitiative.org/read)">Budapest Open
-                Access Initiative</a> codified these principles in a formal statement, laying out a framework for what
-                we now know as the OA movement. Broadly speaking,
-                Open Access is the free and immediate, online distribution of research and scholarship, along with
-                unrestricted access and usage rights for the end-user. These principles stand athwart traditional
-                academic publishing models that lock scholarship behind increasingly cost-prohibitive paywalls,
-                restricting access and limiting participation in scholarly discourse.
-            </p>
-            <p>
-                Bolstered by early adopters like the Public Library of Science (PLoS), Biomed Central, and Creative
-                Commons, as well as broad support from a number of research institutions, academic associations, funding
-                bodies and governments, the OA movement has grown into a robust and innovative community of practice.
-                Publishers are experimenting with business models that incorporate OA principles, and governments are
-                increasingly looking to OA policies as a way to improve stewardship of taxpayer-funded research. In
-                October 2016, the <a href="http://doaj.org">Directory of Open Access Journals (DOAJ)</a>
-                listed 9,210 OA journals from 129 countries, indexing over 2.3 million OA articles.
-            </p>
-            <p>
-              The emerging OA marketplace presents new opportunities and challenges for scholars, funding bodies and
-                publishers looking to thrive in this new environment. Author-pay publishing models shift the financial
-                burden from the consumer to the funding body, usually in the form of article processing charges (APCs).
-                An influx of new OA publications, combined with a paucity of clear economic information has created a
-                great deal of uncertainty in this market. Capitalizing on this uncertainty are a number of "predatory"
-                publishers that employ unethical and deceptive practices to extract fees from researchers, offering
-                only a pretense of peer-review in return. Scholars like
-                <a href="https://scholarlyoa.com/publishers/">Jeffrey Beall</a> have developed criteria and
-                processes for identifying predatory publishers. The
-                <a href="https://eigenfactor.org">Eigenfactor Project</a> uses network analysis to
-                examine scholarly impact, along with economic data from OA publications, to produce quantifiable metrics
-                for cost-effectiveness. Flourish provides users with a practical implementation of these data
-                models, creating an information-rich marketplace of OA publications.
-
-            </p>
+            <h2>{% placeholder "Section 1 Title" with TextInput %}</h2>
+            {% placeholder "Section 1 Content" with Textarea %}
         </section>
         <section id="vision" class="main">
-            <h2>Vision</h2>
-            <p>The success of the Open Access publishing model is highly dependent on a thriving, transparent
-                marketplace. Researchers need to quickly and reliably identify high-quality, relevant and reputable
-                Open Access publications that will maximize their publishing impact. Conversely, quality Open Access
-                publishers must be able to distinguish themselves from the fray of “predatory” journals and unproven
-                startups. By aggregating price information and impact data we empower researchers to identify credible
-                Open Access journals that best fit their publication needs. We also alert the community to unreliable
-                and predatory publishers. Our goal is to increase the use, reliability, and influence of OpenAccess
-                publishing, while decreasing the motivation of predatory publishers by exposing them to the community.
-            </p>
+            <h2>{% placeholder "Section 2 Title" with TextInput %}</h2>
+            {% placeholder "Section 2 Content" with Textarea %}
         </section>
         <section id="data" class="main">
-            <h2>Data</h2>
-            <p>Our article processing charges are scraped directly from several publisher’s websites.
-                We maintain a database consisting of the publishers, publication names, and article processing charges,
-                as well as a handful of other metrics. We then calculate each publication’s influence score using Jevin
-                West’s ArticleInfluence metric. Our database has journal prices for some journals as far back as 2012,
-                and more historical prices are being added for more effective analysis. We believe in sharing our data
-                openly and have created a well-documented <a href="/api/docs/">REST API</a> so that you can easily
-                access this data.
-            </p>
+            <h2>{% placeholder "Section 3 Title" with TextInput %}</h2>
+            {% placeholder "Section 3 Content" with Textarea %}
         </section>
         <section id="funding" class="main">
-            <h2>Funding</h2>
-        <p>This research is generously supported by the <a href="http://sloan.org">Sloan Foundation</a>'s program on
-            scholarly communication.</p>
+            <h2>{% placeholder "Section 4 Title" with TextInput %}</h2>
+            {% placeholder "Section 4 Content" with Textarea %}
         </section>
         <section id="type" class="main">
-            <h2>Types of Journal</h2>
-            <p>A hybrid open access journal is a subscription journal in which some of the articles are open access.
-                This status typically requires the payment of a publication fee (also called an article processing
-                charge or APC) to the publisher, in addition to the subscription fee paid by the reader.
-                (Found on <a href="https://en.wikipedia.org/wiki/Hybrid_open_access_journal">Wikipedia</a>)</p>
-            <p>A "fully" open access journal contains exclusively articles that are open access. Such journals usually
-            have an article processing charge paid by the author, but do not require a subscription to be accessed. </p>
+            <h2>{% placeholder "Section 5 Title" with TextInput %}</h2>
+            {% placeholder "Section 5 Content" with Textarea %}
         </section>
         <section id="team" class="main">
-            <h2>Team</h2>
-            <h3>Jevin West</h3>
-            <p>Jevin is an assistant professor in the Information School at the University of Washington. He co-founded
-            <a href="http://eigenfactor.org">the Eigenfactor project</a>, which aims to rank and map science, in hopes of
-            building better tools for navigating the ever expanding set of scholarly literature.
-            </p>
-            <h3>Carl Bergstrom</h3>
-            <p>Carl is a professor of biology at the University of Washington. He co-founded
-                <a href="http://eigenfactor.org">the Eigenfactor project</a> with Jevin West.
-            </p>
-            <h3>Ashley Farley</h3>
-            <p>
-            Ashley is the Associate Officer of Knowledge and Research Services at the Bill & Melinda Gates
-            Foundation. She can be found on <a href="https://www.linkedin.com/in/ashleyfarley">LinkedIn</a>.
-            </p>
-            <h3>Bree Norlander</h3>
-            <p>
-            Bree is a graduate student in Library and Information Sciences at the University of Washington.
-                She can be found on <a href="https://www.linkedin.com/in/breenorlander">LinkedIn</a>.
-            </p>
-            <h3>Dale Coleman</h3>
-            <p>
-            Dale is a reference librarian at Tacoma Community College.
-            He can be found on <a href="https://www.linkedin.com/in/dalecoleman">LinkedIn</a>.
-            </p>
-            <h3>Patrick Spieker</h3>
-            <p>Patrick is a computer science undergrad at the University of Washington. He likes to work at the intersection
-                of data science and software engineering.
-                He can be found on <a href="https://github.com/PatrickSpieker">Github.</a>
-            </p>
-
+            <h2>{% placeholder "Section 6 Title" with TextInput %}</h2>
+            {% placeholder "Section 6 Content" with Textarea %}
         </section>
 </div>
 {% endblock %}

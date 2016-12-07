@@ -32,6 +32,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     'flourishoa.org',
 	'52.175.212.92',
+    'localhost',
 ]
 
 # Application definition
@@ -190,6 +191,9 @@ def gettext_noop(s):
 
 PAGE_DEFAULT_TEMPLATE = os.path.join(BASE_DIR, 'main_site/templates/main_site/index.html')
 
+PAGE_TEMPLATES = [
+    (os.path.join(BASE_DIR, 'main_site/templates/main_site/about.html'), 'about'),
+]
 PAGE_LANGUAGES = (
     ('en-us', gettext_noop('US English')),
 )
