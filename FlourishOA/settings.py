@@ -18,14 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-def gen_secret_key():
-    return "".join([random.SystemRandom().choice(string.printable) for i in range(50)])
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = gen_secret_key()
-
+SECRET_KEY = "$@j+^nkdc+84kzl8^*i^!(#2#)c2u8-7y+di0t2*qago)5l&b9"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -96,6 +89,14 @@ with open(BASE_DIR + "/FlourishOA/pw.txt") as f:
     un = f.readline().strip()
     pw = f.readline().strip()
 
+
+
+def gen_secret_key():
+    return "".join([random.SystemRandom().choice(string.printable) for i in range(50)])
+
+# SECURITY WARNING: keep the secret key used in production secret!
+
+
 PAGE_USE_SITE_ID = True
 SITE_ID = 1
 
@@ -129,8 +130,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Security
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_BROWSER_XSS_FILTER = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
