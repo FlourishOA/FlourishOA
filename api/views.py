@@ -121,7 +121,7 @@ class InfluenceViewSet(mixins.UpdateModelMixin,
                        viewsets.ViewSet):
 
     # Write-only, so authentication is always required
-    permissions = (permissions.IsAuthenticated,)
+    permissions = (permissions.IsAuthenticatedOrReadOnly,)
     lookup_field = 'issn'
 
     def update(self, request, issn=None, *args, **kwargs):
