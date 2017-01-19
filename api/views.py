@@ -117,6 +117,7 @@ class PriceViewSet(mixins.ListModelMixin,
 
 
 class InfluenceViewSet(mixins.UpdateModelMixin,
+                       mixins.RetrieveModelMixin,
                        viewsets.ViewSet):
 
     # Write-only, so authentication is always required
@@ -147,3 +148,9 @@ class InfluenceViewSet(mixins.UpdateModelMixin,
                                      journal=Journal.objects.get(issn=issn))
 
         return Response(status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, issn=None, *args, **kwargs):
+        queryset = Influence.objects.filter(journal__issn=issn)
+        serializer = JournalSerializer(queryset, many=True)
+        return Response(serializer.data)
+
