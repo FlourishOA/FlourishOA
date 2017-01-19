@@ -1,5 +1,5 @@
 from .models import Journal, Price, Influence
-from .serializers import JournalSerializer, PriceSerializer
+from .serializers import JournalSerializer, PriceSerializer, InfluenceSerializer
 
 from rest_framework import permissions, status, viewsets, mixins
 from rest_framework.response import Response
@@ -151,6 +151,6 @@ class InfluenceViewSet(mixins.UpdateModelMixin,
 
     def retrieve(self, request, issn=None, *args, **kwargs):
         queryset = Influence.objects.filter(journal__issn=issn)
-        serializer = JournalSerializer(queryset, many=True)
+        serializer = InfluenceSerializer(queryset, many=True)
         return Response(serializer.data)
 
