@@ -23,7 +23,7 @@ SECRET_KEY = "$@j+^nkdc+84kzl8^*i^!(#2#)c2u8-7y+di0t2*qago)5l&b9"
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'flourishoa.org',
+    'www.flourishoa.org',
 	'52.175.212.92',
     'localhost',
 ]
