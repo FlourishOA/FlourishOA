@@ -42,7 +42,7 @@ class TestInfluenceViewSet(APITestCase):
         self.client.force_authenticate(user=user)
 
         response = self.client.get(reverse('influence-detail', kwargs={'issn': '5553-1519'}))
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 200)
 
     """
     Testing the update function of the PriceViewSet

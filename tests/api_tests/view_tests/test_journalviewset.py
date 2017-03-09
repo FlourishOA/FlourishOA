@@ -22,12 +22,26 @@ class TestJournalViewSet(APITestCase):
     def setUp(self):
         self.journal1_data = {
             'issn': u'5553-1519',
-            'journal_name': u'Journal 2',
+            'journal_name': u'JOURNAL OF SO MANY THINGS',
+            'pub_name': u'Publisher 1',
+            'is_hybrid': False,
+            'category': None,
+        }
+        self.journal1_data_with_right_name = {
+            'issn': u'5553-1519',
+            'journal_name': u'Journal of So Many Things',
             'pub_name': u'Publisher 1',
             'is_hybrid': False,
             'category': None,
         }
         self.updated_journal1_data = {
+            'issn': u'5553-1519',
+            'journal_name': u'journal 27',
+            'pub_name': u'Publisher 2',
+            'is_hybrid': True,
+            'category': None,
+        }
+        self.updated_journal1_data_with_right_name = {
             'issn': u'5553-1519',
             'journal_name': u'Journal 27',
             'pub_name': u'Publisher 2',
@@ -57,12 +71,12 @@ class TestJournalViewSet(APITestCase):
 
     def test_get_list_not_empty(self):
         # creating objects
-        Journal.objects.create(**self.journal1_data)
+        Journal.objects.create(**self.journal1_data_with_right_name)
         response = self.client.get(reverse('journal-list'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [dict(response.data[0])],
-            [self.journal1_data]
+            [self.journal1_data_with_right_name]
         )
 
     def test_get_single_empty(self):
@@ -101,12 +115,12 @@ class TestJournalViewSet(APITestCase):
         # data received should be the same as the original dict
         self.assertEqual(response.status_code, 200)
         # TODO: fix this, possibly modify the models
-        #self.assertEqual(response.data, self.journal1_data)
+        self.assertEqual(response.data, self.journal1_data_with_right_name)
 
     def test_update_existent(self):
 
         # creating journal so there is something in the database
-        Journal.objects.create(**self.journal1_data)
+        Journal.objects.create(**self.journal1_data_with_right_name)
 
         response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
 
@@ -114,7 +128,7 @@ class TestJournalViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            self.journal1_data
+            self.journal1_data_with_right_name
         )
 
         # setting up user and info to be update
@@ -130,7 +144,7 @@ class TestJournalViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            self.updated_journal1_data,
+            self.updated_journal1_data_with_right_name,
         )
 
     def test_non_uniform_issn_update(self):
@@ -148,7 +162,7 @@ class TestJournalViewSet(APITestCase):
 
     def test_partial_update_valid(self):
         # creating journal so there is something in the database
-        Journal.objects.create(**self.journal1_data)
+        Journal.objects.create(**self.journal1_data_with_right_name)
 
         response = self.client.get(reverse('journal-detail', kwargs={'issn': '5553-1519'}))
 
@@ -156,7 +170,7 @@ class TestJournalViewSet(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            self.journal1_data
+            self.journal1_data_with_right_name
         )
 
         # setting up user and info to be update
@@ -174,7 +188,7 @@ class TestJournalViewSet(APITestCase):
             response.data,
             {
                 'issn': u'5553-1519',
-                'journal_name': u'Journal 2',
+                'journal_name': u'Journal of So Many Things',
                 'pub_name': u'Publisher 3',
                 'is_hybrid': False,
                 'category': None,

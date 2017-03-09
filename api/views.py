@@ -10,6 +10,8 @@ from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from rest_framework.views import APIView
 from rest_framework import response, schemas
 
+from titlecase import titlecase
+
 
 class SchemaView(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -51,6 +53,9 @@ class JournalViewSet(mixins.ListModelMixin,
         # if the given ISSN and the ISSN in the new request.data aren't the same
         if not issn or ('issn' in request.data and issn != request.data['issn']):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if u'journal_name' in request.data:
+            request.data[u'journal_name'] = titlecase(request.data[u'journal_name'])
 
         # creating new Journal model
         journal, journal_created = Journal.objects.update_or_create(
