@@ -38,6 +38,7 @@ semantic-version==2.5.0
 simplejson==3.8.2
 six==1.10.0
 texttable==0.8.4
+titlecase==0.9.0
 tqdm==4.10.0
 uritemplate==0.6
 wcwidth==0.1.7
