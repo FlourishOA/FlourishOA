@@ -3,7 +3,7 @@ from django.shortcuts import render
 from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.serializers import JournalSerializer, PriceSerializer
-from main_site.forms import JournalNameSearchForm, SearchForm
+from main_site.forms import SearchForm
 import simplejson as json
 from dal import autocomplete
 
@@ -180,6 +180,7 @@ class JournalNameAutocomplete(autocomplete.Select2QuerySetView):
         else:
             return Journal.objects.all()
 
+
 class ResultView(TemplateView):
     template_name = 'main_site/result.html'
 
@@ -201,3 +202,9 @@ class ResultView(TemplateView):
 
 
         return render(request, 'main_site/result.html', context)
+
+
+class ScatterData(View):
+    def get(self):
+        return None
+
