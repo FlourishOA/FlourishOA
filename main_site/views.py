@@ -203,8 +203,3 @@ class ResultView(TemplateView):
 
         return render(request, 'main_site/result.html', context)
 
-
-class ScatterData(View):
-    def get(self):
-        return None
-
