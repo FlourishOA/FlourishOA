@@ -2,7 +2,6 @@ from django.views.generic import TemplateView, View
 from django.shortcuts import render
 from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from api.serializers import JournalSerializer, PriceSerializer
 from main_site.forms import SearchForm
 import simplejson as json
 from dal import autocomplete
@@ -22,50 +21,6 @@ class IndexView(TemplateView):
         context['num_journals'] = Journal.objects.all().count()
         context['num_prices'] = Price.objects.all().count()
         context['num_influences'] = Influence.objects.all().count()
-
-        return context
-
-
-class VisualizationView(TemplateView):
-    template_name = 'main_site/viz.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(VisualizationView, self).get_context_data(**kwargs)
-
-        events = []
-
-        categories = ["ALL FIELDS", "ANALYTIC CHEMISTRY", "ANTHROPOLOGY", "ASTRONOMY &amp; ASTROPHYSICS", "CIRCUITS",
-                      "COMMUNICATIONS", "COMPUTER SCIENCE", "CONTROL THEORY", "DENTISTRY", "DERMATOLOGY",
-                      "ECOLOGY &amp; EVOLUTION", "ECONOMICS", "EDUCATION", "ENERGY",
-                      "ENVIRONMENTAL CHEMISTRY &amp; MICROBIOLOGY", "ENVIRONMENTAL HEALTH", "GASTROENTEROLOGY",
-                      "GEOSCIENCES", "HIGH ENERGY PHYSICS", "HISTORY", "INFECTIOUS DISEASES", "INFORMATION SCIENCE",
-                      "INFORMATION THEORY", "LAW", "LINGUISTICS", "MANAGEMENT", "MATERIAL ENGINEERING", "MATHEMATICS",
-                      "MEDICINE", "MOLECULAR &amp; CELL BIOLOGY", "NEPHROLOGY", "NEUROSCIENCE", "OBSTETRICS",
-                      "OPERATIONS RESEARCH", "OPHTHALMOLOGY", "ORTHOPEDICS", "OTOLARYNGOLOGY", "PHARMACOLOGY",
-                      "PHYSICS",
-                      "PLANT BIOLOGY", "POLITICAL SCIENCE", "POWER SYSTEMS", "PROBABILITY &amp; STATISTICS",
-                      "PSYCHOLOGY",
-                      "RADIOLOGY", "RHEUMATOLOGY", "SPORTS MEDICINE", "TRANSPORTATION", "UROLOGY", "VETERINARY",
-                      "WOOD PRODUCTS"]
-        if 'category' in self.request.GET:
-            valid_prices = Price.objects.filter(influence__article_influence__isnull=False,
-                                                date_stamp__year__gte=2012, journal__category__isnull=False,
-                                                journal__category=self.request.GET['category'])
-        else:
-            valid_prices = Price.objects.filter(influence__article_influence__isnull=False,
-                                                date_stamp__year__gte=2012, journal__category__isnull=False)
-
-
-        for price in valid_prices:
-            event = PriceSerializer(price).data
-            event.update(JournalSerializer(price.journal).data)
-            event["article_influence"] = price.influence.article_influence
-            event["est_article_influence"] = price.influence.est_article_influence
-            events.append(event)
-
-        context['events'] = json.dumps(events)
-        context['num_valid_pairs'] = valid_prices.count()
-        context['categories'] = categories
 
         return context
 

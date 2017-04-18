@@ -157,7 +157,7 @@ var dataset; //the full dataset
 var parseDate = d3.timeParse("%Y-%m-%d");
 var formatDate = d3.timeFormat("%m-%d-%Y")
 
-d3.csv("view2_data.csv", function(error, data) {
+d3.csv("./static/view2_data.csv", function(error, data) {
 //read in the data stored in same folder
 	if (error) return console.warn(error);
 	data.forEach(function(d) {  // assign data types to each column

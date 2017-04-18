@@ -1,232 +1,172 @@
-{% extends 'main_site/base.html' %}
-
 {% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<style>
+            body {
+              font: 11px sans-serif;
+            }
 
-{% block header %}
-<header id="header" class="alt">
-    <div style="overflow: hidden;display: inline-block">
-        <img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish">
-    </div>
-</header>
-{% endblock %}
-
-{% block content %}
-<!-- Main -->
-<div id="main">
-    <!-- Content -->
-    <section id="content" class="main">
-        <div class="dropdown">
-            <h3>Category Select</h3>
-            <select class="drop">
-                {% for cat in categories %}
-                    <option tabindex="-1" href="#">{{ cat }}</option>
-                {% endfor %}
-            </select>
-        </br>
+            .axis line,
+            .axis text {
+              font: 11px sans-serif;
+            }
+            .axis path {
+              fill: none;
+              stroke: #000;
+              shape-rendering: crispEdges;
+            }
+        </style>
+        <title>FlourishOA View 1</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'sp_viz.css' %}" >
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+      	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+      	<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                    $('#myselectform').change(function() {
+                var catFinder = $('#myselectform').find(":selected").text();
+                filterType(catFinder);
+                    })
+            })
+        </script>
+	</head>
+	
+	<body>
+		<div class="content">
+            <h1 align="center">Open Access Journals <br> Article Processing Charge and Article Influence Score</h1>
+		
+            <div id="controls">
+                <label for="type">Filter Data by Category:</label>
+                <input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <div id="filters">
+                        <select id="myselectform">
+                                                     <option value="all">All</option>
+                                                     <option value="Anthropology">Anthropology</option>
+                                                     <option value="Astronomy and Astrophysics">Astronomy and Astrophysics</option>
+                                                     <option value="Circuits">Circuits</option>
+                                                     <option value="Computer Science">Computer Science</option>
+                                                     <option value="Dentistry">Dentistry</option>
+                                                     <option value="Dermatology">Dermatology</option>
+                                                     <option value="Ecology and Evolution">Ecology and Evolution</option>
+                                                     <option value="Economics">Economics</option>
+                                                     <option value="Education">Education</option>
+                                                     <option value="Energy">Energy</option>
+                                                     <option value="Environmental Health">Environmental Health</option>
+                                                     <option value="Food Science">Food Science</option>
+                                                     <option value="Gastroenterology">Gastroenterology</option>
+                                                     <option value="High Energy Physics">High Energy Physics</option>
+                                                     <option value="History and Philosophy of Scienced">History and Philosophy of Science</option>
+                                                     <option value="Infectious Diseases">Infectious Diseases</option>
+                                                     <option value="Information Science">Information Science</option>
+                                                     <option value="Law">Law</option>
+                                                     <option value="Linguistics">Linguistics</option>
+                                                     <option value="Marketing">Marketing</option>
+                                                     <option value="Mathematics">Mathematics</option>
+                                                     <option value="Medicine">Medicine</option>
+                                                     <option value="Molecular and Cell Biology">Molecular and Cell Biology</option>
+                                                     <option value="Nephrology">Nephrology</option>
+                                                     <option value="Neuroscience">Neuroscience</option>
+                                                     <option value="Oncology">Oncology</option>
+                                                     <option value="Operations Research">Operations Research</option>
+                                                     <option value="Ophthalmology">Ophthalmology</option>
+                                                     <option value="Orthopedics">Orthopedics</option>
+                                                     <option value="Pharmacology">Pharmacology</option>
+                                                     <option value="Physics and Chemistry">Physics and Chemistry</option>
+                                                     <option value="Plant Biology">Plant Biology</option>
+                                                     <option value="Political Science">Political Science</option>
+                                                     <option value="Psychiatry">Psychiatry</option>
+                                                     <option value="Psychology">Psychology</option>
+                                                     <option value="Radiology">Radiology</option>
+                                                     <option value="Rheumatology">Rheumatology</option>
+                                                     <option value="Robotics">Robotics</option>
+                                                     <option value="Sociology">Sociology</option>
+                                                     <option value="Sports Medicine">Sports Medicine</option>
+                                                     <option value="Structural Engineering">Structural Engineering</option>
+                                                     <option value="Urology">Urology</option>
+                                                     <option value="Veterinary">Veterinary</option>
+                                                     <option value="Wood Products">Wood Products</option>
+                                                     </select>
+                    </div>
+            </div>
         </div>
-        <h2>Buying Influence: Maximizing your impact at any price</h2>
-        <p>The above visualization plots the article publishing price (APC) of a given journal against its
-        ArticleInfluence score. When a given journal is selected via mouseover, information about the journal is shown
-        and two sections of the visualization are highlighted. The red section encapsulates journals that are relatively
-        worse than the selected journal. Currently, we have {{ num_valid_pairs }} prices plotted in the visualization.</p>
-    </section>
+        <script type="text/javascript" src="{% static 'sp_viz.js' %}"></script>
+        <div class="content">
+            <h2>What is this data?</h2>
+            <p>The data used in the visualization above originates from another project I am involved with called
+                <a href="http://flourishoa.org/" target='_blank'>FlourishOA.org</a>. The FlourishOA
+                team collects and analyzes data about Open Access publications. Much of this data is publicly
+                accessible through the <a href="http://flourishoa.org/api/docs" target='_blank'>FlourishOA.org API</a>.</p>
+            <p>The variables charted above are:</p>
+            <ul>
+                <li>Article Processing Charge (APC): the cost to publish in the given journal</li>
+                <li>Article Influence Score: a measure of influence per article</li>
+                    <ul>
+                      <li>“calculated as a journal’s Eigenfactor Score divided by the number of articles in that
+                          journal, normalized so that the average article in the Journal Citation Reports has an
+                          Article Influence Score of 1” (West, Bergstrom, & Bergstrom, 2010, p.239
+                          <a href="http://www.jevinwest.org/papers/West2010CRL.pdf" target='_blank'>PDF</a>).</li>
+                    </ul>
+                <li>Date: the date in which the APC data was gathered</li>
+                <li>Journal Category: a category assigned to the journal by
+                    <a href="http://clarivate.com/?product=journal-citation-reports" target='_blank'>Clarivate Analytics Journal Citation Report</a></li>
+            </ul>
+            <h2>How do I use the visualization?</h2>
+                <p>There are several ways to interact with the scatterplot above. The default view shows you all 650
+                    data points. If you hover over a data point, a tooltip will give additional details. If you click
+                    on a data point, a quadrant will appear showing part of the graph as a green block and parts as a
+                    red block. The green quadrant indicates potential journals which are equal to or higher in Article
+                    Influence Score and equal to or lower in APC. The red quadrant indicates potential journals which
+                    are equal to or lower in Article Influence Score and equal to or
+                    higher in APC. The quadrant will stay in place until you click another data point or make a
+                    category selection from the drop down menu. This allows you to compare the data points within
+                    the quadrants to the one you have selected. You can also choose to view only journals within
+                    certain fields (categories). Choose the appropriate category from the drop down menu
+                    above the chart.</p>
+
+            <p><br><br></p>
+            </div>
+            </body>
+            <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.0/d3-tip.min.js">
+        </script>
+    <body>
+<div class="content">
+    <h1 align="center">Average Article Processing Charge by Journal Category</h1>
+<label><input id="check" type="checkbox"> Sort by APC Values Descending</label>
+    <div id="controls">
+        <label2 for="type">Filter Data by Year:</label2>
+        <input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;">
+
+				<div id="filters">
+					<select id="myselectform">
+						<option value="all">All</option>
+						<option value="2012">2012</option>
+						<option value="2013">2013</option>
+						<option value="2016">2016</option>
+
+					</select>
+				</div>
+    </div>
 </div>
-{% endblock %}
+<script src="{% static 'main_site/bar_viz.js' %}"></script>
+<div class="content">
+<h2>What is this data?</h2>
+<p>The data used in the visualization above originates from another project I am involved with called <a href="http://flourishoa.org/" target="_blank">FlourishOA.org</a>. The FlourishOA team collects and analyzes data about Open Access publications. Much of this data is publicly accessible through the <a href="http://flourishoa.org/api/docs" target="_blank">FlourishOA.org API</a>.</p>
+<p>The three variables charted above are:</p>
+<ul>
+<li>Article Processing Charge (APC): the cost to publish in the given journal</li>
+<li>Year: the year in which the APC data was gathered</li>
+<li>Journal Category: a category assigned to the journal by <a href="http://clarivate.com/?product=journal-citation-reports" target="_blank">Clarivate Analytics Journal Citation Report</a></li>
+</ul>
+<h2>How do I use the visualization?</h2>
+<p>The bar chart is designed to give you summary information about the mean APC to publish in Open Access journals in various fields (categories). The cost represented is a mean value for all years combined, or a particular year chosen from the drop-down menu. The default sorting is alphabetical by category, but the checkbox provided allows you to sort by descending mean APC.</p>
+</div>
+</body>
 
-{% block extra_scripts %}
-    <script src="{% static "assets/js/d3.min.js" %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script id="events" type="application/json">{{ events|safe }}</script>
-    <script>
-    $(document).ready(function() {
-        $(".drop").change(function() {
-            var cat = $(".drop :selected").text();
-            
-            window.location  = "http://flourishoa.org/viz?category=" + cat
-            window.location.reload(True);
-          
-        });
-        var events = JSON.parse(document.getElementById('events').innerHTML);
-
-        var dim = d3.select("#wrapper").node().getBoundingClientRect();
-        console.log(dim.width);
-        // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 40, bottom: 40, left: 40};
-        var width = 1000 - margin.left - margin.right;
-        var height = 800 - margin.top - margin.bottom;
-
-        // set the ranges
-        var x = d3.scaleLinear().range([0, width]);
-        var y = d3.scaleLinear().range([height, 0]);
-
-        // append the svg obgect to the body of the page
-        // appends a 'group' element to 'svg'
-        // moves the 'group' element to the top left margin
-        var svg = d3.select("#content").insert("svg", ":first-child")
-                .attr("overflow", "visible")
-                .style("pointer-events", 'all')
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                        "translate(" + margin.left + "," + margin.top + ")");
-
-        events.forEach(function (d) {
-            d.price = parseFloat(d.price);
-            d.article_influence = parseFloat(d.article_influence);
-        });
-
-        // Scale the range of the data
-        x.domain([0, d3.max(events, function (d) {
-            return d.price;
-        })]);
-
-        y.domain([0, d3.max(events, function (d) {
-            return d.article_influence;
-        })]);
-
-        var node_radius = 12;
-        var highlighted_radius = node_radius;
-
-        var popup_margin = 8;
-        var ems_to_px = 16;
-
-
-        var format_price = function(p) {
-            return "$" + Number(p).toLocaleString('en');
-        };
-
-        var format_ai = function(ai) {
-            return Number(ai).toPrecision(3);
-        };
-
-        // Add the scatterplot
-        var dots = svg.selectAll("dot")
-                .data(events).enter().append("g")
-                .on("mouseover", function (d) {
-                    // nodes fill red when moused over
-                    var lines = [
-                        d.journal_name + ": ",
-                        "ISSN: " + d.issn,
-                        "Price: " + format_price(d.price),
-                        "AI: " + format_ai(d.article_influence),
-                        "Date: " + d.date_stamp
-                    ];
-
-                    var scaledX = x(d.price);
-                    var scaledY = y(d.article_influence);
-
-                    // transparently highlighting other sections
-                    svg.append("rect")
-                            .attr("id", "better")
-                            .attr("x", 0)
-                            .attr("y", 0)
-                            .attr("width", scaledX)
-                            .attr("height", scaledY)
-                            .attr("fill", "green")
-                            .attr("opacity", 0.25);
-
-                    svg.append("rect")
-                            .attr("id", "worse")
-                            .attr("x", scaledX)
-                            .attr("y", scaledY)
-                            .attr("width", width - scaledX)
-                            .attr("height", height - scaledY)
-                            .attr("fill", "red")
-                            .attr("opacity", 0.25);
-
-                    d3.select(this).select("circle")
-                            .attr("r", highlighted_radius)
-                            .attr("fill", "red");
-                    // creating the popup grouping
-                    var popup = svg.append("g")
-                            .attr("id", "popup");
-
-
-                    // popup container (svg rect)
-                    var popupRect = popup.append("rect")
-                            .attr("fill", "white")
-                            .attr("stroke", "black");
-
-                    // base popup text setup (think 'container')
-                    var text = popup.append("text")
-                            .attr("font-size", "1em")
-                            .attr("stroke", "black");
-
-                    // attaching each line of text to the text container
-                    lines.forEach(function (line, index) {
-                        text.append("tspan")
-                                .attr("class", "lines")
-                                .attr("x", popup_margin)
-                                .attr("dy", ems_to_px + popup_margin)
-                                .text(line);
-                    });
-
-                    // getting boundaries of the text
-                    var bbox = text.node().getBBox();
-
-                    // setting the background width and height, using text boundaries
-                    popupRect.attr("width", bbox.width + 2 * popup_margin)
-                            .attr("height", bbox.height + 2 * popup_margin);
-
-                    // adding the popup with the offset to appear directly above the node
-                    popup.attr("transform", function () {
-                        return "translate(" + (scaledX - (popupRect.attr("width")) / 2) + ","
-                                + (scaledY - popupRect.attr("height") - ems_to_px) + ")";
-                    });
-                })
-
-                .on("mouseout", function (d) {
-                    // removing elements from mouseover
-                    d3.select("#popup").remove();
-                    d3.select("#better").remove();
-                    d3.select("#worse").remove();
-                    // reverting color
-                    d3.select(this).select("circle")
-                            .attr("fill", "#6699ff")
-                            .attr("r", node_radius);
-                });
-
-        // adding links and circle for each journal
-        dots.append("a")
-                .attr("xlink:href", function (d) {
-                    return "/journal/" + d.issn + "/"
-                })
-                .append("circle")
-                .attr("stroke", "black")
-                .attr("fill", "#6699ff")
-                .attr("r", node_radius)
-                .attr("cx", function (d) {
-                    return x(d.price);
-                })
-                .attr("cy", function (d) {
-                    return y(d.article_influence);
-                });
-
-        var xAxis = d3.axisBottom(x);
-        var yAxis = d3.axisLeft(y);
-
-        // Add the X Axis
-        var gX = svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-
-        // Add the Y Axis
-        var gY = svg.append("g")
-                .call(yAxis);
-
-        // appending X axis label
-        svg.append("text")
-                .attr("transform", "translate(" + width/2 + "," + (height + 40) + ")")
-                .style("text-anchor", "middle")
-                .text("Publishing Cost in USD ($)");
-
-        // appending Y axis label
-        svg.append("text")
-                .attr("transform", "translate(-35," + height/2 + ")rotate(-90)")
-                .style("text-anchor", "middle")
-                .text("Influence of the Journal (ArticleInfluence(tm) units)");
-
-    });
-</script>
-{% endblock %}
+	
+</html>

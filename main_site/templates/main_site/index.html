@@ -20,7 +20,7 @@
         <ul>
             <li><a href="/about" class="active">About</a></li>
             <li><a href="/api/docs">API Documentation</a></li>
-            <li><a href="/viz.html">Data Visualization</a></li>
+            <li><a href="/viz.html">Data Visualizations</a></li>
             <li><a href="/resources">Resources</a></li>
             <li><a href="/search" style="background-color:#030b23;color:white;">Search Our Catalog</a></li>
         </ul>
@@ -30,70 +30,69 @@
 {% block content %}
 <!-- Main -->
     <div id="main">
-		<script type="text/javascript">
-			$( document ).ready(function() {
+    <!-- Scatter plot viz -->
+        <section id="sp-viz" class="main">
+            <script type="text/javascript">
+                $( document ).ready(function() {
 					$('#myselectform').change(function() {
 				var catFinder = $('#myselectform').find(":selected").text();
 				filterType(catFinder);
 					})
 			})
-	    </script>
-		<div id="controls">
+            </script>
+            <div id="controls">
         <label for="type">Filter Data by Category:</label>
-        <input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;">
-
-				<div id="filters">
-					<select id="myselectform">
-						<option value="all">All</option>
-						<option value="Anthropology">Anthropology</option>
-						<option value="Astronomy and Astrophysics">Astronomy and Astrophysics</option>
-						<option value="Circuits">Circuits</option>
-						<option value="Computer Science">Computer Science</option>
-						<option value="Dentistry">Dentistry</option>
-						<option value="Dermatology">Dermatology</option>
-						<option value="Ecology and Evolution">Ecology and Evolution</option>
-						<option value="Economics">Economics</option>
-						<option value="Education">Education</option>
-						<option value="Energy">Energy</option>
-						<option value="Environmental Health">Environmental Health</option>
-						<option value="Food Science">Food Science</option>
-						<option value="Gastroenterology">Gastroenterology</option>
-						<option value="High Energy Physics">High Energy Physics</option>
-						<option value="History and Philosophy of Scienced">History and Philosophy of Science</option>
-						<option value="Infectious Diseases">Infectious Diseases</option>
-						<option value="Information Science">Information Science</option>
-						<option value="Law">Law</option>
-						<option value="Linguistics">Linguistics</option>
-						<option value="Marketing">Marketing</option>
-						<option value="Mathematics">Mathematics</option>
-						<option value="Medicine">Medicine</option>
-						<option value="Molecular and Cell Biology">Molecular and Cell Biology</option>
-						<option value="Nephrology">Nephrology</option>
-						<option value="Neuroscience">Neuroscience</option>
-						<option value="Oncology">Oncology</option>
-						<option value="Operations Research">Operations Research</option>
-						<option value="Ophthalmology">Ophthalmology</option>
-						<option value="Orthopedics">Orthopedics</option>
-						<option value="Pharmacology">Pharmacology</option>
-						<option value="Physics and Chemistry">Physics and Chemistry</option>
-						<option value="Plant Biology">Plant Biology</option>
-						<option value="Political Science">Political Science</option>
-						<option value="Psychiatry">Psychiatry</option>
-						<option value="Psychology">Psychology</option>
-						<option value="Radiology">Radiology</option>
-						<option value="Rheumatology">Rheumatology</option>
-						<option value="Robotics">Robotics</option>
-						<option value="Sociology">Sociology</option>
-						<option value="Sports Medicine">Sports Medicine</option>
-						<option value="Structural Engineering">Structural Engineering</option>
-						<option value="Urology">Urology</option>
-						<option value="Veterinary">Veterinary</option>
-						<option value="Wood Products">Wood Products</option>
-					</select>
-				</div>
+            <div id="filters">
+                <select id="myselectform">
+                                             <option value="all">All</option>
+                                             <option value="Anthropology">Anthropology</option>
+                                             <option value="Astronomy and Astrophysics">Astronomy and Astrophysics</option>
+                                             <option value="Circuits">Circuits</option>
+                                             <option value="Computer Science">Computer Science</option>
+                                             <option value="Dentistry">Dentistry</option>
+                                             <option value="Dermatology">Dermatology</option>
+                                             <option value="Ecology and Evolution">Ecology and Evolution</option>
+                                             <option value="Economics">Economics</option>
+                                             <option value="Education">Education</option>
+                                             <option value="Energy">Energy</option>
+                                             <option value="Environmental Health">Environmental Health</option>
+                                             <option value="Food Science">Food Science</option>
+                                             <option value="Gastroenterology">Gastroenterology</option>
+                                             <option value="High Energy Physics">High Energy Physics</option>
+                                             <option value="History and Philosophy of Scienced">History and Philosophy of Science</option>
+                                             <option value="Infectious Diseases">Infectious Diseases</option>
+                                             <option value="Information Science">Information Science</option>
+                                             <option value="Law">Law</option>
+                                             <option value="Linguistics">Linguistics</option>
+                                             <option value="Marketing">Marketing</option>
+                                             <option value="Mathematics">Mathematics</option>
+                                             <option value="Medicine">Medicine</option>
+                                             <option value="Molecular and Cell Biology">Molecular and Cell Biology</option>
+                                             <option value="Nephrology">Nephrology</option>
+                                             <option value="Neuroscience">Neuroscience</option>
+                                             <option value="Oncology">Oncology</option>
+                                             <option value="Operations Research">Operations Research</option>
+                                             <option value="Ophthalmology">Ophthalmology</option>
+                                             <option value="Orthopedics">Orthopedics</option>
+                                             <option value="Pharmacology">Pharmacology</option>
+                                             <option value="Physics and Chemistry">Physics and Chemistry</option>
+                                             <option value="Plant Biology">Plant Biology</option>
+                                             <option value="Political Science">Political Science</option>
+                                             <option value="Psychiatry">Psychiatry</option>
+                                             <option value="Psychology">Psychology</option>
+                                             <option value="Radiology">Radiology</option>
+                                             <option value="Rheumatology">Rheumatology</option>
+                                             <option value="Robotics">Robotics</option>
+                                             <option value="Sociology">Sociology</option>
+                                             <option value="Sports Medicine">Sports Medicine</option>
+                                             <option value="Structural Engineering">Structural Engineering</option>
+                                             <option value="Urology">Urology</option>
+                                             <option value="Veterinary">Veterinary</option>
+                                             <option value="Wood Products">Wood Products</option>
+                                             </select>
+            </div>
 		</div>
-        <section id="sp-viz" class="main">
-        <script type="text/javascript" src="{% static "ScatterplotViz/sp_viz.js" %}"></script>
+            <script type="text/javascript" src="{% static "ScatterplotViz/sp_viz.js" %}"></script>
         </section>
     <!-- Introduction -->
         <section id="intro" class="main">
