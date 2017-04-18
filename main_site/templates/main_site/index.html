@@ -20,7 +20,8 @@
         <ul>
             <li><a href="/about" class="active">About</a></li>
             <li><a href="/api/docs">API Documentation</a></li>
-            <li><a href="/viz.html">Data Visualizations</a></li>
+            <li><a href="/scatter">Scatterplot Visualization</a></li>
+            <li><a href="/bar">Category Visualization</a></li>
             <li><a href="/resources">Resources</a></li>
             <li><a href="/search" style="background-color:#030b23;color:white;">Search Our Catalog</a></li>
         </ul>
@@ -31,7 +32,9 @@
 <!-- Main -->
     <div id="main">
     <!-- Scatter plot viz -->
+
         <section id="sp-viz" class="main">
+            <h3 align="center">Article Processing Charge and Article Influence Score</h3>
             <script type="text/javascript">
                 $( document ).ready(function() {
 					$('#myselectform').change(function() {
@@ -92,7 +95,7 @@
                                              </select>
             </div>
 		</div>
-            <script type="text/javascript" src="{% static "ScatterplotViz/sp_viz.js" %}"></script>
+            <script type="text/javascript" src="{% static "sp_viz.js" %}"></script>
         </section>
     <!-- Introduction -->
         <section id="intro" class="main">

@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+    <head>
 		<meta charset="utf-8">
 
         <title>FlourishOA View 1</title>
@@ -75,7 +75,7 @@
                         </select>
                     </div>
             </div>
-            <div id="scatter-viz"></div>
+            <div id="sp-viz"></div>
         </div>
         <script type="text/javascript" src="{% static 'sp_viz.js' %}"></script>
         <div class="content">
@@ -117,46 +117,7 @@
         <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.0/d3-tip.min.js"></script>
-        <div class="content">
-            <h1 align="center">Average Article Processing Charge by Journal Category</h1>
-            <label><input id="apc-check" type="checkbox"> Sort by APC Values Descending</label>
-            <div id="bar-viz"></div>
-            <div id="bar-controls">
-                <label2 for="type">Filter Data by Year:</label2>
-                <input type="text" id="bar" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</head>
 
-                <div id="bar-filters">
-                    <select id="bar-select">
-                        <option value="all">All</option>
-                        <option value="2012">2012</option>
-                        <option value="2013">2013</option>
-                        <option value="2016">2016</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    <script src="{% static 'main_site/bar_viz.js' %}"></script>
-    <div class="content">
-        <h2>What is this data?</h2>
-        <p>The data used in the visualization above originates from another project I am involved with called
-            <a href="http://flourishoa.org/" target="_blank">FlourishOA.org</a>. The FlourishOA team collects and
-            analyzes data about Open Access publications. Much of this data is publicly accessible through the
-            <a href="http://flourishoa.org/api/docs" target="_blank">FlourishOA.org API</a>.</p>
-        <p>The three variables charted above are:</p>
-        <ul>
-            <li>Article Processing Charge (APC): the cost to publish in the given journal</li>
-            <li>Year: the year in which the APC data was gathered</li>
-            <li>Journal Category: a category assigned to the journal by
-                <a href="http://clarivate.com/?product=journal-citation-reports" target="_blank">Clarivate Analytics
-                    Journal Citation Report</a></li>
-        </ul>
-        <h2>How do I use the visualization?</h2>
-        <p>The bar chart is designed to give you summary information about the mean APC to publish in Open Access
-            journals in various fields (categories). The cost represented is a mean value for all years combined,
-            or a particular year chosen from the drop-down menu. The default sorting is alphabetical by category,
-            but the checkbox provided allows you to sort by descending mean APC.</p>
-    </div>
 </body>
-
-	
 </html>

@@ -39,7 +39,7 @@ dataset = data;
 var col = d3.scaleOrdinal(d3.schemeCategory20);
 
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#sp-viz").append("svg")
     .attr("width", w + margin.left + margin.right)
     .attr("height", h + margin.top + margin.bottom)
   .append("g") 
@@ -58,7 +58,7 @@ function make_y_gridlines() {
 }
 
 // add the variable tooltip set to invisible
-var tooltip = d3.select("body")
+var tooltip = d3.select("#sp-viz")
 		.append("div")
     	.attr("class", "tooltip")
     	.style("opacity", 0);

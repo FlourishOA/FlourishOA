@@ -18,7 +18,7 @@ class SchemaView(APIView):
     renderer_classes = [SwaggerUIRenderer, OpenAPIRenderer]
 
     def get(self, request):
-        generator = schemas.SchemaGenerator(title='PriceSleuth API')
+        generator = schemas.SchemaGenerator(title='FlourishOA API')
         return response.Response(generator.get_schema(request=request))
 
 

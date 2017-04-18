@@ -27,7 +27,7 @@ tip = d3.tip()
     .offset([-10, 0])
     .direction('n');
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#bar-viz").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .call(tip)
@@ -51,10 +51,10 @@ d3.csv("./static/view2_data.csv", function(error, data) {
 	});
 
 // Define what happens when drop down menu option is selected
-$("#myselectform").change(function() {
-				var yearFinder = $("#myselectform").find(":selected").text();
+$("#scatter-select").change(function() {
+				var yearFinder = $("#scatter-select").find(":selected").text();
 				filterType(yearFinder);
-				})
+				});
 
 // dataset is the full dataset -- maintain a copy of this at all times
 dataset = data;
@@ -97,7 +97,7 @@ function drawVis(dataset) {
             .attr("x", width/2)
             .attr("dy", "1em")
             .style("text-anchor", "end")
-            .text("Journal Category")
+            .text("Journal Category");
 
     // Append a y-axis label
     ChartGroup.append("text")
@@ -174,7 +174,7 @@ function filterType(mtype) {
 		} else {
             svg.selectAll("*").remove();
 			var ndata = data.filter(function(d) {
-				console.log(mtype)
+				console.log(mtype);
 		    return String(formatDate(d.date_stamp1).split("-")[2]) == mtype;
 		    });
 	        drawVis(ndata);
