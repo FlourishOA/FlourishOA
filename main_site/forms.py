@@ -55,7 +55,7 @@ class JournalInfoForm(forms.Form):
 class PriceInfoForm(forms.Form):
     journal_id = forms.CharField(label='ISSN', max_length=9)
     price = forms.DecimalField(max_digits=7, decimal_places=2)
-    date_stamp = forms.DateField(label='Today\'s date')
+    date_stamp = forms.DateField(label='Today\'s date (YYYY-MM-DD)')
     url = forms.CharField(label='URL of info', max_length=300, required=False)
 
 
