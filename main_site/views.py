@@ -1,11 +1,12 @@
 from django.views.generic import TemplateView, View
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main_site.forms import SearchForm
 import simplejson as json
-from .forms import JournalInfoForm
+from .forms import JournalInfoForm, PriceInfoForm
 from dal import autocomplete
+
 
 
 class IndexView(TemplateView):
@@ -163,7 +164,7 @@ class JournalInfoFormView(TemplateView):
     template_name = 'main_site/journalinfo.html'
 
     def get(self, request, **kwargs):
-        return render(request, template_name, {'form': JournalInfoForm()})
+        return render(request, 'main_site/journalinfo.html', {'form': JournalInfoForm()})
 
     def post(self, request, **kwargs):
         form = JournalInfoForm(request.POST)
@@ -172,8 +173,28 @@ class JournalInfoFormView(TemplateView):
             if not Journal.objects.filter(issn=issn).exists():
                 Journal.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
-        return render(request, template_name, {'form': JournalInfoForm()})
+        return render(request, 'main_site/journalinfo.html', 
+                {'form': JournalInfoForm(),
+                 'failed': True})
 
+
+class PriceInfoFormView(TemplateView):
+    template_name = 'main_site/priceinfo.html'
+
+    def get(self, request, **kwargs):
+        return render(request, 'main_site/priceinfo.html', {'form': PriceInfoForm()})
+
+    def post(self, request, **kwargs):
+        form = PriceInfoForm(request.POST)
+        if form.is_valid():
+            issn = form.cleaned_data['journal_id']
+            print issn
+            if Journal.objects.filter(issn=issn).exists():
+                Price.objects.create(**form.cleaned_data)
+                return HttpResponseRedirect('/success/')
+        return render(request, 'main_site/priceinfo.html', 
+                {'form': PriceInfoForm(),
+                 'failed': True})
 
 
 

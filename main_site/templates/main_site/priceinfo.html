@@ -1,5 +1,13 @@
-<form action="/your-name/" method="post">
+<form action="" method="post">
     {% csrf_token %}
-    {{ form }}
+    <h2>Price Submission Page</h2>
+    {% for field in form%}
+        <p>
+        {{ field.label_tag }} {{ field }}
+        </p>
+    {% endfor %}
+    {% if failed %}
+    <h4>The insertion failed. Please try again.</h4>
+    {% endif %}
     <input type="submit" value="Submit" />
 </form>
