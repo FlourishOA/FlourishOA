@@ -4,6 +4,7 @@ from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main_site.forms import SearchForm
 import simplejson as json
+from .forms import JournalInfoForm
 from dal import autocomplete
 
 
@@ -157,4 +158,29 @@ class ResultView(TemplateView):
 
 
         return render(request, 'main_site/result.html', context)
+
+class JournalInfoFormView(TemplateView):
+    template_name = 'main_site/journalinfo.html'
+
+    def get(self, request, **kwargs):
+        return render(request, template_name, {'form': JournalInfoForm()})
+
+    def post(self, request, **kwargs):
+        form = JournalInfoForm(request.POST)
+        if form.is_valid():
+            issn = form.cleaned_data['issn']
+            if not Journal.objects.filter(issn=issn).exists():
+                Journal.objects.create(**form.cleaned_data)
+                return HttpResponseRedirect('/success/')
+        return render(request, template_name, {'form': JournalInfoForm()})
+
+
+
+
+
+
+
+
+
+
 

@@ -15,6 +15,7 @@ class Journal(models.Model):
     pub_name = models.CharField(max_length=150)
     is_hybrid = models.BooleanField()
     category = models.CharField(max_length=50, null=True)
+    url = models.CharField(max_length=300, null=True)
 
     def __str__(self):
         result = self.issn + ": " + self.journal_name
@@ -48,6 +49,7 @@ class Price(models.Model):
     date_stamp = models.DateField()
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     influence = models.ForeignKey(Influence, null=True, on_delete=models.SET_NULL)
+    url = models.CharField(max_length=300, null=True)
 
     def __str__(self):
         result = self.journal.issn + ": "
@@ -62,3 +64,4 @@ class Price(models.Model):
             result += "No influence value"
         result += " - " + str(self.date_stamp)
         return result
+
