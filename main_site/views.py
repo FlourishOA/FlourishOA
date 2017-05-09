@@ -168,11 +168,15 @@ class JournalInfoFormView(TemplateView):
 
     def post(self, request, **kwargs):
         form = JournalInfoForm(request.POST)
+        print form.data
         if form.is_valid():
+            print('form was valid')
             issn = form.cleaned_data['issn']
             if not Journal.objects.filter(issn=issn).exists():
                 Journal.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
+        else:
+            print("form wasn't valid")
         return render(request, 'main_site/journalinfo.html', 
                 {'form': JournalInfoForm(),
                  'failed': True})
