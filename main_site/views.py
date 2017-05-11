@@ -5,8 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main_site.forms import SearchForm
 import simplejson as json
 from .forms import JournalInfoForm, PriceInfoForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from dal import autocomplete
-
 
 
 class IndexView(TemplateView):
@@ -160,7 +160,9 @@ class ResultView(TemplateView):
 
         return render(request, 'main_site/result.html', context)
 
-class JournalInfoFormView(TemplateView):
+
+class JournalInfoFormView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     template_name = 'main_site/journalinfo.html'
 
     def get(self, request, **kwargs):
@@ -168,21 +170,18 @@ class JournalInfoFormView(TemplateView):
 
     def post(self, request, **kwargs):
         form = JournalInfoForm(request.POST)
-        print form.data
         if form.is_valid():
-            print('form was valid')
             issn = form.cleaned_data['issn']
             if not Journal.objects.filter(issn=issn).exists():
                 Journal.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
-        else:
-            print("form wasn't valid")
-        return render(request, 'main_site/journalinfo.html', 
-                {'form': JournalInfoForm(),
-                 'failed': True})
+        return render(request, 'main_site/journalinfo.html',
+                      {'form': JournalInfoForm(),
+                       'failed': True})
 
 
-class PriceInfoFormView(TemplateView):
+class PriceInfoFormView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     template_name = 'main_site/priceinfo.html'
 
     def get(self, request, **kwargs):
@@ -192,13 +191,12 @@ class PriceInfoFormView(TemplateView):
         form = PriceInfoForm(request.POST)
         if form.is_valid():
             issn = form.cleaned_data['journal_id']
-            print issn
             if Journal.objects.filter(issn=issn).exists():
                 Price.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
         return render(request, 'main_site/priceinfo.html', 
-                {'form': PriceInfoForm(),
-                 'failed': True})
+                      {'form': PriceInfoForm(),
+                       'failed': True})
 
 
 
