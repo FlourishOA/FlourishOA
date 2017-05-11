@@ -65,7 +65,7 @@ class Price(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     influence = models.ForeignKey(Influence, null=True, on_delete=models.SET_NULL)
     url = models.CharField(max_length=300, null=True)
-    license = models.CharField(max_length=1, default=10, choices=LICENSES)
+    license = models.CharField(max_length=1, default='', choices=LICENSES)
 
     def __str__(self):
         result = self.journal.issn + ": "
