@@ -1,9 +1,11 @@
 from django import forms
 from api.models import Journal
 from dal import autocomplete
+from choices import LICENSES
+
 
 class SearchForm(forms.Form):
-    search_query = forms.CharField(required=True,max_length=150)
+    search_query = forms.CharField(required=True, max_length=150)
     sort_by = forms.ChoiceField(choices=(("ce", "Cost Effectiveness"),
                                          ("alpha", "Alphabetical"),
                                          ("price", "APC (price)"),
@@ -53,19 +55,6 @@ class JournalInfoForm(forms.Form):
 
 
 class PriceInfoForm(forms.Form):
-    LICENSES = (
-        (0, 'CC0'),
-        (1, 'CC-BY'),
-        (2, 'CC-BY-NC'),
-        (3, 'CC-BY-NC'),
-        (4, 'CC-BY-NC-ND'),
-        (5, 'CC-BY-SA'),
-        (6, 'CC-BY-NC-SA'),
-        (7, 'CC0'),
-        (8, 'PPDL'),
-        (9, 'Standard copyright'),
-        (10, 'Unknown'),
-    )
     journal_id = forms.CharField(label='ISSN', max_length=9)
     price = forms.DecimalField(max_digits=7, decimal_places=2)
     date_stamp = forms.DateField(label='Today\'s date (YYYY-MM-DD)')

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 
 from django.db import models
-
+from choices import LICENSES
 
 @python_2_unicode_compatible
 class Journal(models.Model):
@@ -46,26 +46,12 @@ class Price(models.Model):
     for each journal. One journal may map to many price events
     """
 
-    LICENSES = (
-        (0, 'CC0'),
-        (1, 'CC - BY'),
-        (2, 'CC - BY - NC'),
-        (3, 'CC - BY - NC'),
-        (4, 'CC - BY - NC - ND'),
-        (5, 'CC - BY - SA'),
-        (6, 'CC - BY - NC - SA'),
-        (7, 'CC0'),
-        (8, 'PPDL'),
-        (9, 'Standard copyright'),
-        (10, 'Unknown'),
-    )
-
     price = models.DecimalField(max_digits=7, decimal_places=2)
     date_stamp = models.DateField()
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     influence = models.ForeignKey(Influence, null=True, on_delete=models.SET_NULL)
     url = models.CharField(max_length=300, null=True)
-    license = models.CharField(max_length=1, default='', choices=LICENSES)
+    license = models.CharField(max_length=30, choices=LICENSES)
 
     def __str__(self):
         result = self.journal.issn + ": "

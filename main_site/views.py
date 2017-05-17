@@ -192,6 +192,8 @@ class PriceInfoFormView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             issn = form.cleaned_data['journal_id']
             if Journal.objects.filter(issn=issn).exists():
+                form.cleaned_data['license'] = int(form.cleaned_data['license'])
+                print form.cleaned_data
                 Price.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
         return render(request, 'main_site/priceinfo.html', 
