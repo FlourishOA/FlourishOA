@@ -80,6 +80,8 @@
                         {% endif %}
                     </span>
                 </div>
+            <!-- Shouldn't show on load-->
+            {% elif request.path == "/search" %}             
             {% else %}
                 <span class="current">
                     <b>We did not find a match for your search term in our database. If you believe we are missing data, please email us the information you have about the publication to <a href="mailto:flourishoa@gmail.com">flourishoa@gmail.com</a>. If you are trying to verify the legitimacy of a journal and it is not in our dataset, we recommend following the steps described in Think, Check, Submit <a href="http://thinkchecksubmit.org/check/">http://thinkchecksubmit.org/check/</a>.</b>
