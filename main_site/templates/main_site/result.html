@@ -82,15 +82,25 @@
         var xScale = d3.scaleTime()
                 .range([0, scale_width])
                 .domain([
-                    d3.min(events, function(d){return d.date}),
-                    d3.max(events, function(d){return d.date})
-                ]);
+                    // fix date label off by one error
+                    d3.min(events, function(d){
+                        var date = new Date(d.date);
+                        date.setFullYear(d.date.getFullYear() - 1);
+                        return date;
+                    }),
+                    d3.max(events, function(d){
+                        return d.date;
+                    })
+                ])
+                .nice();
         var yScale = d3.scaleLinear()
                 .range([scale_height, 0])
                 .domain([
+                    // want a bottom axis label to show up too?
                     d3.min(events, function(d){return d.infl}),
                     d3.max(events, function(d){return d.infl})
-                ]);
+                ])
+                .nice();
 
 
         events.forEach(function(d) {
@@ -105,7 +115,7 @@
 
                     var lines = [
                         "AI: " + d.infl,
-                        "Year: " + d.date.getFullYear()
+                        "Year: " + (d.date.getFullYear() + 1)
                     ];
 
                     var scaledX = xScale(d.date);
@@ -166,13 +176,14 @@
                 .attr("fill", "#6699ff")
                 .attr("r", 5)
                 .attr("cx", function (d) {
-                    return xScale(d.date);
+                    return xScale(d.date.setFullYear(d.date.getFullYear() - 1));
                 })
                 .attr("cy", function (d) {
                     return yScale(d.infl);
                 });
 
         var xAxis = d3.axisBottom(xScale);
+        xAxis.tickFormat(d3.timeFormat('%Y')).ticks(d3.timeYear, 1);
         var yAxis = d3.axisLeft(yScale);
 
         // Add the X Axis
@@ -189,6 +200,13 @@
                 .attr("transform", "translate(" + scale_width/2 + "," + (scale_height + 40) + ")")
                 .style("text-anchor", "middle")
                 .text("Date");
+
+        d3.selectAll('g text').each(function(d,i){
+            if(i%2==1){
+                console.log("hello world");
+                d3.select(this).remove()
+            }
+        })
 
         // appending Y axis label
         svg.append("text")
