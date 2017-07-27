@@ -18,7 +18,7 @@
 
             <p>ISSN: {{ journal.issn }} <br/>
             Type: <a href="/about/#type">
-                    {% if not journal.is_hybrid %} Hybrid
+                    {% if journal.is_hybrid %} Hybrid
                     {% else %}Fully OpenAccess{% endif %}
                 </a> <br/>
             Publisher: {{ journal.pub_name }}<br/>
