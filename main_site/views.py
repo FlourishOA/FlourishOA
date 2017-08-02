@@ -144,7 +144,7 @@ class ResultView(TemplateView):
     def get(self, request, **kwargs):
         context = super(ResultView, self).get_context_data(**kwargs)
         context['journal'] = Journal.objects.get(issn=kwargs['issn'])
-        context['prices'] = Price.objects.filter(journal__issn=kwargs['issn'])
+        context['prices'] = Price.objects.filter(journal__issn=kwargs['issn']).order_by('date_stamp')
         infl_set = Influence.objects.filter(journal__issn=kwargs['issn'])
         context['has_influence'] = infl_set.exists()
         context['num_valid_influences'] = len(infl_set)
