@@ -12,14 +12,13 @@ var margin = {top: 30, right: 30, bottom: 80, left: 40};
 
 var dataset; //the full dataset
 
-d3.csv("./static/clean_data.csv", function(error, data) {
+d3.csv("/static/recent20170710.csv", function(error, data) {
 //read in the data stored in same folder
-    console.log(data);
 	if (error) return console.warn(error);
 	data.forEach(function(d) {  // assign data types to each column
 		d.price = +d.price;
-		d.date_stamp1 = parseDate(d.date_stamp1);
-		d.date_stamp2 = parseDate(d.date_stamp2);
+		d.max_apcdate = parseDate(d.max_apcdate);
+		d.max_aidate = parseDate(d.max_aidate);
 		d.journal_id = String(d.journal_id);
 		d.article_influence = +d.article_influence;
 		d.journal_name = String(d.journal_name);
@@ -38,8 +37,7 @@ dataset = data;
 // Define color variable
 var col = d3.scaleOrdinal(d3.schemeCategory20);
 
-
-var svg = d3.select("#sp-viz").append("svg")
+var svg = d3.select("body").append("svg")
     .attr("width", w + margin.left + margin.right)
     .attr("height", h + margin.top + margin.bottom)
   .append("g") 
@@ -58,19 +56,18 @@ function make_y_gridlines() {
 }
 
 // add the variable tooltip set to invisible
-var tooltip = d3.select("#sp-viz")
+var tooltip = d3.select("body")
 		.append("div")
     	.attr("class", "tooltip")
     	.style("opacity", 0);
 
-
 var x = d3.scaleLinear(x)
-	.domain([0, 4000]) // domain value determined by x max value
+	.domain([0, 5000]) // domain value determined by x max value
 	.range([0, w]);
 	
 	
 var y = d3.scaleLinear(y)
-	.domain([0, 10]) // domain value determined by y max value
+	.domain([0, 20]) // domain value determined by y max value
 	.range([h, 0]); // format of height, 0 allows y-axis to grow from bottom up
 
 // add the X gridlines
@@ -140,6 +137,7 @@ d3.selection.prototype.moveToBack = function() {
     }); 
 }; 
 
+
 function drawVis(dataset) { //draw the circles initially and on each interaction with a control
 
 	var circle = svg.selectAll("circle")
@@ -162,8 +160,9 @@ function drawVis(dataset) { //draw the circles initially and on each interaction
 				tooltip.html("Journal: " + "<a href=http://flourishoa.org/journal/" + d.journal_id + "/ target='_blank'>" + d.journal_name + "</a>"
 				+ "<br>Category: " + d.category
 				+ "<br>APC: $" + d.price 
-				+ "<br>Date: " + formatDate(d.date_stamp1)
-				+ "<br>AI Score: " + d.article_influence.toFixed(2))
+				+ "<br>APC Date: " + formatDate(d.max_apcdate)
+				+ "<br>AI Score: " + d.article_influence.toFixed(2)
+                + "<br>AI Score Date: " + formatDate(d.max_aidate))
 					.style("left", (d3.event.pageX + 5) + "px")
 					.style("top", (d3.event.pageY - 28) + "px");
 				function drawQuad() {
@@ -216,8 +215,9 @@ function drawVis(dataset) { //draw the circles initially and on each interaction
 				tooltip.html("Journal: " + "<a href=http://flourishoa.org/journal/" + d.journal_id + "/ target='_blank'>" + d.journal_name + "</a>"
 				+ "<br>Category: " + d.category
 				+ "<br>APC: $" + d.price 
-				+ "<br>Date: " + formatDate(d.date_stamp1)
-				+ "<br>AI Score: " + d.article_influence.toFixed(2))
+				+ "<br>APC Date: " + formatDate(d.max_apcdate)
+				+ "<br>AI Score: " + d.article_influence.toFixed(2)
+                + "<br>AI Score Date: " + formatDate(d.max_aidate))
 					.style("left", (d3.event.pageX + 5) + "px")
 					.style("top", (d3.event.pageY - 28) + "px");
 					function drawQuad() {

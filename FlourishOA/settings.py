@@ -25,7 +25,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     'www.flourishoa.org',
     'flourishoa.org',
-	'52.175.212.92',
+    'flourishoa.ischool.uw.edu',
     'localhost',
 ]
 
