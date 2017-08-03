@@ -38,7 +38,7 @@
                                     <b>Category:</b> {{ result.journal.category|format_category }}
                                     <br/>
                                     <b>Most Recent Price:</b>
-                                    {% if result.mrp.price %}
+                                    {% if result.mrp.price or result.mrp.price == 0 %}
                                         ${{ result.mrp.price|add_comma }} --
                                     {% else %}
                                         (None on file)
@@ -80,7 +80,7 @@
                         {% endif %}
                     </span>
                 </div>
-            <!-- Shouldn't show on load-->
+            <!-- Shouldn't show on load -->
             {% elif request.path == "/search" %}             
             {% else %}
                 <span class="current">
