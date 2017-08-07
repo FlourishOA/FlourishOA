@@ -4,7 +4,7 @@ from api.models import Journal, Price, Influence
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main_site.forms import SearchForm
 import simplejson as json
-from .forms import JournalInfoForm, PriceInfoForm
+from .forms import JournalInfoForm, PriceInfoForm, SubmitInfoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dal import autocomplete
 
@@ -198,6 +198,22 @@ class PriceInfoFormView(LoginRequiredMixin, TemplateView):
                 return HttpResponseRedirect('/success/')
         return render(request, 'main_site/priceinfo.html', 
                       {'form': PriceInfoForm(),
+                       'failed': True})
+
+class SubmitInfoFormView(TemplateView):
+    login_url = '/login/'
+    template_name = 'main_site/crowdinfo.html'
+
+    def get(self, request, **kwargs):
+        return render(request, 'main_site/crowdinfo.html', {'form': SubmitInfoForm()})
+
+    def post(self, request, **kwargs):
+        form = SubmitInfoForm(request.POST)
+        print form
+        if form.is_valid():
+            return HttpResponseRedirect('/success/')
+        return render(request, 'main_site/crowdinfo.html',
+                      {'form': SubmitInfoForm(),
                        'failed': True})
 
 
