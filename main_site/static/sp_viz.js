@@ -12,8 +12,9 @@ var margin = {top: 30, right: 30, bottom: 80, left: 40};
 
 var dataset; //the full dataset
 
-d3.csv("/static/recent20170710.csv", function(error, data) {
+d3.csv("./static/recent20170710.csv", function(error, data) {
 //read in the data stored in same folder
+        console.log(data);
 	if (error) return console.warn(error);
 	data.forEach(function(d) {  // assign data types to each column
 		d.price = +d.price;
@@ -37,7 +38,7 @@ dataset = data;
 // Define color variable
 var col = d3.scaleOrdinal(d3.schemeCategory20);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#sp-viz").append("svg")
     .attr("width", w + margin.left + margin.right)
     .attr("height", h + margin.top + margin.bottom)
   .append("g") 
@@ -56,7 +57,7 @@ function make_y_gridlines() {
 }
 
 // add the variable tooltip set to invisible
-var tooltip = d3.select("body")
+var tooltip = d3.select("#sp-viz")
 		.append("div")
     	.attr("class", "tooltip")
     	.style("opacity", 0);
