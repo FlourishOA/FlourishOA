@@ -66,10 +66,11 @@ class PriceInfoForm(forms.Form):
 class SubmitInfoForm(forms.Form):
     issn = forms.CharField(label='ISSN', max_length=9, required=False)
     date_stamp = forms.DateField(label='Date of Price/Submission (YYYY-MM-DD)', required=False)
-    journal_name = forms.CharField(label='Journal name (required)', max_length=150, required=True)
+    journal_name = forms.CharField(label='Journal name (required)', max_length=150)
     pub_name = forms.CharField(label='Publisher name', max_length=150, required=False)
     price = forms.DecimalField(max_digits=7, decimal_places=2, required=False)
-    currency = forms.ChoiceField(choices=(('usd', 'USD'),
+    currency = forms.ChoiceField(label="Currency (required if price provided)", choices=(('none', "Select Currency"),
+                                 ('usd', 'USD'),
                                  ('euro', 'EURO'),
                                  ('yen', 'YEN'),
                                  ('pound', 'POUND'),

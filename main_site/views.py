@@ -7,6 +7,8 @@ import simplejson as json
 from .forms import JournalInfoForm, PriceInfoForm, SubmitInfoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dal import autocomplete
+from datetime import date
+import re
 
 
 class IndexView(TemplateView):
@@ -208,8 +210,25 @@ class SubmitInfoFormView(TemplateView):
 
     def post(self, request, **kwargs):
         form = SubmitInfoForm(request.POST)
-        print form
         if form.is_valid():
+            issn = form.cleaned_data["issn"]
+            if issn:
+                prog = re.compile("\d{4}-\d{3}[\dX]")
+                if not prog.match(issn):
+                    print "issn failed"
+            dat = form.cleaned_data["date_stamp"]
+            if dat:
+                if dat > date.today():
+                    print "invalid date"
+            else:
+                form.cleaned_data["date_stamp"] = date.today()
+            price = form.cleaned_data["price"]
+            currency = form.cleaned_data["currency"]
+            if price:
+                if currency == "none":
+                    print "currency required"
+
+
             return HttpResponseRedirect('/success/')
         return render(request, 'main_site/crowdinfo.html',
                       {'form': SubmitInfoForm(),
