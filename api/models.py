@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 
 from django.db import models
-from choices import LICENSES
+from choices import LICENSES, CURRENCIES
 
 @python_2_unicode_compatible
 class Journal(models.Model):
@@ -66,4 +66,21 @@ class Price(models.Model):
             result += "No influence value"
         result += " - " + str(self.date_stamp)
         return result
+
+@python_2_unicode_compatible
+class UserSubmission(models.Model):
+    class Meta:
+        db_table = 'user_submissions'
+
+    issn = models.CharField(max_length=9)
+    date_stamp = models.DateField()
+    journal_name = models.CharField(max_length=150)
+    pub_name = models.CharField(max_length=150)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    currency = models.CharField(max_length=20, choices=CURRENCIES)
+    url = models.CharField(max_length=150)
+    comment = models.CharField(max_length=150)
+
+    def __str__(self):
+        return "this is a placeholder"
 

@@ -10,3 +10,13 @@ LICENSES = (
     (9, 'Standard copyright'),
     (10, 'Unknown'),
 )
+
+CURRENCIES = (
+    ('usd', 'USD'),
+    ('euro', 'EURO'),
+    ('yen', 'YEN'),
+    ('pound', 'POUND'),
+    ('franc', 'FRANC'),
+    ('yuan', 'YUAN'),
+    ('other', 'OTHER')
+)

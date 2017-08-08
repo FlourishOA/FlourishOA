@@ -65,7 +65,7 @@ class PriceInfoForm(forms.Form):
 
 class SubmitInfoForm(forms.Form):
     issn = forms.CharField(label='ISSN', max_length=9, required=False)
-    date_stamp = forms.DateField(label='Date of Price/Submission (YYYY-MM-DD)', required=False)
+    date_stamp = forms.DateField(label='Date of Price/Submission (YYYY-MM-DD)', input_formats=['%Y-%m-%d'], required=True)
     journal_name = forms.CharField(label='Journal name (required)', max_length=150)
     pub_name = forms.CharField(label='Publisher name', max_length=150, required=False)
     price = forms.DecimalField(max_digits=7, decimal_places=2, required=False)
@@ -78,5 +78,5 @@ class SubmitInfoForm(forms.Form):
                                  ('yuan', 'YUAN'),
                                  ('other', 'OTHER')))
     url = forms.CharField(label='Url', max_length=150, required=False)
-    add = forms.CharField(label='Additional Information', max_length=150, required=False)
+    comment = forms.CharField(label='Additional Information', max_length=150, required=False)
 

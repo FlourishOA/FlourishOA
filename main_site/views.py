@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView, View
 from django.shortcuts import render, HttpResponseRedirect
-from api.models import Journal, Price, Influence
+from api.models import Journal, Price, Influence, UserSubmission
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main_site.forms import SearchForm
 import simplejson as json
@@ -191,6 +191,7 @@ class PriceInfoFormView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, **kwargs):
         form = PriceInfoForm(request.POST)
+        print form
         if form.is_valid():
             issn = form.cleaned_data['journal_id']
             if Journal.objects.filter(issn=issn).exists():
@@ -209,30 +210,79 @@ class SubmitInfoFormView(TemplateView):
         return render(request, 'main_site/crowdinfo.html', {'form': SubmitInfoForm()})
 
     def post(self, request, **kwargs):
+        errors = []
         form = SubmitInfoForm(request.POST)
+        print form
         if form.is_valid():
+            print "IS_VALID"
             issn = form.cleaned_data["issn"]
+            # issn validation
             if issn:
                 prog = re.compile("\d{4}-\d{3}[\dX]")
                 if not prog.match(issn):
-                    print "issn failed"
+                    errors.append('Invalid ISSN: Should match \d{4}-\d{3}[\dX]')
             dat = form.cleaned_data["date_stamp"]
+            # date validation
             if dat:
                 if dat > date.today():
-                    print "invalid date"
-            else:
-                form.cleaned_data["date_stamp"] = date.today()
+                    errors.append('Invalid Date: Should be less than or equal to todays date')
+                elif dat.year > date.today().year:
+                    errors.append('Invalid Date: Year should be < %s' % date.today().year)
+                elif dat.month > 12:
+                    errors.append('Invalid Date: Month should be <= 12')
+                else:
+                    if dat.month in [1, 3, 5, 7, 8, 10, 12]:
+                        if dat.day > 31:
+                            errors.append('Invalid Date: Day should be <= 31 for month %s' % dat.month)
+                    elif dat.month in [4, 6, 9, 11]:
+                        if dat.day > 30:
+                            errors.append('Invalid Date: Day should be <= 30 for month %s' % dat.month)
+                    else:
+                        if dat.day > 29:
+                            errors.append('Invalid Date: Day should be <= 29 for any year in February')
+                        else:
+                            if year % 4 == 0:
+                                if year % 100 == 0:
+                                    if year % 400 == 0:
+                                        if dat.day > 29:
+                                            errors.append('Invalid Date: Day should be <= 29 for February in year %s' % dat.year)
+                                    else:
+                                        if dat.day > 28:
+                                            errors.append('Invalid Date: Day should be <= 28 for February in year %s' % dat.year)
+                                else:
+                                    if dat.day > 29:
+                                        errors.append('Invalid Date: Day should be <= 29 for February in year %s' % dat.year)
+                            else:
+                                if dat.day > 28:
+                                    errors.append('Invalid Date: Day should be <= 28 for February in year %s' % dat.year)
+            #else:
+            #    form.cleaned_data["date_stamp"] = str(date.today())
             price = form.cleaned_data["price"]
             currency = form.cleaned_data["currency"]
             if price:
                 if currency == "none":
                     print "currency required"
-
-
-            return HttpResponseRedirect('/success/')
+            if not errors:
+                #print form.cleaned_data
+                UserSubmission.objects.create(**form.cleaned_data)
+                return HttpResponseRedirect('/success/')
+        else:
+            print "INVALID"
+            journal_name = form.data["journal_name"]
+            if not journal_name:
+                errors.append("Invalid Journal Name: Cannot be empty")
+            pub_name = form.data["pub_name"]
+            if len(pub_name) > 150:
+                errors.append("Invalid Publisher Name: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
+            url = form.data["url"]
+            if len(url) > 150:
+                errors.append("Invalid URL: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
+            comment = form.data["comment"]
+            if len(comment) > 150:
+                errors.append("Invalid Additional Information: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
         return render(request, 'main_site/crowdinfo.html',
                       {'form': SubmitInfoForm(),
-                       'failed': True})
+                       'failed': True, 'errors': errors})
 
 
 

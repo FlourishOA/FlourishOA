@@ -36,6 +36,16 @@
 <div id="main">
     <!-- Content -->
         <section id="background" class="main">
+            {% if failed %}
+                <h4 style="color: red">The insertion failed. Please try again.</h4>
+            {% endif %}
+            {% if errors %}
+                <ul>
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         <form action="" method="post">
             {% csrf_token %}
             <h2>Crowd Sourced Submission Page</h2>
@@ -45,9 +55,6 @@
                 {{ field.label_tag }} {{ field }}
                 </p>
             {% endfor %}
-            {% if failed %}
-            <h4>The insertion failed. Please try again.</h4>
-            {% endif %}
             <input type="submit" value="Submit" />
         </form>
     </div>
