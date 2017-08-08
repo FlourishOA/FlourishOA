@@ -8,6 +8,7 @@ from .forms import JournalInfoForm, PriceInfoForm, SubmitInfoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dal import autocomplete
 from datetime import date
+import datetime
 import re
 
 
@@ -212,65 +213,51 @@ class SubmitInfoFormView(TemplateView):
     def post(self, request, **kwargs):
         errors = []
         form = SubmitInfoForm(request.POST)
-        print form
         if form.is_valid():
-            print "IS_VALID"
             issn = form.cleaned_data["issn"]
             # issn validation
             if issn:
                 prog = re.compile("\d{4}-\d{3}[\dX]")
                 if not prog.match(issn):
                     errors.append('Invalid ISSN: Should match \d{4}-\d{3}[\dX]')
-            dat = form.cleaned_data["date_stamp"]
             # date validation
-            if dat:
-                if dat > date.today():
+            date_stamp = form.cleaned_data["date_stamp"]
+            if date_stamp:
+                if date_stamp > date.today():
                     errors.append('Invalid Date: Should be less than or equal to todays date')
-                elif dat.year > date.today().year:
-                    errors.append('Invalid Date: Year should be < %s' % date.today().year)
-                elif dat.month > 12:
-                    errors.append('Invalid Date: Month should be <= 12')
-                else:
-                    if dat.month in [1, 3, 5, 7, 8, 10, 12]:
-                        if dat.day > 31:
-                            errors.append('Invalid Date: Day should be <= 31 for month %s' % dat.month)
-                    elif dat.month in [4, 6, 9, 11]:
-                        if dat.day > 30:
-                            errors.append('Invalid Date: Day should be <= 30 for month %s' % dat.month)
-                    else:
-                        if dat.day > 29:
-                            errors.append('Invalid Date: Day should be <= 29 for any year in February')
-                        else:
-                            if year % 4 == 0:
-                                if year % 100 == 0:
-                                    if year % 400 == 0:
-                                        if dat.day > 29:
-                                            errors.append('Invalid Date: Day should be <= 29 for February in year %s' % dat.year)
-                                    else:
-                                        if dat.day > 28:
-                                            errors.append('Invalid Date: Day should be <= 28 for February in year %s' % dat.year)
-                                else:
-                                    if dat.day > 29:
-                                        errors.append('Invalid Date: Day should be <= 29 for February in year %s' % dat.year)
-                            else:
-                                if dat.day > 28:
-                                    errors.append('Invalid Date: Day should be <= 28 for February in year %s' % dat.year)
-            #else:
-            #    form.cleaned_data["date_stamp"] = str(date.today())
+            else:
+                form.cleaned_data["date_stamp"] = str(date.today())
+            # price and currency validation
             price = form.cleaned_data["price"]
             currency = form.cleaned_data["currency"]
             if price:
                 if currency == "none":
-                    print "currency required"
+                    errors.append('Invalid Currency: If price is provided, currency type is required')
+                if currency == "other":
+                    other = form.cleaned_data["other"]
+                    if not other:
+                        errors.append('Invalid Currency: If other is selected, it must not be empty')
+                    else:
+                        if len(other) > 20:
+                            errors.append("Invalid Currency: Length should be <= 20, if it is longer please email the form information to us at flourishoa@gmail.com")
+                        else:
+                            form.cleaned_data["currency"] = other
+                            del form.cleaned_data['other']
+
             if not errors:
-                #print form.cleaned_data
                 UserSubmission.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
         else:
-            print "INVALID"
+            # originally was automatic form validation from forms.py but now with explicit errors
+            try:
+                datetime.datetime.strptime(form.data["date_stamp"], '%Y-%m-%d')
+            except ValueError:
+                errors.append('Invalid Date: Check that the date is in YYYY-MM-DD format')
             journal_name = form.data["journal_name"]
             if not journal_name:
                 errors.append("Invalid Journal Name: Cannot be empty")
+            if len(journal_name) > 150:
+                errors.append("Invalid Jounal Name: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
             pub_name = form.data["pub_name"]
             if len(pub_name) > 150:
                 errors.append("Invalid Publisher Name: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
@@ -281,7 +268,7 @@ class SubmitInfoFormView(TemplateView):
             if len(comment) > 150:
                 errors.append("Invalid Additional Information: Length should be <= 150, if it is longer please email the form information to us at flourishoa@gmail.com")
         return render(request, 'main_site/crowdinfo.html',
-                      {'form': SubmitInfoForm(),
+                      {'form': form,
                        'failed': True, 'errors': errors})
 
 
