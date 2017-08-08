@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+<!--
+    Stellar by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+    <head>
+        <title> Flourish | OpenAccess Journal Finder</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="/static/main_site/assets/css/main.css" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="/static/main_site/assets/css/ie9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="/static/main_site/assets/css/ie8.css" /><![endif]-->
+    </head>
+    <body>
+
+        <!-- Wrapper -->
+            <div id="wrapper">
+                <!-- Header -->
+                
+<!-- Header -->
+
+
+<header id="header" class="alt">
+    <div style="overflow: hidden;display: inline-block">
+        <h1 style="float: left">Submit</h1>
+    </div>
+</header>
+
+                
+<!-- Main -->
+<div id="main">
+    <!-- Content -->
+        <section id="background" class="main">
+        <form action="" method="post">
+            {% csrf_token %}
+            <h2>Crowd Sourced Submission Page</h2>
+            {% for field in form%}
+                <p>
+                {{ field.label_tag }} {{ field }}
+                </p>
+            {% endfor %}
+            {% if failed %}
+            <h4>The insertion failed. Please try again.</h4>
+            {% endif %}
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+
+        <!-- Footer -->
+            <footer id="footer">
+                <section>
+                    <h2>Funding support</h2>
+                    <a href="http://www.sloan.org/"><img width="40%" height="40%"
+                         src="/static/images/SloanLogo-primary-black.png" alt="Sloan Logo"></a>
+                    <p><a href="/about/#funding" class="button">Learn More</a></p>
+                </section>
+                <section>
+                    <a href="http://datalab.ischool.uw.edu">
+                        <h2>University of Washington DataLab</h2>
+                    </a>
+                    <dl class="alt">
+                        <dt>Email</dt>
+                        <dd><a href="mailto:flourishoa@gmail.com">flourishoa@gmail.com</a></dd>
+                        <dt>Feedback</dt>
+                        <dd><a href="http://bit.ly/flourishfeedback">bit.ly/flourishfeedback</a></dd>
+                    </dl>
+                    <p><a href="/about/#team" class="button">Learn More</a></p>
+                    <ul class="icons">
+                        <li><a href="https://twitter.com/Flourish_OA" class="icon fa-twitter alt"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://github.com/FlourishOA" class="icon fa-github alt"><span class="label">GitHub</span></a></li>
+                        <li><a href="https://facebook.com/flourishoa" class="icon fa-facebook alt"><span class="label">Facebook</span></a></li>
+                    </ul>
+                </section>
+                <p class="copyright">&copy; UW DataLab. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+            </footer>
+
+    </div>
+
+<!-- Scripts -->
+    <script src="/static/assets/js/jquery.min.js"></script>
+    <script src="/static/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/static/assets/js/jquery.scrolly.min.js"></script>
+    <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-90540460-1', 'auto');
+         ga('send', 'pageview');
+
+        </script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+            
+
+    </body>
+</html>

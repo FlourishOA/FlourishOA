@@ -201,7 +201,6 @@ class PriceInfoFormView(LoginRequiredMixin, TemplateView):
                        'failed': True})
 
 class SubmitInfoFormView(TemplateView):
-    login_url = '/login/'
     template_name = 'main_site/crowdinfo.html'
 
     def get(self, request, **kwargs):
