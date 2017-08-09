@@ -242,8 +242,8 @@ class SubmitInfoFormView(TemplateView):
                             errors.append("Invalid Currency: Length should be <= 20, if it is longer please email the form information to us at flourishoa@gmail.com")
                         else:
                             form.cleaned_data["currency"] = other
-                            del form.cleaned_data['other']
-
+            # Don't insert this field as a new column
+            del form.cleaned_data['other']
             if not errors:
                 UserSubmission.objects.create(**form.cleaned_data)
                 return HttpResponseRedirect('/success/')
