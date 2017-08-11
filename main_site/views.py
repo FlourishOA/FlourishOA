@@ -135,10 +135,13 @@ class SearchView(TemplateView):
 
 class JournalNameAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Journal.objects.none()
+        qs = Journal.objects.all()
         if self.q:
-            return Journal.objects.filter(journal_name__istartswith=self.q)
-        else:
-            return Journal.objects.all()
+            qs = qs.filter(journal_name__istartswith=self.q)
+        return qs
+
 
 
 class ResultView(TemplateView):

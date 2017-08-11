@@ -9,10 +9,11 @@
         <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
     </div>
 </header>
+
 {% endblock %}
 {% block content %}
 <!-- Main -->
-<div id="main">
+<div id="main" class="ui-widget">
     <!-- Content -->
         <section id="content" class="main">
             <form action="/search/" method="get">
@@ -21,7 +22,7 @@
                     <p style="float:left;padding-right: 30px">Search By:{{ form.search_by }}</p>
                     <p style="float:left;padding-right: 30px">Sort By:{{ form.sort_by }}</p>
                     <p style="float:left;padding-right: 30px">Order:{{ form.order }}</p>
-                </div>
+                </div>`
                 {{ form.search_query }}
                 <input type="submit" value="Search" />
             </form>
@@ -91,6 +92,12 @@
 </div>
 {% endblock %}
 {% block extra_scripts %}
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+      integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+      crossorigin="anonymous"></script>
+    <link src="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+    <script src="/static/autocomplete.js"></script>
     <style>
     /* Making the default width smaller specifically for the result page */
         #wrapper {
@@ -98,6 +105,9 @@
 	    }
         .select2-results {
             background-color: gray;
+        }
+        .ui-autocomplete {
+            z-index: 100;
         }
     </style>
     {{ form.media }}

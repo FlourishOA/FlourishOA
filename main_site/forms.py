@@ -20,9 +20,13 @@ class SearchForm(forms.Form):
 
 
 class JournalNameSearchForm(forms.Form):
+    class Meta:
+        model = Journal
+        fields = ('__all__')
+
     search_query = forms.ModelChoiceField(required=True,
                                           queryset=Journal.objects.all(),
-                                          widget=autocomplete.ModelSelect2(url='journal-autocomplete'),
+                                          widget=autocomplete.ModelSelect2(url='jname-autocomplete'),
                                           )
     search_by = forms.ChoiceField(choices=(("name", "Journal name"),
                                        ("pub", "Publisher"),

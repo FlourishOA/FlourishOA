@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^submit/?', views.SubmitInfoFormView.as_view(), name='submitj'),
     url(r'^success', views.TemplateView.as_view(
         template_name='main_site/success.html')),
+    url(r'^jname-autocomplete/', views.JournalNameAutocomplete.as_view(create_field='name'),
+        name='jname-autocomplete')
 ]
