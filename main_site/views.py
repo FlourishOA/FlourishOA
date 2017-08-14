@@ -140,8 +140,7 @@ class JournalNameAutocomplete(autocomplete.Select2QuerySetView):
         qs = Journal.objects.all()
         if self.q:
             qs = qs.filter(journal_name__istartswith=self.q)
-        return qs
-
+        return qs        
 
 
 class ResultView(TemplateView):

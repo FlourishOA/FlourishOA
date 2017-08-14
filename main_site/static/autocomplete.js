@@ -4,6 +4,13 @@ $(document).ready(function() {
     });
 });
 
+$(document).on("mouseover", ".ui-menu-item", function() {
+    $(this).css("background-color", "#ADD8E6");
+});
+
+$(document).on("mouseout", ".ui-menu-item", function() {
+    $(this).css("background-color", "white");
+})
 
 
 function getData(value) {
@@ -13,11 +20,10 @@ function getData(value) {
         url: '/jname-autocomplete/?q=' + value,
         dataType: "JSON",
         success: function(data) {
-            console.log(data);
             arr = [];
             if (data["results"]) {
                 for (var index = 0; index < data["results"].length; index++) {
-                    arr.push(data.results[index].text.substring(11) + " (ISSN:" + data.results[index].text.substring(0, 10) + ")");
+                    arr.push(data.results[index].text.substring(11) + " (ISSN: " + data.results[index].text.substring(0, 9) + ")");
                 }
             }
             complete(arr);
@@ -26,11 +32,9 @@ function getData(value) {
 }
 
 function complete(arr) {
-    var autocomplete;
-    console.log(arr);
     $("#id_search_query").autocomplete({
+        appendTo: "#container",
         minLength: 2,
         source: arr,
     });
-    console.log($("#id_search_query").autocomplete("widget"));
 }

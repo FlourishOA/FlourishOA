@@ -24,6 +24,8 @@
                     <p style="float:left;padding-right: 30px">Order:{{ form.order }}</p>
                 </div>`
                 {{ form.search_query }}
+                <div id="container">
+                </div>
                 <input type="submit" value="Search" />
             </form>
             {% if results %}
@@ -106,8 +108,18 @@
         .select2-results {
             background-color: gray;
         }
+        #container {
+            display: block;
+            overflow: hidden;
+        } 
         .ui-autocomplete {
-            z-index: 100;
+            position: absolute;
+        }
+        .ui-menu {
+            background-color: white;
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
         }
     </style>
     {{ form.media }}
