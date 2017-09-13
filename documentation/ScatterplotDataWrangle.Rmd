@@ -1,0 +1,122 @@
+---
+title: "Scatterplot Data Wrangling"
+output: html_document
+---
+
+```{r}
+# Import required libraries
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+# Assign today's date to the date variable
+date <- strftime(Sys.time(), "%Y%m%d")
+```
+
+
+```{r}
+# Load the csv's exported from mySQL database
+prices_data = read.csv("api_price7-10-17.csv", sep = ',', na.strings = c("NULL", "null"))
+journals_data = read.csv("api_journal7-10-17.csv", sep = ',', na.strings = c("NULL", "null"))
+influences_data = read.csv("api_influence7-10-17.csv", sep = ',', na.strings = c("NULL", "null"))
+```
+
+
+```{r}
+# Rename specific columns in preparation for joining tables
+prices_data <- rename(prices_data, price_date_stamp = date_stamp)
+prices_data <- rename(prices_data, price_url = url)
+influences_data <- rename(influences_data, aiscore_date_stamp = date_stamp)
+journals_data <- rename(journals_data, journal_url = url)
+```
+
+```{r}
+# http://stat545.com/bit001_dplyr-cheatsheet.html#full_joinsuperheroes-publishers
+# dplyr full_join: "Return all rows and all columns from both x and y. Where there are not matching 
+# values, returns NA for the one missing. This is a mutating join."
+
+# Join prices_data and influences_data on 
+# prices_data$influence_id = influence_data$id and issn (journal_id = journal_id)
+joined_data <- full_join(prices_data, influences_data, by = c("influence_id" = "id", "journal_id"))
+```
+```{r}
+# Join joined_data with journals_data by joined_data$journal_id = journals_data$issn
+# Create new dataframe full_data
+full_data  <- joined_data %>%
+  full_join(journals_data, c("journal_id" = "issn"))
+```
+
+```{r}
+# Write full_data out as csv
+write.csv(full_data, file = paste0("fulldata", date, ".csv"), row.names = FALSE, quote=FALSE)
+```
+
+```{r}
+# Create new dataframe, clean_data, with just the columns needed for visualizations
+clean_data <- full_data %>%
+  select(price, price_date_stamp, license, aiscore_date_stamp, journal_id, article_influence, journal_name, category)
+```
+
+```{r}
+# Re-assign data type for dates in clean_data
+clean_data$aiscore_date_stamp <- as.Date(clean_data$aiscore_date_stamp, format = "%Y-%m-%d")
+clean_data$price_date_stamp <- as.Date(clean_data$price_date_stamp, format = "%Y-%m-%d")
+```
+
+```{r}
+# "group_by() takes an existing tbl and converts it into a grouped tbl where operations are 
+# performed "by group" https://cran.r-project.org/web/packages/dplyr/dplyr.pdf
+
+# New dataframe, by_issn, groups clean_data by issn(journal_id), journal_name, and license
+by_issn <- clean_data %>% group_by(journal_id, journal_name, license)
+```
+
+```{r}
+# New dataframe, recent, gives most recent dates of AI Scores and APCs for each group
+recent <- summarise(by_issn,
+  max_aidate = max(aiscore_date_stamp, na.rm = TRUE),
+  max_apcdate = max(price_date_stamp, na.rm = TRUE))
+```
+
+```{r}
+# "inner_join() return all rows from x where there are matching values in y, and all columns from
+# x and y. If there are multiple matches between x and y, all combination of the matches are
+# returned." https://cran.r-project.org/web/packages/dplyr/dplyr.pdf
+
+# Inner join clean_data with recent by recent&max_aidate = clean_data$auscore_date_stamp and by issn(journal_id)
+recent <- inner_join(recent, clean_data, by=c("max_aidate" = "aiscore_date_stamp","journal_id"))
+```
+
+```{r}
+# Inner join clean_data with recent by recent&max_apcdate = clean_data$price_date_stamp and by issn(journal_id)
+recent <- inner_join(recent, clean_data, by=c("max_apcdate" = "price_date_stamp","journal_id"))
+```
+
+```{r}
+# Keep only selected columns for recent dataframe, rename some columns for readability
+recent <- recent %>%
+  select(journal_id, journal_name, max_aidate, article_influence.x, max_apcdate, price.y, license) %>%
+  rename(article_influence = article_influence.x) %>%
+  rename(price = price.y)
+```
+
+
+```{r}
+# Create dataframe of journals for which we have no price data
+fillinprice <- subset(recent, is.na(recent$price))
+write.csv(fillinprice, file = paste0("fillinprice", date, ".csv"), row.names = FALSE)
+```
+
+```{r}
+# Remove rows from recent where there are NAs in both price and article_influence
+recent <- recent %>%
+  drop_na(price, article_influence)
+```
+
+
+```{r}
+# Write out recent dataframe to csv - this is what we'll use for d3 viz
+write.csv(recent, file = paste0("recent", date, ".csv"), row.names = FALSE)
+```
+
