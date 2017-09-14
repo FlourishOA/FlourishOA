@@ -12,7 +12,6 @@ $(document).on("mouseout", ".ui-menu-item", function() {
     $(this).css("background-color", "white");
 })
 
-
 function getData(value) {
     $.ajax({
         async: false,
@@ -36,5 +35,9 @@ function complete(arr) {
         appendTo: "#container",
         minLength: 2,
         source: arr,
+        select: function(event, ui) {
+            $("#id_search_query").val(ui.item.value.slice(0, -19));
+            return false;
+        }
     });
 }
