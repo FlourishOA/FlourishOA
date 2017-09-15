@@ -1,13 +1,8 @@
 {% extends 'main_site/base.html' %}
-
 {% load staticfiles %}
 {% load pages_tags %}
 {% block header %}
 <!-- Header -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-  	<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 
     <header id="header" class="alt">
         <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
@@ -18,14 +13,14 @@
 <!-- Nav -->
     <nav id="nav">
         <ul>
-            <li><a href="/about" class="active">About</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/api/docs">API Documentation</a></li>
             <li><a href="/scatter">Scatterplot Visualization</a></li>
             <li><a href="/bar">Category Visualization</a></li>
             <li><a href="/resources">Resources</a></li>
-            <li><a href="/search" style="background-color:#030b23;color:white;">Search Our Catalog</a></li>
+            <li><a href="/search">Search Our Catalog</a></li>
         </ul>
-</nav>
+    </nav>
 {% endblock %}
 
 {% block content %}
@@ -38,10 +33,10 @@
             <script type="text/javascript">
                 $( document ).ready(function() {
 					$('#myselectform').change(function() {
-				var catFinder = $('#myselectform').find(":selected").text();
-				filterType(catFinder);
+        				var catFinder = $('#myselectform').find(":selected").text();
+        				filterType(catFinder);
 					})
-			})
+    			})
             </script>
             <div id="controls">
         <label for="type">Filter Data by Category:</label>

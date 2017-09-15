@@ -1,16 +1,29 @@
-{% extends "main_site/base.html" %}
+{% extends 'main_site/base.html' %}
 {% load staticfiles %}
 {% load pages_tags %}
 {% block header %}
 <!-- Header -->
 
+    <header id="header" class="alt">
+        <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
+        <p>Discover Your Open Access Options<br />
+        Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
+    </header>
 
-<header id="header" class="alt">
-    <div style="overflow: hidden;display: inline-block">
-        <h1 style="float: left">{% placeholder "Main Title" with TextInput %}</h1>
-    </div>
-</header>
+<!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li><a href="/about" class="active">About</a></li>
+            <li><a href="/api/docs">API Documentation</a></li>
+            <li><a href="/scatter">Scatterplot Visualization</a></li>
+            <li><a href="/bar">Category Visualization</a></li>
+            <li><a href="/resources">Resources</a></li>
+            <li><a href="/search">Search Our Catalog</a></li>
+        </ul>
+    </nav>
+
 {% endblock %}
+
 {% block content %}
 <!-- Main -->
 <div id="main">
