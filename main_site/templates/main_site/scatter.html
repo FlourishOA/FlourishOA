@@ -1,30 +1,51 @@
+{% extends 'main_site/base.html' %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-		<meta charset="utf-8">
+{% load pages_tags %}
+{% block header %}
+<!-- Header -->
 
-        <title>FlourishOA View 1</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'sp_viz.css' %}" >
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-      	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-      	<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-        <script type="text/javascript">
-            $( document ).ready(function() {
-                    $('#scatter-select').change(function() {
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#scatter-select').change(function() {
                 var catFinder = $('#scatter-select').find(":selected").text();
                 filterType(catFinder);
-                    })
             })
-        </script>
-	</head>
-    <body>
-		<div class="content">
+        })
+    </script>
+    <header id="header" class="alt">
+        <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
+        <p>Discover Your Open Access Options<br />
+        Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
+    </header>
+
+<!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/api/docs">API Documentation</a></li>
+            <li><a href="/scatter" class="active">Scatterplot Visualization</a></li>
+            <li><a href="/bar">Category Visualization</a></li>
+            <li><a href="/resources">Resources</a></li>
+            <li><a href="/search">Search Our Catalog</a></li>
+        </ul>
+    </nav>
+
+{% endblock %}
+
+{% block content %}
+    <div id="main">
+		<section id="sp-viz" class="main">
             <h1 align="center">Open Access Journals <br> Article Processing Charge and Article Influence Score</h1>
             <div id="scatter-controls">
                 <label for="type">Filter Data by Category:</label>
+                <!--
+                ???
                 <input type="text" id="scatter-type" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                -->
                     <div id="scatter-filters">
                         <select id="scatter-select">
                              <option value="all">All</option>
@@ -76,48 +97,44 @@
                     </div>
             </div>
             <div id="sp-viz"></div>
-        </div>
-        <script type="text/javascript" src="{% static 'sp_viz.js' %}"></script>
-        <div class="content">
-            <h2>What is this data?</h2>
-            <p>The data used in the visualization above originates from another project I am involved with called
-                <a href="http://flourishoa.org/" target='_blank'>FlourishOA.org</a>. The FlourishOA
-                team collects and analyzes data about Open Access publications. Much of this data is publicly
-                accessible through the <a href="http://flourishoa.org/api/docs" target='_blank'>FlourishOA.org API</a>.</p>
-            <p>The variables charted above are:</p>
-            <ul>
-                <li>Article Processing Charge (APC): the cost to publish in the given journal</li>
-                <li>Article Influence Score: a measure of influence per article</li>
-                    <ul>
-                      <li>“calculated as a journal’s Eigenfactor Score divided by the number of articles in that
-                          journal, normalized so that the average article in the Journal Citation Reports has an
-                          Article Influence Score of 1” (West, Bergstrom, & Bergstrom, 2010, p.239
-                          <a href="http://www.jevinwest.org/papers/West2010CRL.pdf" target='_blank'>PDF</a>).</li>
-                    </ul>
-                <li>Date: the date in which the APC data was gathered</li>
-                <li>Journal Category: a category assigned to the journal by
-                    <a href="http://clarivate.com/?product=journal-citation-reports" target='_blank'>Clarivate Analytics Journal Citation Report</a></li>
-            </ul>
-            <h2>How do I use the visualization?</h2>
-                <p>There are several ways to interact with the scatterplot above. The default view shows you all 650
-                    data points. If you hover over a data point, a tooltip will give additional details. If you click
-                    on a data point, a quadrant will appear showing part of the graph as a green block and parts as a
-                    red block. The green quadrant indicates potential journals which are equal to or higher in Article
-                    Influence Score and equal to or lower in APC. The red quadrant indicates potential journals which
-                    are equal to or lower in Article Influence Score and equal to or
-                    higher in APC. The quadrant will stay in place until you click another data point or make a
-                    category selection from the drop down menu. This allows you to compare the data points within
-                    the quadrants to the one you have selected. You can also choose to view only journals within
-                    certain fields (categories). Choose the appropriate category from the drop down menu
-                    above the chart.</p>
+        </section>
+        <section id="intro" class="main">
+            <script type="text/javascript" src="{% static 'sp_viz.js' %}"></script>
+            <div class="content">
+                <h2>What is this data?</h2>
+                <p>The data used in the visualization above originates from another project I am involved with called
+                    <a href="http://flourishoa.org/" target='_blank'>FlourishOA.org</a>. The FlourishOA
+                    team collects and analyzes data about Open Access publications. Much of this data is publicly
+                    accessible through the <a href="http://flourishoa.org/api/docs" target='_blank'>FlourishOA.org API</a>.</p>
+                <p>The variables charted above are:</p>
+                <ul>
+                    <li>Article Processing Charge (APC): the cost to publish in the given journal</li>
+                    <li>Article Influence Score: a measure of influence per article</li>
+                        <ul>
+                          <li>“calculated as a journal’s Eigenfactor Score divided by the number of articles in that
+                              journal, normalized so that the average article in the Journal Citation Reports has an
+                              Article Influence Score of 1” (West, Bergstrom, & Bergstrom, 2010, p.239
+                              <a href="http://www.jevinwest.org/papers/West2010CRL.pdf" target='_blank'>PDF</a>).</li>
+                        </ul>
+                    <li>Date: the date in which the APC data was gathered</li>
+                    <li>Journal Category: a category assigned to the journal by
+                        <a href="http://clarivate.com/?product=journal-citation-reports" target='_blank'>Clarivate Analytics Journal Citation Report</a></li>
+                </ul>
+                <h2>How do I use the visualization?</h2>
+                    <p>There are several ways to interact with the scatterplot above. The default view shows you all 650
+                        data points. If you hover over a data point, a tooltip will give additional details. If you click
+                        on a data point, a quadrant will appear showing part of the graph as a green block and parts as a
+                        red block. The green quadrant indicates potential journals which are equal to or higher in Article
+                        Influence Score and equal to or lower in APC. The red quadrant indicates potential journals which
+                        are equal to or lower in Article Influence Score and equal to or
+                        higher in APC. The quadrant will stay in place until you click another data point or make a
+                        category selection from the drop down menu. This allows you to compare the data points within
+                        the quadrants to the one you have selected. You can also choose to view only journals within
+                        certain fields (categories). Choose the appropriate category from the drop down menu
+                        above the chart.</p>
 
-            <p><br><br></p>
-            </div>
-            <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.0/d3-tip.min.js"></script>
-</head>
-
-</body>
-</html>
+                <p><br><br></p>
+                </div>
+            </section>
+    </div>
+{% endblock %}
