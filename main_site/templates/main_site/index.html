@@ -4,6 +4,9 @@
 {% block header %}
 <!-- Header -->
 
+    <script src="https://d3js.org/d3.v4.min.js"></script>               
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>        
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
     <header id="header" class="alt">
         <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
         <p>Discover Your Open Access Options<br />
@@ -28,15 +31,35 @@
     <div id="main">
     <!-- Scatter plot viz -->
 
+        <section id="intro" class="main">
+            <div class="spotlight">
+                <div class="content">
+                    <header class="major">
+                        <h2>
+                            {% placeholder "Intro title" with TextInput %}
+                        </h2>
+                    </header>
+                    <p>{% placeholder "Intro Paragraph 1" with Textarea %}</p>
+                    <p>{% placeholder "Intro Paragraph 2" with Textarea %}</p>
+                    <iframe width="100%" height="300" src="https://www.youtube.com/embed/bgtmt3qy-oY?rel=0" frameborder="0" allowfullscreen></iframe>
+                    <ul class="actions">
+                        <li><a href="/about/#background" class="button">Learn more</a></li>
+                    </ul>
+                </div>
+                <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
+            </div>
+        </section>
+
+    <!-- Introduction -->
         <section id="sp-viz" class="main">
             <h3 align="center">Article Processing Charge and Article Influence Score</h3>
             <script type="text/javascript">
                 $( document ).ready(function() {
-					$('#myselectform').change(function() {
-        				var catFinder = $('#myselectform').find(":selected").text();
-        				filterType(catFinder);
-					})
-    			})
+                    $('#myselectform').change(function() {
+                        var catFinder = $('#myselectform').find(":selected").text();
+                        filterType(catFinder);
+                    })
+                })
             </script>
             <div id="controls">
         <label for="type">Filter Data by Category:</label>
@@ -89,28 +112,9 @@
                                              <option value="Wood Products">Wood Products</option>
                                              </select>
             </div>
-		</div>
+        </div>
             <script type="text/javascript" src="{% static "sp_viz.js" %}"></script>
-        </section>
-    <!-- Introduction -->
-        <section id="intro" class="main">
-            <div class="spotlight">
-                <div class="content">
-                    <header class="major">
-                        <h2>
-                            {% placeholder "Intro title" with TextInput %}
-                        </h2>
-                    </header>
-                    <p>{% placeholder "Intro Paragraph 1" with Textarea %}</p>
-                    <p>{% placeholder "Intro Paragraph 2" with Textarea %}</p>
-                    <iframe width="100%" height="300" src="https://www.youtube.com/embed/bgtmt3qy-oY?rel=0" frameborder="0" allowfullscreen></iframe>
-                    <ul class="actions">
-                        <li><a href="/about/#background" class="button">Learn more</a></li>
-                    </ul>
-                </div>
-                <span class="image"><img src="{% static "images/pic01.jpg" %}" alt="" /></span>
-            </div>
-        </section>
+        </section>        
 
     <!-- First Section -->
         <section id="first" class="main special">
