@@ -36,7 +36,7 @@ function complete(arr) {
         minLength: 2,
         source: arr,
         select: function(event, ui) {
-            $("#id_search_query").val(ui.item.value.slice(0, -19));
+            $("#id_search_query").val(ui.item.value.slice(0, -18));
             return false;
         }
     });
