@@ -1,47 +1,35 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+{% extends 'main_site/base.html' %}
+{% load staticfiles %}
+{% load data_extras %}
+{% block header %}
 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.0/d3-tip.min.js"></script>
+<style>
 .bar {
   fill: steelblue;
 }
-
 .bar:hover {
   fill: brown;
 }
-
 .axis {
   font: 10px sans-serif;
 }
-
 .text{
     font: 10px sans-serif;
     fill:black;
-    }
-
-.axis path,
-.axis line {
+}
+.axis path, .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
 .x.axis path {
   display: none;
 }
-
-label {
-  position: absolute;
-  top: 75px;
-  left: 200px; 
-}
-
-label2 {
-  position: absolute;
-  top: 75px;
-  left: 40px; 
-}
-
 /* Define tooltip style */
 .d3-tip {
     font: 10px sans-serif;
@@ -54,7 +42,6 @@ label2 {
     border-radius: 2px;
     box-shadow: -3px 3px 15px #888888;
 }
-
 /* Create a small triangle extender for the tooltip */
 .d3-tip:after {
   box-sizing: border-box;
@@ -66,7 +53,6 @@ label2 {
   position: absolute;
   pointer-events: none;
 }
-
 /* Alignment of tooltip above bar */
 .d3-tip.n:after {
   content: "\25BC";
@@ -75,7 +61,6 @@ label2 {
   left: 0;
   text-align: center;
 }
-
 #controls {
         width: 200px;
         height:40px;
@@ -83,39 +68,57 @@ label2 {
         padding-top: 1px;
         padding-left: 60px;
 }
-
-div.content { width: 950px }
-
+div.content { 
+    width: 950px;
+}
+#check {
+    -webkit-appearance: checkbox;
+}
 </style>
- 
-<title>FlourishOA View 2</title>
+<!-- Header -->
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
+    <header id="header" class="alt">
+        <a href="/"><img src="{% static "images/logo.png" %}" width="50%" height="50%" alt="Flourish"></a>
+        <p>Discover Your Open Access Options<br />
+        Built by the <a href="http://datalab.ischool.uw.edu">UW DataLab</a></p>
+    </header>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.0/d3-tip.min.js">
-</script>
-<body>
-<div class="content">
-    <h1 align="center">Average Article Processing Charge by Journal Category</h1>
-<label><input id="check" type="checkbox"> Sort by APC Values Descending</label>
-    <div id="controls">
-        <label2 for="type">Filter Data by Year:</label2>
-        <input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;">
-	
-				<div id="filters">
-					<select id="myselectform">
-						<option value="all">All</option>
-						<option value="2012">2012</option>
-						<option value="2013">2013</option>
-						<option value="2016">2016</option>
-						
-					</select>
-				</div>
-    </div>
-</div>
+<!-- Nav -->
+    <nav id="nav">
+        <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/api/docs">API Documentation</a></li>
+            <li><a href="/scatter">Scatterplot Visualization</a></li>
+            <li><a href="/bar" class="active">Category Visualization</a></li>
+            <li><a href="/resources">Resources</a></li>
+            <li><a href="/search">Search Our Catalog</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div id="main">
+    <section id="sp-viz" class="main">
+        <div class="content">
+            <h1 align="center">Average Article Processing Charge by Journal Category</h1>
+            <label><input id="check" type="checkbox">Sort by APC Values Descending</label>
+            <div id="scatter-controls">
+                <label2 for="type">Filter Data by Year:</label2>
+                <!--
+                I have no idea what this is for
+                <input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                -->
+        			<div id="filters">
+        				<select id="myselectform">
+        					<option value="all">All</option>
+        					<option value="2012">2012</option>
+        					<option value="2013">2013</option>
+        					<option value="2016">2016</option>
+        				</select>
+        			</div>
+            </div>
+        </div>
+    </section>
 <script>
 
 var margin = {top: 20, right: 50, bottom: 250, left: 45},
@@ -143,7 +146,7 @@ tip = d3.tip()
     .offset([-10, 0])
     .direction('n');
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#sp-viz").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .call(tip)
@@ -300,16 +303,19 @@ function filterType(mtype) {
 });
 
 </script>
-<div class="content">
-<h2>What is this data?</h2>
-<p>The data used in the visualization above originates from another project I am involved with called <a href="http://flourishoa.org/" target="_blank">FlourishOA.org</a>. The FlourishOA team collects and analyzes data about Open Access publications. Much of this data is publicly accessible through the <a href="http://flourishoa.org/api/docs" target="_blank">FlourishOA.org API</a>.</p>
-<p>The three variables charted above are:</p>
-<ul>
-<li>Article Processing Charge (APC): the cost to publish in the given journal</li>
-<li>Year: the year in which the APC data was gathered</li>
-<li>Journal Category: a category assigned to the journal by <a href="http://clarivate.com/?product=journal-citation-reports" target="_blank">Clarivate Analytics Journal Citation Report</a></li>
-</ul>
-<h2>How do I use the visualization?</h2>
-<p>The bar chart is designed to give you summary information about the mean APC to publish in Open Access journals in various fields (categories). The cost represented is a mean value for all years combined, or a particular year chosen from the drop-down menu. The default sorting is alphabetical by category, but the checkbox provided allows you to sort by descending mean APC.</p>
+<section id="first" class="main special">
+    <div class="content">
+        <h2>What is this data?</h2>
+        <p>The data used in the visualization above originates from another project I am involved with called <a href="http://flourishoa.org/" target="_blank">FlourishOA.org</a>. The FlourishOA team collects and analyzes data about Open Access publications. Much of this data is publicly accessible through the <a href="http://flourishoa.org/api/docs" target="_blank">FlourishOA.org API</a>.</p>
+        <p>The three variables charted above are:</p>
+        <ul>
+        <li>Article Processing Charge (APC): the cost to publish in the given journal</li>
+        <li>Year: the year in which the APC data was gathered</li>
+        <li>Journal Category: a category assigned to the journal by <a href="http://clarivate.com/?product=journal-citation-reports" target="_blank">Clarivate Analytics Journal Citation Report</a></li>
+        </ul>
+        <h2>How do I use the visualization?</h2>
+        <p>The bar chart is designed to give you summary information about the mean APC to publish in Open Access journals in various fields (categories). The cost represented is a mean value for all years combined, or a particular year chosen from the drop-down menu. The default sorting is alphabetical by category, but the checkbox provided allows you to sort by descending mean APC.</p>
+    </div>
+</section>
 </div>
-</body>
+{% endblock %}

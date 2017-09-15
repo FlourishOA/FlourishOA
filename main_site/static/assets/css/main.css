@@ -2129,7 +2129,9 @@
 		padding: 0.75em 1em;
 	}
 
+	/* I can't get past this line for some reason
 	input[type="checkbox"],
+	*/
 	input[type="radio"] {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -3317,7 +3319,7 @@
 					}
 
 					#nav ul li a.active {
-						background-color: #ffffff;
+						background-color: #ADD8E6;
 						box-shadow: none;
 					}
 
