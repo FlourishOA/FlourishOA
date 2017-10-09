@@ -13,11 +13,11 @@ Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-47-generic x86_64)
     http://www.ubuntu.com/business/services/cloud
 
 ```
-~$ mysqldump -u root -p price_sleuth > flourishdump.sql
+~$ mysqldump -u root -p DBname > flourishdump.sql
 Enter password: 
 ~$ ls
 bree.sql
-~$ mysql -u root -p bree < flourishdump.sql
+~$ mysql -u root -p username < flourishdump.sql
 Enter password: 
 ~$ exit
 ```
